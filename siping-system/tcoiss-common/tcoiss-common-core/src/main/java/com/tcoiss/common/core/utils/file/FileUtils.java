@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.utils.file;
 
-import com.ruoyi.common.core.utils.StringUtils;
+import com.tcoiss.common.core.utils.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.servlet.http.HttpServletRequest;

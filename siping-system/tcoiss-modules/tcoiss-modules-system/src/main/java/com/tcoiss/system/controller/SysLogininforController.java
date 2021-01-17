@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.ruoyi.common.core.constant.Constants;
-import com.ruoyi.common.core.utils.ServletUtils;
-import com.ruoyi.common.core.utils.ip.IpUtils;
-import com.ruoyi.common.core.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.web.controller.BaseController;
-import com.ruoyi.common.core.web.domain.AjaxResult;
-import com.ruoyi.common.core.web.page.TableDataInfo;
-import com.ruoyi.common.log.annotation.Log;
-import com.ruoyi.common.log.enums.BusinessType;
-import com.ruoyi.common.security.annotation.PreAuthorize;
+import com.tcoiss.common.core.constant.Constants;
+import com.tcoiss.common.core.utils.ServletUtils;
+import com.tcoiss.common.core.utils.ip.IpUtils;
+import com.tcoiss.common.core.utils.poi.ExcelUtil;
+import com.tcoiss.common.core.web.controller.BaseController;
+import com.tcoiss.common.core.web.domain.AjaxResult;
+import com.tcoiss.common.core.web.page.TableDataInfo;
+import com.tcoiss.common.log.annotation.Log;
+import com.tcoiss.common.log.enums.BusinessType;
+import com.tcoiss.common.security.annotation.PreAuthorize;
 import com.tcoiss.system.domain.SysLogininfor;
 
 /**

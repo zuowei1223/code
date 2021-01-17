@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
-import com.ruoyi.common.core.exception.PreAuthorizeException;
+import com.tcoiss.common.core.exception.PreAuthorizeException;
 import com.tcoiss.common.security.annotation.PreAuthorize;
 import com.tcoiss.common.security.service.TokenService;
 import com.tcoiss.system.api.model.LoginUser;

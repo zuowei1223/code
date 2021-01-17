@@ -6,14 +6,14 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.ruoyi.common.core.constant.CacheConstants;
-import com.ruoyi.common.core.constant.Constants;
-import com.ruoyi.common.core.utils.IdUtils;
-import com.ruoyi.common.core.utils.SecurityUtils;
-import com.ruoyi.common.core.utils.ServletUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.utils.ip.IpUtils;
-import com.ruoyi.common.redis.service.RedisService;
+import com.tcoiss.common.core.constant.CacheConstants;
+import com.tcoiss.common.core.constant.Constants;
+import com.tcoiss.common.core.utils.IdUtils;
+import com.tcoiss.common.core.utils.SecurityUtils;
+import com.tcoiss.common.core.utils.ServletUtils;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.core.utils.ip.IpUtils;
+import com.tcoiss.common.redis.service.RedisService;
 import com.tcoiss.system.api.model.LoginUser;
 
 /**

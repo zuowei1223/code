@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.ruoyi.system.api.domain.SysDept;
+import com.tcoiss.system.api.domain.SysDept;
 
 /**
  * 部门管理 数据层

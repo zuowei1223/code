@@ -1,6 +1,6 @@
 package com.tcoiss.system.service;
 
-import com.ruoyi.system.api.model.LoginUser;
+import com.tcoiss.system.api.model.LoginUser;
 import com.tcoiss.system.domain.SysUserOnline;
 
 /**

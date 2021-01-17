@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.utils;
 
-import com.ruoyi.common.core.text.StrFormatter;
+import com.tcoiss.common.core.text.StrFormatter;
 
 import java.util.Collection;
 import java.util.List;

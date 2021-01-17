@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ruoyi.system.api.domain.SysDept;
+import com.tcoiss.system.api.domain.SysDept;
 import com.tcoiss.system.domain.SysMenu;
 
 /**

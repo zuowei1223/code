@@ -1,7 +1,7 @@
 package com.tcoiss.common.core.web.domain;
 
-import com.ruoyi.common.core.constant.HttpStatus;
-import com.ruoyi.common.core.utils.StringUtils;
+import com.tcoiss.common.core.constant.HttpStatus;
+import com.tcoiss.common.core.utils.StringUtils;
 
 import java.util.HashMap;
 

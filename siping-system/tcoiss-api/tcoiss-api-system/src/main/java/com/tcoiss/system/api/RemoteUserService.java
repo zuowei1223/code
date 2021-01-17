@@ -5,13 +5,13 @@ import com.tcoiss.system.api.model.LoginUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.ruoyi.common.core.constant.ServiceNameConstants;
-import com.ruoyi.common.core.domain.R;
+import com.tcoiss.common.core.constant.ServiceNameConstants;
+import com.tcoiss.common.core.domain.R;
 
 /**
  * 用户服务
  * 
- * @author ruoyi
+ * @author zw
  */
 @FeignClient(contextId = "remoteUserService", value = ServiceNameConstants.SYSTEM_SERVICE, fallbackFactory = RemoteUserFallbackFactory.class)
 public interface RemoteUserService

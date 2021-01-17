@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.utils;
 
-import com.ruoyi.common.core.text.Convert;
+import com.tcoiss.common.core.text.Convert;
 
 import java.util.Arrays;
 import java.util.Collection;

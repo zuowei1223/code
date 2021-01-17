@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.text;
 
-import com.ruoyi.common.core.utils.StringUtils;
+import com.tcoiss.common.core.utils.StringUtils;
 
 /**
  * 字符串格式化

@@ -1,7 +1,7 @@
 package com.tcoiss.common.core.utils.sql;
 
-import com.ruoyi.common.core.exception.BaseException;
-import com.ruoyi.common.core.utils.StringUtils;
+import com.tcoiss.common.core.exception.BaseException;
+import com.tcoiss.common.core.utils.StringUtils;
 
 /**
  * sql操作工具类

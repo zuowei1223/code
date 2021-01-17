@@ -1,6 +1,6 @@
 package com.tcoiss.gen.service;
 
-import com.ruoyi.gen.domain.GenTableColumn;
+import com.tcoiss.gen.domain.GenTableColumn;
 
 import java.util.List;
 

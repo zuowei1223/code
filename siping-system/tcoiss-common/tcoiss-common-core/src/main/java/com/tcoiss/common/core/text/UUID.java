@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.text;
 
-import com.ruoyi.common.core.exception.UtilException;
+import com.tcoiss.common.core.exception.UtilException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

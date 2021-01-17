@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.utils.file.FileUtils;
-import com.ruoyi.system.api.domain.SysFile;
+import com.tcoiss.common.core.domain.R;
+import com.tcoiss.common.core.utils.file.FileUtils;
+import com.tcoiss.system.api.domain.SysFile;
 
 /**
  * 文件请求处理

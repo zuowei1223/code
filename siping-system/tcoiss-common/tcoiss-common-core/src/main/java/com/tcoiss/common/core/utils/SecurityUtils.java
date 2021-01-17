@@ -1,7 +1,7 @@
 package com.tcoiss.common.core.utils;
 
-import com.ruoyi.common.core.constant.CacheConstants;
-import com.ruoyi.common.core.text.Convert;
+import com.tcoiss.common.core.constant.CacheConstants;
+import com.tcoiss.common.core.text.Convert;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;

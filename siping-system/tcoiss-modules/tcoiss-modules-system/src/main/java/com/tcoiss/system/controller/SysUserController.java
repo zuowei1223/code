@@ -21,20 +21,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.ruoyi.common.core.constant.UserConstants;
-import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.utils.SecurityUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.web.controller.BaseController;
-import com.ruoyi.common.core.web.domain.AjaxResult;
-import com.ruoyi.common.core.web.page.TableDataInfo;
-import com.ruoyi.common.log.annotation.Log;
-import com.ruoyi.common.log.enums.BusinessType;
-import com.ruoyi.common.security.annotation.PreAuthorize;
-import com.ruoyi.system.api.domain.SysRole;
-import com.ruoyi.system.api.domain.SysUser;
-import com.ruoyi.system.api.model.LoginUser;
+import com.tcoiss.common.core.constant.UserConstants;
+import com.tcoiss.common.core.domain.R;
+import com.tcoiss.common.core.utils.SecurityUtils;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.core.utils.poi.ExcelUtil;
+import com.tcoiss.common.core.web.controller.BaseController;
+import com.tcoiss.common.core.web.domain.AjaxResult;
+import com.tcoiss.common.core.web.page.TableDataInfo;
+import com.tcoiss.common.log.annotation.Log;
+import com.tcoiss.common.log.enums.BusinessType;
+import com.tcoiss.common.security.annotation.PreAuthorize;
+import com.tcoiss.system.api.domain.SysRole;
+import com.tcoiss.system.api.domain.SysUser;
+import com.tcoiss.system.api.model.LoginUser;
 
 /**
  * 用户信息

@@ -1,10 +1,10 @@
 package com.tcoiss.gen.util;
 
-import com.ruoyi.common.core.constant.GenConstants;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.gen.config.GenConfig;
-import com.ruoyi.gen.domain.GenTable;
-import com.ruoyi.gen.domain.GenTableColumn;
+import com.tcoiss.common.core.constant.GenConstants;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.gen.config.GenConfig;
+import com.tcoiss.gen.domain.GenTable;
+import com.tcoiss.gen.domain.GenTableColumn;
 import org.apache.commons.lang3.RegExUtils;
 
 import java.util.Arrays;

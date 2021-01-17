@@ -3,16 +3,16 @@ package com.tcoiss.common.security.feign;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
-import com.ruoyi.common.core.constant.CacheConstants;
-import com.ruoyi.common.core.utils.ServletUtils;
-import com.ruoyi.common.core.utils.StringUtils;
+import com.tcoiss.common.core.constant.CacheConstants;
+import com.tcoiss.common.core.utils.ServletUtils;
+import com.tcoiss.common.core.utils.StringUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
 /**
  * feign 请求拦截器
  * 
- * @author ruoyi
+ * @author zw
  */
 @Component
 public class FeignRequestInterceptor implements RequestInterceptor

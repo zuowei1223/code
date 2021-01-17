@@ -1,8 +1,8 @@
 package com.tcoiss.gen.service;
 
-import com.ruoyi.common.core.text.Convert;
-import com.ruoyi.gen.domain.GenTableColumn;
-import com.ruoyi.gen.mapper.GenTableColumnMapper;
+import com.tcoiss.common.core.text.Convert;
+import com.tcoiss.gen.domain.GenTableColumn;
+import com.tcoiss.gen.mapper.GenTableColumnMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

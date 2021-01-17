@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FastByteArrayOutputStream;
 import com.google.code.kaptcha.Producer;
-import com.ruoyi.common.core.constant.Constants;
-import com.ruoyi.common.core.exception.CaptchaException;
-import com.ruoyi.common.core.utils.IdUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.utils.sign.Base64;
-import com.ruoyi.common.core.web.domain.AjaxResult;
-import com.ruoyi.common.redis.service.RedisService;
+import com.tcoiss.common.core.constant.Constants;
+import com.tcoiss.common.core.exception.CaptchaException;
+import com.tcoiss.common.core.utils.IdUtils;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.core.utils.sign.Base64;
+import com.tcoiss.common.core.web.domain.AjaxResult;
+import com.tcoiss.common.redis.service.RedisService;
 
 /**
  * 验证码实现处理

@@ -5,13 +5,13 @@ import java.io.IOException;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
-import com.ruoyi.common.core.exception.file.FileNameLengthLimitExceededException;
-import com.ruoyi.common.core.exception.file.FileSizeLimitExceededException;
-import com.ruoyi.common.core.exception.file.InvalidExtensionException;
-import com.ruoyi.common.core.utils.DateUtils;
-import com.ruoyi.common.core.utils.IdUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.utils.file.MimeTypeUtils;
+import com.tcoiss.common.core.exception.file.FileNameLengthLimitExceededException;
+import com.tcoiss.common.core.exception.file.FileSizeLimitExceededException;
+import com.tcoiss.common.core.exception.file.InvalidExtensionException;
+import com.tcoiss.common.core.utils.DateUtils;
+import com.tcoiss.common.core.utils.IdUtils;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.core.utils.file.MimeTypeUtils;
 
 /**
  * 文件上传工具类

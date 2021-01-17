@@ -2,9 +2,9 @@ package com.tcoiss.system.api.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ruoyi.common.core.annotation.Excel;
-import com.ruoyi.common.core.annotation.Excel.ColumnType;
-import com.ruoyi.common.core.web.domain.BaseEntity;
+import com.tcoiss.common.core.annotation.Excel;
+import com.tcoiss.common.core.annotation.Excel.ColumnType;
+import com.tcoiss.common.core.web.domain.BaseEntity;
 
 /**
  * 操作日志记录表 oper_log

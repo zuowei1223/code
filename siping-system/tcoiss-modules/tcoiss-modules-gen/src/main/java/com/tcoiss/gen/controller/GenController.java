@@ -1,16 +1,16 @@
 package com.tcoiss.gen.controller;
 
-import com.ruoyi.common.core.text.Convert;
-import com.ruoyi.common.core.web.controller.BaseController;
-import com.ruoyi.common.core.web.domain.AjaxResult;
-import com.ruoyi.common.core.web.page.TableDataInfo;
-import com.ruoyi.common.log.annotation.Log;
-import com.ruoyi.common.log.enums.BusinessType;
-import com.ruoyi.common.security.annotation.PreAuthorize;
-import com.ruoyi.gen.domain.GenTable;
-import com.ruoyi.gen.domain.GenTableColumn;
-import com.ruoyi.gen.service.IGenTableColumnService;
-import com.ruoyi.gen.service.IGenTableService;
+import com.tcoiss.common.core.text.Convert;
+import com.tcoiss.common.core.web.controller.BaseController;
+import com.tcoiss.common.core.web.domain.AjaxResult;
+import com.tcoiss.common.core.web.page.TableDataInfo;
+import com.tcoiss.common.log.annotation.Log;
+import com.tcoiss.common.log.enums.BusinessType;
+import com.tcoiss.common.security.annotation.PreAuthorize;
+import com.tcoiss.gen.domain.GenTable;
+import com.tcoiss.gen.domain.GenTableColumn;
+import com.tcoiss.gen.service.IGenTableColumnService;
+import com.tcoiss.gen.service.IGenTableService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

@@ -1,7 +1,7 @@
 package com.tcoiss.common.core.utils;
 
-import com.ruoyi.common.core.constant.Constants;
-import com.ruoyi.common.core.text.Convert;
+import com.tcoiss.common.core.constant.Constants;
+import com.tcoiss.common.core.text.Convert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

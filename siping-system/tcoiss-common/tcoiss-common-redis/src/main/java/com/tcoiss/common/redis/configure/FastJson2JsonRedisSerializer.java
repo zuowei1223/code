@@ -1,4 +1,4 @@
-package com.ruoyi.common.redis.configure;
+package com.tcoiss.common.redis.configure;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;

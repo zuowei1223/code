@@ -6,7 +6,7 @@ import com.tcoiss.system.mapper.SysOperLogMapper;
 import com.tcoiss.system.service.ISysOperLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.api.domain.SysOperLog;
+import com.tcoiss.system.api.domain.SysOperLog;
 
 /**
  * 操作日志 服务层处理

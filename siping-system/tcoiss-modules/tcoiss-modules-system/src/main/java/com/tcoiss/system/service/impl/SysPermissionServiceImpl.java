@@ -9,7 +9,7 @@ import com.tcoiss.system.service.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ruoyi.system.api.domain.SysUser;
+import com.tcoiss.system.api.domain.SysUser;
 
 @Service
 public class SysPermissionServiceImpl implements ISysPermissionService

@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.domain;
 
-import com.ruoyi.common.core.constant.Constants;
+import com.tcoiss.common.core.constant.Constants;
 
 import java.io.Serializable;
 

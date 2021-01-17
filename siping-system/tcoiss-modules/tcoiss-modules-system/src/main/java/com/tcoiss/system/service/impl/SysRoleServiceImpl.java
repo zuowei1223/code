@@ -14,12 +14,12 @@ import com.tcoiss.system.service.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.ruoyi.common.core.constant.UserConstants;
-import com.ruoyi.common.core.exception.CustomException;
-import com.ruoyi.common.core.utils.SpringUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.datascope.annotation.DataScope;
-import com.ruoyi.system.api.domain.SysRole;
+import com.tcoiss.common.core.constant.UserConstants;
+import com.tcoiss.common.core.exception.CustomException;
+import com.tcoiss.common.core.utils.SpringUtils;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.datascope.annotation.DataScope;
+import com.tcoiss.system.api.domain.SysRole;
 import com.tcoiss.system.domain.SysRoleDept;
 import com.tcoiss.system.domain.SysRoleMenu;
 

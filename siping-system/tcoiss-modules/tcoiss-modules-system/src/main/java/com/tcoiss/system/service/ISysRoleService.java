@@ -3,7 +3,7 @@ package com.tcoiss.system.service;
 import java.util.List;
 import java.util.Set;
 
-import com.ruoyi.system.api.domain.SysRole;
+import com.tcoiss.system.api.domain.SysRole;
 
 /**
  * 角色业务层

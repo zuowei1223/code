@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.ruoyi.system.api.domain.SysUser;
+import com.tcoiss.system.api.domain.SysUser;
 
 /**
  * 用户表 数据层

@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.exception.file;
 
-import com.ruoyi.common.core.exception.BaseException;
+import com.tcoiss.common.core.exception.BaseException;
 
 /**
  * 文件信息异常类

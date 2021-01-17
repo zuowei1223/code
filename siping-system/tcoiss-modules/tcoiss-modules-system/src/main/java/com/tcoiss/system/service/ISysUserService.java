@@ -2,7 +2,7 @@ package com.tcoiss.system.service;
 
 import java.util.List;
 
-import com.ruoyi.system.api.domain.SysUser;
+import com.tcoiss.system.api.domain.SysUser;
 
 /**
  * 用户 业务层

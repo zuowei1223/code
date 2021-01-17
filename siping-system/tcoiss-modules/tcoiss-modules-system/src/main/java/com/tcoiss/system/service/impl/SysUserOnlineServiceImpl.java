@@ -2,8 +2,8 @@ package com.tcoiss.system.service.impl;
 
 import com.tcoiss.system.service.ISysUserOnlineService;
 import org.springframework.stereotype.Service;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.system.api.model.LoginUser;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.system.api.model.LoginUser;
 import com.tcoiss.system.domain.SysUserOnline;
 
 /**

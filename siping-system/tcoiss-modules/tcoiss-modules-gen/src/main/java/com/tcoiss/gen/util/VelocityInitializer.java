@@ -1,6 +1,6 @@
 package com.tcoiss.gen.util;
 
-import com.ruoyi.common.core.constant.Constants;
+import com.tcoiss.common.core.constant.Constants;
 import org.apache.velocity.app.Velocity;
 
 import java.util.Properties;

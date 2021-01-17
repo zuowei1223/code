@@ -2,10 +2,10 @@ package com.tcoiss.system.utils;
 
 import java.util.Collection;
 import java.util.List;
-import com.ruoyi.common.core.constant.Constants;
-import com.ruoyi.common.core.utils.SpringUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.redis.service.RedisService;
+import com.tcoiss.common.core.constant.Constants;
+import com.tcoiss.common.core.utils.SpringUtils;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.redis.service.RedisService;
 import com.tcoiss.system.domain.SysDictData;
 
 /**

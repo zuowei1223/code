@@ -1,7 +1,7 @@
 package com.tcoiss.gen.domain;
 
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.web.domain.BaseEntity;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.core.web.domain.BaseEntity;
 
 import javax.validation.constraints.NotBlank;
 

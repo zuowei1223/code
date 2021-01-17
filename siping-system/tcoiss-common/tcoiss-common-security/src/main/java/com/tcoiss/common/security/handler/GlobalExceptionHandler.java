@@ -6,12 +6,12 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import com.ruoyi.common.core.exception.BaseException;
-import com.ruoyi.common.core.exception.CustomException;
-import com.ruoyi.common.core.exception.DemoModeException;
-import com.ruoyi.common.core.exception.PreAuthorizeException;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.web.domain.AjaxResult;
+import com.tcoiss.common.core.exception.BaseException;
+import com.tcoiss.common.core.exception.CustomException;
+import com.tcoiss.common.core.exception.DemoModeException;
+import com.tcoiss.common.core.exception.PreAuthorizeException;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.core.web.domain.AjaxResult;
 
 /**
  * 全局异常处理器

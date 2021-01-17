@@ -1,7 +1,7 @@
 package com.tcoiss.common.core.utils.reflect;
 
-import com.ruoyi.common.core.text.Convert;
-import com.ruoyi.common.core.utils.DateUtils;
+import com.tcoiss.common.core.text.Convert;
+import com.tcoiss.common.core.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.poi.ss.usermodel.DateUtil;

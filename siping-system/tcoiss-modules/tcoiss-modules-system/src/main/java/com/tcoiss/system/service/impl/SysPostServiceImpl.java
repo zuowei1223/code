@@ -8,9 +8,9 @@ import com.tcoiss.system.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ruoyi.common.core.constant.UserConstants;
-import com.ruoyi.common.core.exception.CustomException;
-import com.ruoyi.common.core.utils.StringUtils;
+import com.tcoiss.common.core.constant.UserConstants;
+import com.tcoiss.common.core.exception.CustomException;
+import com.tcoiss.common.core.utils.StringUtils;
 import com.tcoiss.system.domain.SysPost;
 
 /**

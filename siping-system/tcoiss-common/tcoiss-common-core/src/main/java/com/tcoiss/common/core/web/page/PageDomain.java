@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.web.page;
 
-import com.ruoyi.common.core.utils.StringUtils;
+import com.tcoiss.common.core.utils.StringUtils;
 
 /**
  * 分页数据

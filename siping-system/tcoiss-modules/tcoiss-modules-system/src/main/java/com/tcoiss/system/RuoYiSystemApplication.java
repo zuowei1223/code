@@ -2,9 +2,9 @@ package com.tcoiss.system;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
-import com.ruoyi.common.security.annotation.EnableCustomConfig;
-import com.ruoyi.common.security.annotation.EnableRyFeignClients;
-import com.ruoyi.common.swagger.annotation.EnableCustomSwagger2;
+import com.tcoiss.common.security.annotation.EnableCustomConfig;
+import com.tcoiss.common.security.annotation.EnableRyFeignClients;
+import com.tcoiss.common.swagger.annotation.EnableCustomSwagger2;
 
 /**
  * 系统模块

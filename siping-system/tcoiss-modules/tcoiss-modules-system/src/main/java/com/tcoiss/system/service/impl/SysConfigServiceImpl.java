@@ -8,12 +8,12 @@ import com.tcoiss.system.mapper.SysConfigMapper;
 import com.tcoiss.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.common.core.constant.Constants;
-import com.ruoyi.common.core.constant.UserConstants;
-import com.ruoyi.common.core.exception.CustomException;
-import com.ruoyi.common.core.text.Convert;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.redis.service.RedisService;
+import com.tcoiss.common.core.constant.Constants;
+import com.tcoiss.common.core.constant.UserConstants;
+import com.tcoiss.common.core.exception.CustomException;
+import com.tcoiss.common.core.text.Convert;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.redis.service.RedisService;
 import com.tcoiss.system.domain.SysConfig;
 
 /**

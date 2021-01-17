@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.exception.user;
 
-import com.ruoyi.common.core.exception.BaseException;
+import com.tcoiss.common.core.exception.BaseException;
 
 /**
  * 用户信息异常类

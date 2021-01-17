@@ -17,12 +17,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ruoyi.common.core.constant.CacheConstants;
-import com.ruoyi.common.core.constant.Constants;
-import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.utils.ServletUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.redis.service.RedisService;
+import com.tcoiss.common.core.constant.CacheConstants;
+import com.tcoiss.common.core.constant.Constants;
+import com.tcoiss.common.core.domain.R;
+import com.tcoiss.common.core.utils.ServletUtils;
+import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.redis.service.RedisService;
 import com.tcoiss.gateway.config.properties.IgnoreWhiteProperties;
 import reactor.core.publisher.Mono;
 
