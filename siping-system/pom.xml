@@ -10,9 +10,13 @@
     <description>四平系统集中化平台</description>
     <modules>
         <module>tcoiss-common</module>
+        <module>tcoiss-api</module>
+        <module>tcoiss-gateway</module>
+        <module>tcoiss-integration</module>
+        <module>tcoiss-modules</module>
     </modules>
     <properties>
-        <ruoyi.version>2.4.0</ruoyi.version>
+        <tcoiss.version>1.0-SNAPSHOT</tcoiss.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -156,8 +160,61 @@
                 <artifactId>commons-pool2</artifactId>
                 <version>${common-pool.version}</version>
             </dependency>
+            <!-- 核心模块 -->
+            <dependency>
+                <groupId>com.siping.tcoiss</groupId>
+                <artifactId>tcoiss-common-core</artifactId>
+                <version>${tcoiss.version}</version>
+            </dependency>
 
+            <!-- 接口模块 -->
+            <dependency>
+                <groupId>com.siping.tcoiss</groupId>
+                <artifactId>tcoiss-common-swagger</artifactId>
+                <version>${tcoiss.version}</version>
+            </dependency>
 
+            <!-- 安全模块 -->
+            <dependency>
+                <groupId>com.siping.tcoiss</groupId>
+                <artifactId>tcoiss-common-security</artifactId>
+                <version>${tcoiss.version}</version>
+            </dependency>
+
+            <!-- 权限范围 -->
+            <dependency>
+                <groupId>com.siping.tcoiss</groupId>
+                <artifactId>tcoiss-common-datascope</artifactId>
+                <version>${tcoiss.version}</version>
+            </dependency>
+
+            <!-- 多数据源 -->
+            <dependency>
+                <groupId>com.siping.tcoiss</groupId>
+                <artifactId>tcoiss-common-datasource</artifactId>
+                <version>${tcoiss.version}</version>
+            </dependency>
+
+            <!-- 日志记录 -->
+            <dependency>
+                <groupId>com.siping.tcoiss</groupId>
+                <artifactId>tcoiss-common-log</artifactId>
+                <version>${tcoiss.version}</version>
+            </dependency>
+
+            <!-- 缓存服务 -->
+            <dependency>
+                <groupId>com.siping.tcoiss</groupId>
+                <artifactId>tcoiss-common-redis</artifactId>
+                <version>${tcoiss.version}</version>
+            </dependency>
+
+            <!-- 系统接口 -->
+            <dependency>
+                <groupId>com.siping.tcoiss</groupId>
+                <artifactId>tcoiss-api-system</artifactId>
+                <version>${tcoiss.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

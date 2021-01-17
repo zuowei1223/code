@@ -10,6 +10,24 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tcoiss-common-redis</artifactId>
+    <description>
+        tcoiss-common-redis缓存服务
+    </description>
 
+    <dependencies>
+
+        <!-- SpringBoot Boot Redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- tcoiss Common Core-->
+        <dependency>
+            <groupId>com.siping.tcoiss</groupId>
+            <artifactId>tcoiss-common-core</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>

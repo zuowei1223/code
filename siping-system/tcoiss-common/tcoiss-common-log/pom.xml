@@ -10,6 +10,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tcoiss-common-log</artifactId>
+    <description>
+        tcoiss-common-log日志记录
+    </description>
 
+    <dependencies>
+
+        <!-- tcoiss Common Security -->
+        <dependency>
+            <groupId>com.siping.tcoiss</groupId>
+            <artifactId>tcoiss-common-security</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>

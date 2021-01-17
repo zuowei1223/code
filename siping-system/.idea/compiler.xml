@@ -6,9 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="tcoiss-api-system" />
         <module name="tcoiss-common-core" />
+        <module name="tcoiss-common-datascope" />
+        <module name="tcoiss-common-datasource" />
         <module name="tcoiss-common-log" />
         <module name="tcoiss-common-redis" />
+        <module name="tcoiss-common-security" />
+        <module name="tcoiss-common-swagger" />
+        <module name="tcoiss-gateway" />
+        <module name="tcoiss-integration" />
+        <module name="tcoiss-modules-file" />
+        <module name="tcoiss-modules-gen" />
+        <module name="tcoiss-modules-system" />
       </profile>
     </annotationProcessing>
   </component>

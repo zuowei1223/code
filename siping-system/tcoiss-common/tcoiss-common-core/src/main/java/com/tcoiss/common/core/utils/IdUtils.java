@@ -1,6 +1,6 @@
 package com.tcoiss.common.core.utils;
 
-import com.ruoyi.common.core.text.UUID;
+import com.tcoiss.common.core.text.UUID;
 
 /**
  * ID生成器工具类

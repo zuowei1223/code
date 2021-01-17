@@ -2,9 +2,22 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-api/tcoiss-api-system" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tcoiss-common" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tcoiss-common/tcoiss-common-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-common/tcoiss-common-datascope" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-common/tcoiss-common-datasource" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tcoiss-common/tcoiss-common-log" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tcoiss-common/tcoiss-common-redis" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-common/tcoiss-common-security" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-common/tcoiss-common-swagger" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-common/tcoiss-datasource" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-gateway" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-integration" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-modules" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-modules/tcoiss-modules-file" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-modules/tcoiss-modules-gen" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tcoiss-modules/tcoiss-modules-system" charset="UTF-8" />
   </component>
 </project>
