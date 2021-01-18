@@ -16,7 +16,7 @@ import com.tcoiss.common.core.web.domain.AjaxResult;
 /**
  * 全局异常处理器
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler

@@ -3,7 +3,7 @@ package com.tcoiss.common.core.exception;
 /**
  * 权限异常
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class PreAuthorizeException extends RuntimeException
 {

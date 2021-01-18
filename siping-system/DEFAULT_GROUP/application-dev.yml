@@ -44,7 +44,7 @@ security:
       scope: server
     resource:
       loadBalanced: true
-      token-info-uri: http://ruoyi-auth/oauth/check_token
+      token-info-uri: http://tcoiss-auth/oauth/check_token
     ignore:
       urls:
         - /v2/api-docs

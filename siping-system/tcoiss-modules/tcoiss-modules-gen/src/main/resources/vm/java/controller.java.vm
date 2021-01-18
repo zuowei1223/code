@@ -1,4 +1,4 @@
-package ${packageName}.controller;
+package ${packageName}.com.tcoiss.dbsource.controller;
 
 import java.util.List;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import com.tcoiss.common.log.enums.BusinessType;
 import com.tcoiss.common.security.annotation.PreAuthorize;
 import ${packageName}.domain.${ClassName};
 import ${packageName}.service.I${ClassName}Service;
-import com.tcoiss.common.core.web.controller.BaseController;
+import com.tcoiss.common.core.web.com.tcoiss.dbsource.controller.BaseController;
 import com.tcoiss.common.core.web.domain.AjaxResult;
 import com.tcoiss.common.core.utils.poi.ExcelUtil;
 #if($table.crud)

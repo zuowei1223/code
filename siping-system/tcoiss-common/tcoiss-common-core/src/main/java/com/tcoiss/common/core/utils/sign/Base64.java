@@ -3,7 +3,7 @@ package com.tcoiss.common.core.utils.sign;
 /**
  * Base64工具类
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public final class Base64
 {

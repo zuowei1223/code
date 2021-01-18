@@ -19,7 +19,7 @@ import com.tcoiss.system.domain.SysConfig;
 /**
  * 参数配置 服务层实现
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Service
 public class SysConfigServiceImpl implements ISysConfigService

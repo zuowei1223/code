@@ -20,7 +20,7 @@ import com.tcoiss.system.api.model.LoginUser;
 /**
  * 自定义权限实现
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Aspect
 @Component
@@ -38,7 +38,7 @@ public class PreAuthorizeAspect
     /** 数组为0时 */
     private static final Integer ARRAY_EMPTY = 0;
 
-    @Around("@annotation(PreAuthorize)")
+    @Around("@annotation(com.tcoiss.common.security.annotation.PreAuthorize)")
     public Object around(ProceedingJoinPoint point) throws Throwable
     {
         Signature signature = point.getSignature();

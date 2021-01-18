@@ -5,7 +5,7 @@ import com.tcoiss.common.core.utils.StringUtils;
 /**
  * 分页数据
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class PageDomain
 {

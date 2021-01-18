@@ -6,7 +6,7 @@ import com.tcoiss.system.domain.SysDictData;
 /**
  * 字典 业务层
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public interface ISysDictDataService
 {

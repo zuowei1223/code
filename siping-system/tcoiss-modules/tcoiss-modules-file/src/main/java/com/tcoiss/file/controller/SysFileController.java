@@ -14,7 +14,7 @@ import com.tcoiss.system.api.domain.SysFile;
 /**
  * 文件请求处理
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @RestController
 public class SysFileController

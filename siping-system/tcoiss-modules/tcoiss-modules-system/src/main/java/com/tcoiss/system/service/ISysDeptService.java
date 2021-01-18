@@ -8,7 +8,7 @@ import com.tcoiss.system.domain.vo.TreeSelect;
 /**
  * 部门管理 服务层
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public interface ISysDeptService
 {

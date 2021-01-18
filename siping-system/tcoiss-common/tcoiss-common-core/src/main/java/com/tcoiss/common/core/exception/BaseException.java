@@ -3,7 +3,7 @@ package com.tcoiss.common.core.exception;
 /**
  * 基础异常
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class BaseException extends RuntimeException
 {

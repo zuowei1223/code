@@ -12,7 +12,7 @@ import com.tcoiss.common.core.web.domain.BaseEntity;
 /**
  * 部门表 sys_dept
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class SysDept extends BaseEntity
 {

@@ -3,7 +3,7 @@ package com.tcoiss.common.log.enums;
 /**
  * 业务操作类型
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public enum BusinessType
 {

@@ -3,7 +3,7 @@ package com.tcoiss.common.log.enums;
 /**
  * 操作人类别
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public enum OperatorType
 {

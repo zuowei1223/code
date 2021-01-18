@@ -11,7 +11,7 @@ import com.alibaba.csp.sentinel.adapter.gateway.sc.SentinelGatewayFilter;
 /**
  * 网关限流配置
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Configuration
 public class GatewayConfig

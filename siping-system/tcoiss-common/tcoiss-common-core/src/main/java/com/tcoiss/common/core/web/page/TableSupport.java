@@ -5,7 +5,7 @@ import com.tcoiss.common.core.utils.ServletUtils;
 /**
  * 表格数据处理
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class TableSupport
 {

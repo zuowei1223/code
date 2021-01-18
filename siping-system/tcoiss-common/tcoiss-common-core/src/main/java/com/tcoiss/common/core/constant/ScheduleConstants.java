@@ -3,7 +3,7 @@ package com.tcoiss.common.core.constant;
 /**
  * 任务调度通用常量
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class ScheduleConstants
 {

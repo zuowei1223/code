@@ -12,7 +12,7 @@ import com.tcoiss.common.core.domain.R;
 /**
  * 日志服务
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @FeignClient(contextId = "remoteLogService", value = ServiceNameConstants.SYSTEM_SERVICE, fallbackFactory = RemoteLogFallbackFactory.class)
 public interface RemoteLogService

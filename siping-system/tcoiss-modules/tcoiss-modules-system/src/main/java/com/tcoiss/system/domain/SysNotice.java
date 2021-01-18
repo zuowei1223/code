@@ -10,7 +10,7 @@ import com.tcoiss.common.core.web.domain.BaseEntity;
 /**
  * 通知公告表 sys_notice
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class SysNotice extends BaseEntity
 {

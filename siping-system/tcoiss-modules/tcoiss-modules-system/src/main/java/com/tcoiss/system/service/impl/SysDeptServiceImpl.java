@@ -21,7 +21,7 @@ import com.tcoiss.system.domain.vo.TreeSelect;
 /**
  * 部门管理 服务实现
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Service
 public class SysDeptServiceImpl implements ISysDeptService

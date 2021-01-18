@@ -43,15 +43,15 @@ spring:
 # mybatis配置
 mybatis:
     # 搜索指定包别名
-    typeAliasesPackage: com.ruoyi.system
+    typeAliasesPackage: com.tcoiss.mapper.system
     # 配置mapper的扫描，找到所有的mapper.xml映射文件
     mapperLocations: classpath:mapper/**/*.xml
 
 # swagger配置
 swagger:
   title: 系统模块接口文档
-  license: Powered By ruoyi
-  licenseUrl: https://ruoyi.vip
+  license: Powered By tcoiss
+  licenseUrl: https://tcoiss.vip
   authorization:
     name: RuoYi OAuth
     auth-regex: ^.*$

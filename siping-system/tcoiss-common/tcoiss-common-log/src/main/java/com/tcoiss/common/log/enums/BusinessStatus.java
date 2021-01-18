@@ -3,7 +3,7 @@ package com.tcoiss.common.log.enums;
 /**
  * 操作状态
  * 
- * @author ruoyi
+ * @author tcoiss
  *
  */
 public enum BusinessStatus

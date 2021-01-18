@@ -9,7 +9,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 /**
  * 代码生成
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @EnableCustomConfig
 @EnableCustomSwagger2   

@@ -12,7 +12,7 @@ import com.tcoiss.system.domain.SysNotice;
 /**
  * 公告 服务层实现
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Service
 public class SysNoticeServiceImpl implements ISysNoticeService

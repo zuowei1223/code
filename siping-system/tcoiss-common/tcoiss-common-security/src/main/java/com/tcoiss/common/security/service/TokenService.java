@@ -19,7 +19,7 @@ import com.tcoiss.system.api.model.LoginUser;
 /**
  * token验证处理
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Component
 public class TokenService

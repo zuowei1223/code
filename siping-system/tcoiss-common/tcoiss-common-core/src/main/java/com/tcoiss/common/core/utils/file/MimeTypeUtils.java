@@ -3,7 +3,7 @@ package com.tcoiss.common.core.utils.file;
 /**
  * 媒体类型工具类
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class MimeTypeUtils
 {

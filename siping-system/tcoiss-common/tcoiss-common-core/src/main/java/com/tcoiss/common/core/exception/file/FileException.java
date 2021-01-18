@@ -5,7 +5,7 @@ import com.tcoiss.common.core.exception.BaseException;
 /**
  * 文件信息异常类
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class FileException extends BaseException
 {

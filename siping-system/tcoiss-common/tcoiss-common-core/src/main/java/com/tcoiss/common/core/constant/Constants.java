@@ -3,7 +3,7 @@ package com.tcoiss.common.core.constant;
 /**
  * 通用常量信息
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class Constants
 {

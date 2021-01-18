@@ -3,7 +3,7 @@ package com.tcoiss.common.core.constant;
 /**
  * 返回状态码
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class HttpStatus
 {

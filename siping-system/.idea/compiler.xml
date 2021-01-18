@@ -15,10 +15,13 @@
         <module name="tcoiss-common-security" />
         <module name="tcoiss-common-swagger" />
         <module name="tcoiss-gateway" />
-        <module name="tcoiss-integration" />
+        <module name="tcoiss-integration-dbsource" />
+        <module name="tcoiss-integration-webservice" />
         <module name="tcoiss-modules-file" />
         <module name="tcoiss-modules-gen" />
         <module name="tcoiss-modules-system" />
+        <module name="tcoiss-schedule-admin" />
+        <module name="tociss-integration-report" />
       </profile>
     </annotationProcessing>
   </component>

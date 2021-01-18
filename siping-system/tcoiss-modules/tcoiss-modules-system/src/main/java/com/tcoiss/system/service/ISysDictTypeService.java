@@ -7,7 +7,7 @@ import com.tcoiss.system.domain.SysDictType;
 /**
  * 字典 业务层
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public interface ISysDictTypeService
 {

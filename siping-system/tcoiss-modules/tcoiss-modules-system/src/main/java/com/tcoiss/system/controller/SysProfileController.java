@@ -29,7 +29,7 @@ import com.tcoiss.system.api.model.LoginUser;
 /**
  * 个人信息 业务处理
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @RestController
 @RequestMapping("/user/profile")

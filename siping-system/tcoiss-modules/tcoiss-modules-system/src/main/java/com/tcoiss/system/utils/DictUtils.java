@@ -11,7 +11,7 @@ import com.tcoiss.system.domain.SysDictData;
 /**
  * 字典工具类
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class DictUtils
 {

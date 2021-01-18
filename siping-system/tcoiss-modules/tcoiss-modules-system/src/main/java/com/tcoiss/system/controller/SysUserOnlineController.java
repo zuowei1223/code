@@ -27,7 +27,7 @@ import com.tcoiss.system.domain.SysUserOnline;
 /**
  * 在线用户监控
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @RestController
 @RequestMapping("/online")

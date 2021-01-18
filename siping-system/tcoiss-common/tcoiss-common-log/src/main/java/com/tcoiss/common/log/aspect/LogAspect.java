@@ -45,7 +45,7 @@ public class LogAspect
     private AsyncLogService asyncLogService;
 
     // 配置织入点
-    @Pointcut("@annotation(com.tcoiss.common.Log)")
+    @Pointcut("@annotation(com.tcoiss.common.log.annotation.Log)")
     public void logPointCut()
     {
     }

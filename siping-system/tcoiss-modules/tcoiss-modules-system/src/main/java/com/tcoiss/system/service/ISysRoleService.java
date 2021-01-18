@@ -8,7 +8,7 @@ import com.tcoiss.system.api.domain.SysRole;
 /**
  * 角色业务层
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public interface ISysRoleService
 {

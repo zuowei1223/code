@@ -14,6 +14,7 @@
         <module>tcoiss-gateway</module>
         <module>tcoiss-integration</module>
         <module>tcoiss-modules</module>
+        <module>tcoiss-schedule-admin</module>
     </modules>
     <properties>
         <tcoiss.version>1.0-SNAPSHOT</tcoiss.version>

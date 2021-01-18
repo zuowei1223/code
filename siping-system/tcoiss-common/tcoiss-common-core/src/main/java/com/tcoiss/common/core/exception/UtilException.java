@@ -3,7 +3,7 @@ package com.tcoiss.common.core.exception;
 /**
  * 工具类异常
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class UtilException extends RuntimeException
 {

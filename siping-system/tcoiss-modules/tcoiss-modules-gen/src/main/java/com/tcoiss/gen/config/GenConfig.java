@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 /**
  * 代码生成相关配置
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Component
-@ConfigurationProperties(prefix = "com/tcoiss/gen")
+@ConfigurationProperties(prefix = "gen")
 public class GenConfig
 {
     /** 作者 */

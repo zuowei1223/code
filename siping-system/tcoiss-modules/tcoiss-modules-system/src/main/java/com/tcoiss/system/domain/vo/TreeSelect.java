@@ -10,7 +10,7 @@ import com.tcoiss.system.domain.SysMenu;
 /**
  * Treeselect树结构实体类
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class TreeSelect implements Serializable
 {

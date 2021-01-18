@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 /**
  * 验证码过滤器
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Component
 public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object>

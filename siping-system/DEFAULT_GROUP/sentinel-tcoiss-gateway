@@ -1,6 +1,6 @@
 [
     {
-        "resource": "ruoyi-auth",
+        "resource": "tcoiss-auth",
         "count": 500,
         "grade": 1,
         "limitApp": "default",
@@ -8,7 +8,7 @@
         "controlBehavior": 0
     },
 	{
-        "resource": "ruoyi-system",
+        "resource": "tcoiss-system",
         "count": 1000,
         "grade": 1,
         "limitApp": "default",
@@ -16,7 +16,7 @@
         "controlBehavior": 0
     },
 	{
-        "resource": "ruoyi-gen",
+        "resource": "tcoiss-gen",
         "count": 200,
         "grade": 1,
         "limitApp": "default",
@@ -24,7 +24,7 @@
         "controlBehavior": 0
     },
 	{
-        "resource": "ruoyi-job",
+        "resource": "tcoiss-job",
         "count": 300,
         "grade": 1,
         "limitApp": "default",
@@ -32,7 +32,7 @@
         "controlBehavior": 0
     },
     {
-        "resource": "ruoyi-dbsource",
+        "resource": "tcoiss-dbsource",
         "count": 300,
         "grade": 1,
         "limitApp": "default",
@@ -40,7 +40,7 @@
         "controlBehavior": 0
     },
     {
-        "resource": "ruoyi-test",
+        "resource": "tcoiss-test",
         "count": 300,
         "grade": 1,
         "limitApp": "default",

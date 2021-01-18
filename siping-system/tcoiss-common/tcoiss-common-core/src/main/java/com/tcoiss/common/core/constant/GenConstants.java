@@ -3,7 +3,7 @@ package com.tcoiss.common.core.constant;
 /**
  * 代码生成通用常量
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class GenConstants
 {

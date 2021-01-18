@@ -9,7 +9,7 @@ import com.tcoiss.system.api.domain.SysDept;
 /**
  * 部门管理 数据层
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public interface SysDeptMapper
 {

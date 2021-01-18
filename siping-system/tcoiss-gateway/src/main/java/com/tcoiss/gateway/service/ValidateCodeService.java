@@ -7,7 +7,7 @@ import com.tcoiss.common.core.web.domain.AjaxResult;
 /**
  * 验证码处理
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public interface ValidateCodeService
 {

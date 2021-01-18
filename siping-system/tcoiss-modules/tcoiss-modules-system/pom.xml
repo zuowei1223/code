@@ -55,10 +55,10 @@
         </dependency>
 
         <!-- tcoiss Common DataSource -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.siping.tcoiss</groupId>
             <artifactId>tcoiss-common-datasource</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!-- RuoYi Common DataScope -->
         <dependency>

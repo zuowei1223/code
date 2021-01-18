@@ -22,7 +22,7 @@ import com.tcoiss.common.redis.service.RedisService;
 /**
  * 验证码实现处理
  *
- * @author ruoyi
+ * @author tcoiss
  */
 @Service
 public class ValidateCodeServiceImpl implements ValidateCodeService

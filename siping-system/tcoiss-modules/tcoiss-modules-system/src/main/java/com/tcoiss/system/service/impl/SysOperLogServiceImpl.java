@@ -11,7 +11,7 @@ import com.tcoiss.system.api.domain.SysOperLog;
 /**
  * 操作日志 服务层处理
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Service
 public class SysOperLogServiceImpl implements ISysOperLogService

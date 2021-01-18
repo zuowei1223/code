@@ -7,7 +7,7 @@ import com.tcoiss.system.domain.SysNotice;
 /**
  * 公告 服务层
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public interface ISysNoticeService
 {

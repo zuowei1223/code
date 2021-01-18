@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcoiss.dbsource.mapper.DatasourceMapper">
+    
+    <resultMap type="Datasource" id="DatasourceResult">
+        <result property="datasourceId"    column="datasource_id"    />
+        <result property="url"    column="url"    />
+        <result property="userName"    column="user_name"    />
+        <result property="passWord"    column="pass_word"    />
+        <result property="code"    column="code"    />
+        <result property="databasetype"    column="databasetype"    />
+    </resultMap>
+
+    <sql id="selectDatasourceVo">
+        select datasource_id, url, user_name, pass_word, code, databasetype from datasource
+    </sql>
+
+    <select id="selectDatasourceList" parameterType="Datasource" resultMap="DatasourceResult">
+        <include refid="selectDatasourceVo"/>
+        <where>  
+            <if test="datasourceId != null  and datasourceId != ''"> and datasource_id = #{datasourceId}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="passWord != null  and passWord != ''"> and pass_word = #{passWord}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="databasetype != null  and databasetype != ''"> and databasetype = #{databasetype}</if>
+        </where>
+    </select>
+    
+    <select id="selectDatasourceById" parameterType="String" resultMap="DatasourceResult">
+        <include refid="selectDatasourceVo"/>
+        where datasource_id = #{datasourceId}
+    </select>
+        
+    <insert id="insertDatasource" parameterType="Datasource">
+        insert into datasource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="datasourceId != null and datasourceId != ''">datasource_id,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="passWord != null and passWord != ''">pass_word,</if>
+            <if test="code != null">code,</if>
+            <if test="databasetype != null and databasetype != ''">databasetype,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="datasourceId != null and datasourceId != ''">#{datasourceId},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="passWord != null and passWord != ''">#{passWord},</if>
+            <if test="code != null">#{code},</if>
+            <if test="databasetype != null and databasetype != ''">#{databasetype},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDatasource" parameterType="Datasource">
+        update datasource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="url != null and url != ''">url = #{url},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="passWord != null and passWord != ''">pass_word = #{passWord},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="databasetype != null and databasetype != ''">databasetype = #{databasetype},</if>
+        </trim>
+        where datasource_id = #{datasourceId}
+    </update>
+
+    <delete id="deleteDatasourceById" parameterType="String">
+        delete from datasource where datasource_id = #{datasourceId}
+    </delete>
+
+    <delete id="deleteDatasourceByIds" parameterType="String">
+        delete from datasource where datasource_id in 
+        <foreach item="datasourceId" collection="array" open="(" separator="," close=")">
+            #{datasourceId}
+        </foreach>
+    </delete>
+    
+</mapper>

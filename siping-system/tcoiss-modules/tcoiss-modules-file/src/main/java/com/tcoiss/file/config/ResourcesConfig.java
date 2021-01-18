@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * 通用映射配置
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Configuration
 public class ResourcesConfig implements WebMvcConfigurer

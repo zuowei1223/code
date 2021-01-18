@@ -16,7 +16,7 @@ import com.tcoiss.system.domain.SysPost;
 /**
  * 岗位信息 服务层处理
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Service
 public class SysPostServiceImpl implements ISysPostService

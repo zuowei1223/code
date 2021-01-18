@@ -7,7 +7,7 @@ import com.tcoiss.system.api.domain.SysUser;
 /**
  * 用户 业务层
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public interface ISysUserService
 {

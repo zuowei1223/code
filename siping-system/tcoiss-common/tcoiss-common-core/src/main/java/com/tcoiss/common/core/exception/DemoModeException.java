@@ -3,7 +3,7 @@ package com.tcoiss.common.core.exception;
 /**
  * 演示模式异常
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class DemoModeException extends RuntimeException
 {

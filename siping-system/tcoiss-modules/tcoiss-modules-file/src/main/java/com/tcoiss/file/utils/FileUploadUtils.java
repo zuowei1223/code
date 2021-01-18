@@ -16,7 +16,7 @@ import com.tcoiss.common.core.utils.file.MimeTypeUtils;
 /**
  * 文件上传工具类
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class FileUploadUtils
 {

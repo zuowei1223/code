@@ -11,7 +11,7 @@ import feign.hystrix.FallbackFactory;
 /**
  * 用户服务降级处理
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Component
 public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserService>

@@ -9,7 +9,7 @@ import com.tcoiss.system.domain.SysDictType;
 /**
  * 字典表 数据层
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Mapper
 public interface SysDictTypeMapper

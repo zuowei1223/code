@@ -3,7 +3,7 @@ package com.tcoiss.common.core.exception;
 /**
  * 自定义异常
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class CustomException extends RuntimeException
 {

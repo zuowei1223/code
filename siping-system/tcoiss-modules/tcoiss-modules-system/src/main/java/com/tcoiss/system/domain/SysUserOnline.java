@@ -3,7 +3,7 @@ package com.tcoiss.system.domain;
 /**
  * 当前在线会话
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class SysUserOnline
 {

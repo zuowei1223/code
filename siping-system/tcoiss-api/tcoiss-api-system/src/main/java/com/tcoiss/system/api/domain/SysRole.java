@@ -11,7 +11,7 @@ import com.tcoiss.common.core.web.domain.BaseEntity;
 /**
  * 角色表 sys_role
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public class SysRole extends BaseEntity
 {

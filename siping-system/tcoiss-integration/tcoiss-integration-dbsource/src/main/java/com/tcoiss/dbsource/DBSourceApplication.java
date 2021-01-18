@@ -1,4 +1,4 @@
-package com.tcoiss.system;
+package com.tcoiss.dbsource;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
@@ -7,20 +7,20 @@ import com.tcoiss.common.security.annotation.EnableRyFeignClients;
 import com.tcoiss.common.swagger.annotation.EnableCustomSwagger2;
 
 /**
- * 系统模块
+ * 数据引擎模块
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @EnableCustomConfig
 @EnableCustomSwagger2
 @EnableRyFeignClients
 @SpringCloudApplication
-public class RuoYiSystemApplication
+public class DBSourceApplication
 {
     public static void main(String[] args)
     {
-        SpringApplication.run(RuoYiSystemApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  系统模块启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
+        SpringApplication.run(DBSourceApplication.class, args);
+        System.out.println("(♥◠‿◠)ﾉﾞ  数据引擎模块启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
                 " .-------.       ____     __        \n" +
                 " |  _ _   \\      \\   \\   /  /    \n" +
                 " | ( ' )  |       \\  _. /  '       \n" +

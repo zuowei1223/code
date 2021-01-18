@@ -3,7 +3,7 @@ package com.tcoiss.common.core.enums;
 /**
  * 用户状态
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 public enum UserStatus
 {

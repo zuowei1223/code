@@ -29,7 +29,7 @@ import com.tcoiss.system.mapper.SysUserRoleMapper;
 /**
  * 用户 业务层处理
  * 
- * @author ruoyi
+ * @author tcoiss
  */
 @Service
 public class SysUserServiceImpl implements ISysUserService
