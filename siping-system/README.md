@@ -7,34 +7,34 @@
 * 注册中心、配置中心选型Nacos，权限认证使用Redis。
 * 流量控制框架选型Sentinel。
 * 如需不分离应用，请移步 [RuoYi](https://gitee.com/y_project/RuoYi)，如需分离应用，请移步 [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue)
-* 阿里云折扣场：[点我进入](http://aly.ruoyi.vip)，腾讯云秒杀场：[点我进入](http://txy.ruoyi.vip)&nbsp;&nbsp;
+* 阿里云折扣场：[点我进入](http://aly.tcoiss.vip)，腾讯云秒杀场：[点我进入](http://txy.tcoiss.vip)&nbsp;&nbsp;
 * 阿里云优惠券：[点我领取](https://www.aliyun.com/minisite/goods?userCode=brki8iof&share_source=copy_link)，腾讯云优惠券：[点我领取](https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console)&nbsp;&nbsp;
 
-#### 友情链接 [若依/RuoYi-Cloud](https://gitee.com/zhangmrit/ruoyi-cloud) Ant Design版本。
+#### 友情链接 [若依/RuoYi-Cloud](https://gitee.com/zhangmrit/tcoiss-cloud) Ant Design版本。
 
 ## 系统模块
 
 ~~~
-com.ruoyi     
-├── ruoyi-ui              // 前端框架 [80]
-├── ruoyi-gateway         // 网关模块 [8080]
-├── ruoyi-auth            // 认证中心 [9200]
-├── ruoyi-api             // 接口模块
-│       └── ruoyi-api-system                          // 系统接口
-├── ruoyi-common          // 通用模块
-│       └── ruoyi-common-core                         // 核心模块
-│       └── ruoyi-common-datascope                    // 权限范围
-│       └── ruoyi-common-log                          // 日志记录
-│       └── ruoyi-common-redis                        // 缓存服务
-│       └── ruoyi-common-security                     // 安全模块
-│       └── ruoyi-common-swagger                      // 系统接口
-├── ruoyi-modules         // 业务模块
-│       └── ruoyi-system                              // 系统模块 [9201]
-│       └── ruoyi-gen                                 // 代码生成 [9202]
-│       └── ruoyi-job                                 // 定时任务 [9203]
-│       └── ruoyi-file                                // 文件服务 [9300]
-├── ruoyi-visual          // 图形化管理模块
-│       └── ruoyi-visual-monitor                      // 监控中心 [9100]
+com.tcoiss     
+├── tcoiss-ui              // 前端框架 [80]
+├── tcoiss-gateway         // 网关模块 [8080]
+├── tcoiss-auth            // 认证中心 [9200]
+├── tcoiss-api             // 接口模块
+│       └── tcoiss-api-system                          // 系统接口
+├── tcoiss-common          // 通用模块
+│       └── tcoiss-common-core                         // 核心模块
+│       └── tcoiss-common-datascope                    // 权限范围
+│       └── tcoiss-common-log                          // 日志记录
+│       └── tcoiss-common-redis                        // 缓存服务
+│       └── tcoiss-common-security                     // 安全模块
+│       └── tcoiss-common-swagger                      // 系统接口
+├── tcoiss-modules         // 业务模块
+│       └── tcoiss-system                              // 系统模块 [9201]
+│       └── tcoiss-gen                                 // 代码生成 [9202]
+│       └── tcoiss-job                                 // 定时任务 [9203]
+│       └── tcoiss-file                                // 文件服务 [9300]
+├── tcoiss-visual          // 图形化管理模块
+│       └── tcoiss-visual-monitor                      // 监控中心 [9100]
 ├──pom.xml                // 公共依赖
 ~~~
 
@@ -67,8 +67,8 @@ com.ruoyi
 - admin/admin123  
 - 陆陆续续收到一些打赏，为了更好的体验已用于演示服务器升级。谢谢各位小伙伴。
 
-演示地址：http://ruoyi.vip  
-文档地址：http://doc.ruoyi.vip
+演示地址：http://tcoiss.vip  
+文档地址：http://doc.tcoiss.vip
 
 ## 演示图
 
