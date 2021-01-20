@@ -1,6 +1,6 @@
 package com.tcoiss.dbsource.service;
 
-import com.tcoiss.dbsource.domain.Datasource;
+import com.tcoiss.dbsource.domain.DataSource;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface DBChangeService {
 
-    List<Datasource> get();
+    List<DataSource> get();
 
     boolean changeDb(String datasourceId) throws Exception;
 

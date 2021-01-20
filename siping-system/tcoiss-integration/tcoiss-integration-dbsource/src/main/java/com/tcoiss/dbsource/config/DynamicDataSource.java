@@ -2,7 +2,7 @@ package com.tcoiss.dbsource.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.stat.DruidDataSourceStatManager;
-import com.tcoiss.dbsource.domain.Datasource;
+import com.tcoiss.dbsource.domain.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -193,8 +193,8 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         this.dynamicDefaultTargetDataSource = dynamicDefaultTargetDataSource;
     }
 
-    public void createDataSourceWithCheck(Datasource dataSource) throws Exception {
-        String datasourceId = dataSource.getDatasourceId();
+    public void createDataSourceWithCheck(DataSource dataSource) throws Exception {
+        String datasourceId = dataSource.getDatabaseName();
         log.info("正在检查数据源："+datasourceId);
         Map<Object, Object> dynamicTargetDataSources2 = this.dynamicTargetDataSources;
         if (dynamicTargetDataSources2.containsKey(datasourceId)) {
@@ -241,13 +241,15 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     }
 
-    private  void createDataSource(Datasource dataSource) throws Exception {
-        String datasourceId = dataSource.getDatasourceId();
+    private  void createDataSource(DataSource dataSource) throws Exception {
+        String datasourceId = dataSource.getDatabaseName();
         log.info("准备创建数据源"+datasourceId);
-        String databasetype = dataSource.getDatabasetype();
+        String databasetype = dataSource.getDatabaseType();
         String username = dataSource.getUserName();
         String password = dataSource.getPassWord();
-        String url = dataSource.getUrl();
+        //jdbc:mysql://localhost:3306/sp_system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        String url = "jdbc:mysql://"+dataSource.getIpAddress()+dataSource.getIpPort()
+                +"/"+dataSource.getDatabaseName()+"?"+dataSource.getConncetAttr();
         String driveClass = "com.mysql.cj.jdbc.Driver";
         /*if("mysql".equalsIgnoreCase(databasetype)) {
             driveClass = DBUtil.mysqldriver;
