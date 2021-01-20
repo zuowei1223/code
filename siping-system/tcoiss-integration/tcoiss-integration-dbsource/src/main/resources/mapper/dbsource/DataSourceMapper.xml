@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcoiss.dbsource.mapper.DataSourceMapper">
+    
+    <resultMap type="DataSource" id="DataSourceResult">
+        <result property="id"    column="id"    />
+        <result property="ipAddress"    column="ip_address"    />
+        <result property="userName"    column="user_name"    />
+        <result property="passWord"    column="pass_word"    />
+        <result property="conncetAttr"    column="conncet_attr"    />
+        <result property="databaseType"    column="database_type"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorName"    column="creator_name"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="dataLevel"    column="data_level"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="databaseName"    column="database_name"    />
+        <result property="ipPort"    column="ip_port"    />
+    </resultMap>
+
+
+</mapper>
