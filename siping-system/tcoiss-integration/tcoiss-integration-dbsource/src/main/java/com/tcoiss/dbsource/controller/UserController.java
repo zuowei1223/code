@@ -2,10 +2,10 @@ package com.tcoiss.dbsource.controller;
 
 import com.tcoiss.dbsource.service.*;
 import com.tcoiss.dbsource.domain.*;
-import com.tcoiss.dbsource.config.*;
-import com.tcoiss.dbsource.config.DBContextHolder;
+/*import com.tcoiss.dbsource.config.*;
+import com.tcoiss.dbsource.config.DBContextHolder;*/
 import com.tcoiss.dbsource.domain.User;
-import com.tcoiss.dbsource.service.DBChangeService;
+/*import com.tcoiss.dbsource.service.DBChangeService;*/
 import com.tcoiss.dbsource.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +23,8 @@ import java.util.List;
 public class UserController {
 
 
-    @Autowired
-    private DBChangeService dbChangeServiceImpl;
+    /*@Autowired
+    private DBChangeService dbChangeServiceImpl;*/
     @Autowired
     private UserService userService;
 
@@ -37,7 +37,7 @@ public class UserController {
     @GetMapping("/test")
     public String test() throws Exception {
 
-        //切换到数据库dbtest2
+        /*//切换到数据库dbtest2
         String datasourceId = "dbtest2";
         dbChangeServiceImpl.changeDb(datasourceId);
         List<User> userList = userService.queryUserInfo();
@@ -50,7 +50,7 @@ public class UserController {
 
 
         //切回主数据源
-        DBContextHolder.clearDataSource();
+        DBContextHolder.clearDataSource();*/
         return "ok";
     }
 

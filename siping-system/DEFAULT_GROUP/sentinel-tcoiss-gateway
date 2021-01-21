@@ -22,29 +22,5 @@
         "limitApp": "default",
         "strategy": 0,
         "controlBehavior": 0
-    },
-	{
-        "resource": "tcoiss-job",
-        "count": 300,
-        "grade": 1,
-        "limitApp": "default",
-        "strategy": 0,
-        "controlBehavior": 0
-    },
-    {
-        "resource": "tcoiss-dbsource",
-        "count": 300,
-        "grade": 1,
-        "limitApp": "default",
-        "strategy": 0,
-        "controlBehavior": 0
-    },
-    {
-        "resource": "tcoiss-test",
-        "count": 300,
-        "grade": 1,
-        "limitApp": "default",
-        "strategy": 0,
-        "controlBehavior": 0
     }
 ]

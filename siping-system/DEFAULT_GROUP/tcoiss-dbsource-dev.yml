@@ -1,0 +1,108 @@
+# spring配置
+spring: 
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sp_system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
+    ###############以上为配置druid添加的配置
+
+# mybatis配置
+mybatis-plus:
+    # 搜索指定包别名
+    typeAliasesPackage: com.tcoiss.dbsource.domain
+    # 配置mapper的扫描，找到所有的mapper.xml映射文件
+    mapperLocations: classpath:mapper/**/*.xml
+    # SIMPLE：该执行器类型不做特殊的事情，为每个语句的执行创建一个新的预处理语句（PreparedStatement）
+    executorType: SIMPLE
+    # MyBatis 自动映射时未知列或未知属性处理策
+    # NONE：不做任何处理 (默认值)
+    # WARNING：以日志的形式打印相关警告信息
+    # FAILING：当作映射失败处理，并抛出异常和详细信息
+    autoMappingUnknownColumnBehavior: WARNING
+    # Mybatis一级缓存，默认为 SESSION
+    # SESSION session级别缓存，同一个session相同查询语句不会再次查询数据库
+    # STATEMENT 关闭一级缓存
+    localCacheScope: SESSION
+    # 开启Mybatis二级缓存，默认为 true
+    cacheEnabled: true
+global-config:
+    # 是否打印 Logo banner
+    banner: true
+    # 是否初始化 SqlRunner
+    enableSqlRunner: false
+    dbConfig:
+      # 主键类型
+      # AUTO 数据库ID自增
+      # NONE 空
+      # INPUT 用户输入ID
+      # ASSIGN_ID 全局唯一ID
+      # ASSIGN_UUID 全局唯一ID UUID
+      idType: AUTO
+      # 表名前缀
+      tablePrefix: null
+      # 字段 format,例: %s,(对主键无效)
+      columnFormat: null
+      # 表名是否使用驼峰转下划线命名,只对表名生效
+      tableUnderline: true
+      # 大写命名,对表名和字段名均生效
+      capitalMode: false
+      # 全局的entity的逻辑删除字段属性名
+      logicDeleteField: null
+      # 逻辑已删除值
+      logicDeleteValue: 1
+      # 逻辑未删除值
+      logicNotDeleteValue: 0
+      # 字段验证策略之 insert,在 insert 的时候的字段验证策略
+      # IGNORED 忽略判断
+      # NOT_NULL 非NULL判断
+      # NOT_EMPTY 非空判断(只对字符串类型字段,其他类型字段依然为非NULL判断)
+      # DEFAULT 默认的,一般只用于注解里
+      # NEVER 不加入 SQL
+      insertStrategy: NOT_NULL
+      # 字段验证策略之 update,在 update 的时候的字段验证策略
+      updateStrategy: NOT_NULL
+      # 字段验证策略之 select,在 select 的时候的字段验证策略既 wrapper 根据内部 entity 生成的 where 条件
+      selectStrategy: NOT_NULL
+# swagger配置
+swagger:
+  title: 定时任务接口文档
+  license: Powered By ruoyi
+  licenseUrl: https://ruoyi.vip
+  authorization:
+    name: RuoYi OAuth
+    auth-regex: ^.*$
+    authorization-scope-list:
+      - scope: server
+        description: 客户端授权范围
+    token-url-list:
+      - http://localhost:8080/auth/oauth/token

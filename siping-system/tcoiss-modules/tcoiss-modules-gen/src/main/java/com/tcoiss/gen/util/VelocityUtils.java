@@ -160,9 +160,9 @@ public class VelocityUtils
         {
             fileName = StringUtils.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
         }
-        else if (template.contains("com.tcoiss.dbsource.controller.java.vm"))
+        else if (template.contains("controller.java.vm"))
         {
-            fileName = StringUtils.format("{}/com.tcoiss.dbsource.controller/{}Controller.java", javaPath, className);
+            fileName = StringUtils.format("{}/controller/{}Controller.java", javaPath, className);
         }
         else if (template.contains("mapper.xml.vm"))
         {

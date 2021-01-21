@@ -1,36 +1,41 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="数据源id" prop="datasourceId">
+      <el-form-item label="连接ip" prop="ipAddress">
         <el-input
-          v-model="queryParams.datasourceId"
-          placeholder="请输入数据源id"
+          v-model="queryParams.ipAddress"
+          placeholder="请输入连接ip"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-
-      <el-form-item label="用户名" prop="userName">
-        <el-input
-          v-model="queryParams.userName"
-          placeholder="请输入用户名"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-
-
-      <el-form-item label="数据库类型" prop="databasetype">
-        <el-select v-model="queryParams.databasetype" placeholder="请选择数据库类型" clearable size="small">
+      <el-form-item label="数据库类型" prop="databaseType">
+        <el-select v-model="queryParams.databaseType" placeholder="请选择数据库类型" clearable size="small">
           <el-option
-            v-for="dict in databasetypeOptions"
+            v-for="dict in databaseTypeOptions"
             :key="dict.dictValue"
             :label="dict.dictLabel"
             :value="dict.dictValue"
           />
         </el-select>
+      </el-form-item>
+      <el-form-item label="创建日期" prop="createDate">
+        <el-date-picker clearable size="small"
+          v-model="queryParams.createDate"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择创建日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="数据库名称" prop="databaseName">
+        <el-input
+          v-model="queryParams.databaseName"
+          placeholder="请输入数据库名称"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -46,7 +51,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['dbsource:datasource:add']"
+          v-hasPermi="['integration:datasource:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -57,7 +62,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['dbsource:datasource:edit']"
+          v-hasPermi="['integration:datasource:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -68,7 +73,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['dbsource:datasource:remove']"
+          v-hasPermi="['integration:datasource:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -78,7 +83,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['dbsource:datasource:export']"
+          v-hasPermi="['integration:datasource:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -86,12 +91,23 @@
 
     <el-table v-loading="loading" :data="datasourceList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="数据源的id" align="center" prop="datasourceId" />
-      <el-table-column label="连接信息" align="center" prop="url" />
+      <el-table-column label="编号" align="center" prop="id" />
+      <el-table-column label="连接ip" align="center" prop="ipAddress" />
       <el-table-column label="用户名" align="center" prop="userName" />
       <el-table-column label="密码" align="center" prop="passWord" />
-      <el-table-column label="暂留字段" align="center" prop="code" />
-      <el-table-column label="数据库类型" align="center" prop="databasetype" :formatter="databasetypeFormat" />
+      <el-table-column label="连接属性" align="center" prop="conncetAttr" />
+      <el-table-column label="数据库类型" align="center" prop="databaseType" :formatter="databaseTypeFormat" />
+      <el-table-column label="创建人编号" align="center" prop="creatorId" />
+      <el-table-column label="创建人姓名" align="center" prop="creatorName" />
+      <el-table-column label="创建日期" align="center" prop="createDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="数据级别" align="center" prop="dataLevel" :formatter="dataLevelFormat" />
+      <el-table-column label="排序号" align="center" prop="orderNo" />
+      <el-table-column label="数据库名称" align="center" prop="databaseName" />
+      <el-table-column label="连接端口" align="center" prop="ipPort" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -99,14 +115,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['dbsource:datasource:edit']"
+            v-hasPermi="['integration:datasource:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['dbsource:datasource:remove']"
+            v-hasPermi="['integration:datasource:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -120,14 +136,17 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改datasource对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <!-- 添加或修改数据源配置对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="50%" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="数据源的id" prop="datasourceId">
-          <el-input v-model="form.datasourceId" placeholder="请输入数据源的id" />
+        <el-form-item label="数据库名称" prop="databaseName">
+          <el-input v-model="form.databaseName" placeholder="请输入数据库名称" />
         </el-form-item>
-        <el-form-item label="连接信息" prop="url">
-          <el-input v-model="form.url" placeholder="请输入连接信息" />
+        <el-form-item label="连接ip" prop="ipAddress">
+          <el-input v-model="form.ipAddress" placeholder="请输入连接ip" />
+        </el-form-item>
+        <el-form-item label="连接端口" prop="ipPort">
+          <el-input v-model="form.ipPort" placeholder="请输入连接端口" />
         </el-form-item>
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入用户名" />
@@ -135,13 +154,13 @@
         <el-form-item label="密码" prop="passWord">
           <el-input v-model="form.passWord" placeholder="请输入密码" />
         </el-form-item>
-        <el-form-item label="暂留字段" prop="code">
-          <el-input v-model="form.code" placeholder="请输入暂留字段" />
+        <el-form-item label="连接属性" prop="conncetAttr">
+          <el-input v-model="form.conncetAttr" placeholder="请输入连接属性" />
         </el-form-item>
-        <el-form-item label="数据库类型" prop="databasetype">
-          <el-select v-model="form.databasetype" placeholder="请选择数据库类型">
+        <el-form-item label="数据库类型" prop="databaseType">
+          <el-select v-model="form.databaseType" placeholder="请选择数据库类型">
             <el-option
-              v-for="dict in databasetypeOptions"
+              v-for="dict in databaseTypeOptions"
               :key="dict.dictValue"
               :label="dict.dictLabel"
               :value="dict.dictValue"
@@ -158,7 +177,7 @@
 </template>
 
 <script>
-import { listDatasource, getDatasource, delDatasource, addDatasource, updateDatasource } from "@/api/dbsource/datasource";
+import { listDatasource, getDatasource, delDatasource, addDatasource, updateDatasource } from "@/api/integration/datasource";
 
 export default {
   name: "Datasource",
@@ -178,34 +197,31 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // datasource表格数据
+      // 数据源配置表格数据
       datasourceList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
       // 数据库类型字典
-      databasetypeOptions: [],
+      databaseTypeOptions: [],
+      // 数据级别字典
+      dataLevelOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        datasourceId: null,
-        url: null,
-        userName: null,
-        passWord: null,
-        code: null,
-        databasetype: null
+        ipAddress: null,
+        databaseType: null,
+        createDate: null,
+        databaseName: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        datasourceId: [
-          { required: true, message: "数据源的id不能为空", trigger: "blur" }
-        ],
-        url: [
-          { required: true, message: "连接信息不能为空", trigger: "blur" }
+        ipAddress: [
+          { required: true, message: "连接ip不能为空", trigger: "blur" }
         ],
         userName: [
           { required: true, message: "用户名不能为空", trigger: "blur" }
@@ -213,20 +229,26 @@ export default {
         passWord: [
           { required: true, message: "密码不能为空", trigger: "blur" }
         ],
-        databasetype: [
+        databaseType: [
           { required: true, message: "数据库类型不能为空", trigger: "change" }
+        ],
+        ipPort: [
+          { required: true, message: "连接端口不能为空", trigger: "blur" }
         ]
       }
     };
   },
   created() {
     this.getList();
-    this.getDicts("sys_database_type").then(response => {
-      this.databasetypeOptions = response.data;
+    this.getDicts("database_type").then(response => {
+      this.databaseTypeOptions = response.data;
+    });
+    this.getDicts("data_level").then(response => {
+      this.dataLevelOptions = response.data;
     });
   },
   methods: {
-    /** 查询datasource列表 */
+    /** 查询数据源配置列表 */
     getList() {
       this.loading = true;
       listDatasource(this.queryParams).then(response => {
@@ -236,8 +258,12 @@ export default {
       });
     },
     // 数据库类型字典翻译
-    databasetypeFormat(row, column) {
-      return this.selectDictLabel(this.databasetypeOptions, row.databasetype);
+    databaseTypeFormat(row, column) {
+      return this.selectDictLabel(this.databaseTypeOptions, row.databaseType);
+    },
+    // 数据级别字典翻译
+    dataLevelFormat(row, column) {
+      return this.selectDictLabel(this.dataLevelOptions, row.dataLevel);
     },
     // 取消按钮
     cancel() {
@@ -247,12 +273,19 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        datasourceId: null,
-        url: null,
+        id: null,
+        ipAddress: null,
         userName: null,
         passWord: null,
-        code: null,
-        databasetype: null
+        conncetAttr: null,
+        databaseType: null,
+        creatorId: null,
+        creatorName: null,
+        createDate: null,
+        dataLevel: null,
+        orderNo: null,
+        databaseName: null,
+        ipPort: null
       };
       this.resetForm("form");
     },
@@ -268,7 +301,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.datasourceId)
+      this.ids = selection.map(item => item.id)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -276,23 +309,23 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加datasource";
+      this.title = "添加数据源配置";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const datasourceId = row.datasourceId || this.ids
-      getDatasource(datasourceId).then(response => {
+      const id = row.id || this.ids
+      getDatasource(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改datasource";
+        this.title = "修改数据源配置";
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.datasourceId != null) {
+          if (this.form.id != null) {
             updateDatasource(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
@@ -310,13 +343,13 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const datasourceIds = row.datasourceId || this.ids;
-      this.$confirm('是否确认删除datasource编号为"' + datasourceIds + '"的数据项?', "警告", {
+      const ids = row.id || this.ids;
+      this.$confirm('是否确认删除数据源配置编号为"' + ids + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delDatasource(datasourceIds);
+          return delDatasource(ids);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -324,9 +357,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('dbsource/datasource/export', {
+      this.download('integration/datasource/export', {
         ...this.queryParams
-      }, `dbsource_datasource.xlsx`)
+      }, `integration_datasource.xlsx`)
     }
   }
 };

@@ -31,7 +31,7 @@ spring:
         - id: tcoiss-system
           uri: lb://tcoiss-system
           predicates:
-            - Path=/mapper.system/**
+            - Path=/system/**
           filters:
             - StripPrefix=1
         # 文件服务
@@ -41,11 +41,19 @@ spring:
             - Path=/file/**
           filters:
             - StripPrefix=1
-        # 测试服务
-        - id: tcoiss-test
-          uri: lb://tcoiss-test
+        # 数据库集成服务
+        - id: tcoiss-dbsource
+          uri: lb://tcoiss-dbsource
           predicates:
-            - Path=/test/**
+            - Path=/dbsource/**
+          filters:
+            - StripPrefix=1
+
+        # web集成服务
+        - id: tcoiss-webservice
+          uri: lb://tcoiss-webservice
+          predicates:
+            - Path=/webservice/**
           filters:
             - StripPrefix=1
 
