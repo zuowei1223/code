@@ -18,7 +18,7 @@
 11:13:32.645 [main] INFO  c.a.n.client.naming - [processServiceJson,228] - current ips:(0) service: DEFAULT_GROUP@@tcoiss-file -> []
 11:13:32.647 [main] INFO  c.a.n.client.naming - [addListener,83] - [LISTENER] adding DEFAULT_GROUP@@tcoiss-file with DEFAULT to listener map
 11:13:32.665 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Starting ProtocolHandler ["http-nio-9300"]
-11:13:32.751 [main] INFO  c.a.n.client.naming - [addBeatInfo,81] - [BEAT] adding beat: BeatInfo{port=9300, ip='172.17.184.114', weight=1.0, serviceName='DEFAULT_GROUP@@tcoiss-file', cluster='DEFAULT', metadata={preserved.register.source=SPRING_CLOUD}, scheduled=false, period=5000, stopped=false} to beat map.
+11:13:32.751 [main] INFO  c.a.n.client.naming - [addBeatInfo,81] - [BEAT] adding beat: BeatInfo{port=9300, ip='172.17.184.114', weight=1.0, serviceName='DEFAULT_GROUP@@tcoiss-file', cluster='DEFAULT', metadata={preserved.register.source=SPRING_CLOUD}, webserviced=false, period=5000, stopped=false} to beat map.
 11:13:32.753 [main] INFO  c.a.n.client.naming - [registerService,223] - [REGISTER-SERVICE] public registering service DEFAULT_GROUP@@tcoiss-file with instance: Instance{instanceId='null', ip='172.17.184.114', port=9300, weight=1.0, healthy=true, enabled=true, ephemeral=true, clusterName='DEFAULT', serviceName='null', metadata={preserved.register.source=SPRING_CLOUD}}
 11:13:32.761 [main] INFO  c.a.c.n.r.NacosServiceRegistry - [register,71] - nacos registry, DEFAULT_GROUP tcoiss-file 172.17.184.114:9300 register finished
 11:13:33.220 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - [start,160] - Context refreshed

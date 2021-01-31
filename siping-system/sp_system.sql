@@ -1277,7 +1277,7 @@ CREATE TABLE `xxl_job_lock` (
 -- ----------------------------
 -- Records of xxl_job_lock
 -- ----------------------------
-INSERT INTO `xxl_job_lock` VALUES ('schedule_lock');
+INSERT INTO `xxl_job_lock` VALUES ('webservice_lock');
 
 -- ----------------------------
 -- Table structure for xxl_job_log

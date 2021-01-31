@@ -1,31 +1,42 @@
-17:43:30.930 [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,21] - HV000001: Hibernate Validator 6.1.5.Final
-17:43:32.437 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - [<clinit>,212] - LOCAL_SNAPSHOT_PATH:C:\Users\Administrator\nacos\config
-17:43:32.826 [main] INFO  c.a.n.c.c.i.Limiter - [<clinit>,54] - limitTime:5.0
-17:43:32.864 [main] INFO  c.a.n.c.c.u.JvmUtil - [<clinit>,49] - isMultiInstance:false
-17:43:32.898 [main] INFO  c.t.a.RuoYiAuthApplication - [logStartupProfileInfo,655] - The following profiles are active: dev
-17:43:35.983 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Initializing ProtocolHandler ["http-nio-9200"]
-17:43:35.984 [main] INFO  o.a.c.c.StandardService - [log,173] - Starting service [Tomcat]
-17:43:35.985 [main] INFO  o.a.c.c.StandardEngine - [log,173] - Starting Servlet engine: [Apache Tomcat/9.0.38]
-17:43:36.396 [main] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring embedded WebApplicationContext
-17:43:37.671 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
-17:43:37.679 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
-17:43:37.987 [main] INFO  c.a.c.s.SentinelWebAutoConfiguration - [addInterceptors,80] - [Sentinel Starter] register SentinelWebInterceptor with urlPatterns: [/**].
-17:43:38.552 [main] INFO  c.a.n.client.naming - [call,64] - initializer namespace from System Property :null
-17:43:38.553 [main] INFO  c.a.n.client.naming - [call,73] - initializer namespace from System Environment :null
-17:43:38.553 [main] INFO  c.a.n.client.naming - [call,83] - initializer namespace from System Property :null
-17:43:41.109 [main] INFO  c.a.n.client.naming - [processServiceJson,217] - init new ips(0) service: DEFAULT_GROUP@@tcoiss-auth -> []
-17:43:41.119 [main] INFO  c.a.n.client.naming - [processServiceJson,228] - current ips:(0) service: DEFAULT_GROUP@@tcoiss-auth -> []
-17:43:41.120 [main] INFO  c.a.n.client.naming - [addListener,83] - [LISTENER] adding DEFAULT_GROUP@@tcoiss-auth with DEFAULT to listener map
-17:43:41.140 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Starting ProtocolHandler ["http-nio-9200"]
-17:43:41.301 [main] INFO  c.a.n.client.naming - [addBeatInfo,81] - [BEAT] adding beat: BeatInfo{port=9200, ip='172.17.184.114', weight=1.0, serviceName='DEFAULT_GROUP@@tcoiss-auth', cluster='DEFAULT', metadata={preserved.register.source=SPRING_CLOUD}, scheduled=false, period=5000, stopped=false} to beat map.
-17:43:41.303 [main] INFO  c.a.n.client.naming - [registerService,223] - [REGISTER-SERVICE] public registering service DEFAULT_GROUP@@tcoiss-auth with instance: Instance{instanceId='null', ip='172.17.184.114', port=9200, weight=1.0, healthy=true, enabled=true, ephemeral=true, clusterName='DEFAULT', serviceName='null', metadata={preserved.register.source=SPRING_CLOUD}}
-17:43:41.312 [main] INFO  c.a.c.n.r.NacosServiceRegistry - [register,71] - nacos registry, DEFAULT_GROUP tcoiss-auth 172.17.184.114:9200 register finished
-17:43:41.880 [main] INFO  c.t.a.RuoYiAuthApplication - [logStarted,61] - Started RuoYiAuthApplication in 12.05 seconds (JVM running for 13.278)
-17:43:41.930 [main] INFO  c.a.n.c.c.i.ClientWorker - [addCacheDataIfAbsent,262] - [fixed-127.0.0.1_8848] [subscribe] tcoiss-auth-dev.yml+DEFAULT_GROUP
-17:43:41.933 [main] INFO  c.a.n.c.c.i.CacheData - [addListener,93] - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=tcoiss-auth-dev.yml, group=DEFAULT_GROUP, cnt=1
-17:43:41.933 [main] INFO  c.a.n.c.c.i.ClientWorker - [addCacheDataIfAbsent,262] - [fixed-127.0.0.1_8848] [subscribe] tcoiss-auth.yml+DEFAULT_GROUP
-17:43:41.934 [main] INFO  c.a.n.c.c.i.CacheData - [addListener,93] - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=tcoiss-auth.yml, group=DEFAULT_GROUP, cnt=1
-17:43:41.934 [main] INFO  c.a.n.c.c.i.ClientWorker - [addCacheDataIfAbsent,262] - [fixed-127.0.0.1_8848] [subscribe] tcoiss-auth+DEFAULT_GROUP
-17:43:41.935 [main] INFO  c.a.n.c.c.i.CacheData - [addListener,93] - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=tcoiss-auth, group=DEFAULT_GROUP, cnt=1
-17:43:42.149 [com.alibaba.nacos.client.naming.updater] INFO  c.a.n.client.naming - [processServiceJson,191] - new ips(1) service: DEFAULT_GROUP@@tcoiss-auth@@DEFAULT -> [{"instanceId":"172.17.184.114#9200#DEFAULT#DEFAULT_GROUP@@tcoiss-auth","ip":"172.17.184.114","port":9200,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"tcoiss-auth","metadata":{"preserved.register.source":"SPRING_CLOUD"},"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]
-17:43:42.154 [com.alibaba.nacos.client.naming.updater] INFO  c.a.n.client.naming - [processServiceJson,228] - current ips:(1) service: DEFAULT_GROUP@@tcoiss-auth@@DEFAULT -> [{"instanceId":"172.17.184.114#9200#DEFAULT#DEFAULT_GROUP@@tcoiss-auth","ip":"172.17.184.114","port":9200,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"tcoiss-auth","metadata":{"preserved.register.source":"SPRING_CLOUD"},"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]
+09:50:53.612 [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,21] - HV000001: Hibernate Validator 6.1.5.Final
+09:50:54.812 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - [<clinit>,212] - LOCAL_SNAPSHOT_PATH:C:\Users\Administrator\nacos\config
+09:50:55.146 [main] INFO  c.a.n.c.c.i.Limiter - [<clinit>,54] - limitTime:5.0
+09:50:55.182 [main] INFO  c.a.n.c.c.u.JvmUtil - [<clinit>,49] - isMultiInstance:false
+09:50:55.214 [main] INFO  c.t.a.AuthApplication - [logStartupProfileInfo,655] - The following profiles are active: dev
+09:50:58.024 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Initializing ProtocolHandler ["http-nio-9200"]
+09:50:58.025 [main] INFO  o.a.c.c.StandardService - [log,173] - Starting service [Tomcat]
+09:50:58.025 [main] INFO  o.a.c.c.StandardEngine - [log,173] - Starting Servlet engine: [Apache Tomcat/9.0.38]
+09:50:58.275 [main] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring embedded WebApplicationContext
+09:50:59.463 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+09:50:59.471 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+09:50:59.794 [main] INFO  c.a.c.s.SentinelWebAutoConfiguration - [addInterceptors,80] - [Sentinel Starter] register SentinelWebInterceptor with urlPatterns: [/**].
+09:51:00.354 [main] INFO  c.a.n.client.naming - [call,64] - initializer namespace from System Property :null
+09:51:00.355 [main] INFO  c.a.n.client.naming - [call,73] - initializer namespace from System Environment :null
+09:51:00.356 [main] INFO  c.a.n.client.naming - [call,83] - initializer namespace from System Property :null
+09:51:01.805 [main] INFO  c.a.n.client.naming - [processServiceJson,217] - init new ips(0) service: DEFAULT_GROUP@@tcoiss-auth -> []
+09:51:01.812 [main] INFO  c.a.n.client.naming - [processServiceJson,228] - current ips:(0) service: DEFAULT_GROUP@@tcoiss-auth -> []
+09:51:01.813 [main] INFO  c.a.n.client.naming - [addListener,83] - [LISTENER] adding DEFAULT_GROUP@@tcoiss-auth with DEFAULT to listener map
+09:51:01.820 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Starting ProtocolHandler ["http-nio-9200"]
+09:51:01.900 [main] INFO  c.a.n.client.naming - [addBeatInfo,81] - [BEAT] adding beat: BeatInfo{port=9200, ip='192.168.1.148', weight=1.0, serviceName='DEFAULT_GROUP@@tcoiss-auth', cluster='DEFAULT', metadata={preserved.register.source=SPRING_CLOUD}, webserviced=false, period=5000, stopped=false} to beat map.
+09:51:01.901 [main] INFO  c.a.n.client.naming - [registerService,223] - [REGISTER-SERVICE] public registering service DEFAULT_GROUP@@tcoiss-auth with instance: Instance{instanceId='null', ip='192.168.1.148', port=9200, weight=1.0, healthy=true, enabled=true, ephemeral=true, clusterName='DEFAULT', serviceName='null', metadata={preserved.register.source=SPRING_CLOUD}}
+09:51:01.909 [main] INFO  c.a.c.n.r.NacosServiceRegistry - [register,71] - nacos registry, DEFAULT_GROUP tcoiss-auth 192.168.1.148:9200 register finished
+09:51:02.258 [main] INFO  c.t.a.AuthApplication - [logStarted,61] - Started AuthApplication in 10.328 seconds (JVM running for 11.922)
+09:51:02.300 [main] INFO  c.a.n.c.c.i.ClientWorker - [addCacheDataIfAbsent,262] - [fixed-127.0.0.1_8848] [subscribe] tcoiss-auth-dev.yml+DEFAULT_GROUP
+09:51:02.301 [main] INFO  c.a.n.c.c.i.CacheData - [addListener,93] - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=tcoiss-auth-dev.yml, group=DEFAULT_GROUP, cnt=1
+09:51:02.305 [main] INFO  c.a.n.c.c.i.ClientWorker - [addCacheDataIfAbsent,262] - [fixed-127.0.0.1_8848] [subscribe] tcoiss-auth.yml+DEFAULT_GROUP
+09:51:02.306 [main] INFO  c.a.n.c.c.i.CacheData - [addListener,93] - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=tcoiss-auth.yml, group=DEFAULT_GROUP, cnt=1
+09:51:02.306 [main] INFO  c.a.n.c.c.i.ClientWorker - [addCacheDataIfAbsent,262] - [fixed-127.0.0.1_8848] [subscribe] tcoiss-auth+DEFAULT_GROUP
+09:51:02.306 [main] INFO  c.a.n.c.c.i.CacheData - [addListener,93] - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=tcoiss-auth, group=DEFAULT_GROUP, cnt=1
+09:51:02.832 [com.alibaba.nacos.client.naming.updater] INFO  c.a.n.client.naming - [processServiceJson,191] - new ips(1) service: DEFAULT_GROUP@@tcoiss-auth@@DEFAULT -> [{"instanceId":"192.168.1.148#9200#DEFAULT#DEFAULT_GROUP@@tcoiss-auth","ip":"192.168.1.148","port":9200,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"tcoiss-auth","metadata":{"preserved.register.source":"SPRING_CLOUD"},"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]
+09:51:02.834 [com.alibaba.nacos.client.naming.updater] INFO  c.a.n.client.naming - [processServiceJson,228] - current ips:(1) service: DEFAULT_GROUP@@tcoiss-auth@@DEFAULT -> [{"instanceId":"192.168.1.148#9200#DEFAULT#DEFAULT_GROUP@@tcoiss-auth","ip":"192.168.1.148","port":9200,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"tcoiss-auth","metadata":{"preserved.register.source":"SPRING_CLOUD"},"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]
+10:12:48.703 [http-nio-9200-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+10:12:49.328 [http-nio-9200-exec-1] INFO  c.n.c.ChainedDynamicProperty - [checkAndFlip,115] - Flipping property: tcoiss-system.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+10:12:49.356 [http-nio-9200-exec-1] INFO  c.n.l.BaseLoadBalancer - [initWithConfig,197] - Client: tcoiss-system instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=tcoiss-system,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+10:12:49.368 [http-nio-9200-exec-1] INFO  c.n.l.DynamicServerListLoadBalancer - [enableAndInitLearnNewServersFeature,222] - Using serverListUpdater PollingServerListUpdater
+10:12:49.375 [http-nio-9200-exec-1] INFO  c.a.n.client.naming - [processServiceJson,191] - new ips(1) service: DEFAULT_GROUP@@tcoiss-system -> [{"instanceId":"192.168.1.148#9201#DEFAULT#DEFAULT_GROUP@@tcoiss-system","ip":"192.168.1.148","port":9201,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"tcoiss-system","metadata":{"preserved.register.source":"SPRING_CLOUD"},"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]
+10:12:49.377 [http-nio-9200-exec-1] INFO  c.a.n.client.naming - [processServiceJson,228] - current ips:(1) service: DEFAULT_GROUP@@tcoiss-system -> [{"instanceId":"192.168.1.148#9201#DEFAULT#DEFAULT_GROUP@@tcoiss-system","ip":"192.168.1.148","port":9201,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"tcoiss-system","metadata":{"preserved.register.source":"SPRING_CLOUD"},"ipDeleteTimeout":30000,"instanceHeartBeatTimeOut":15000,"instanceHeartBeatInterval":5000}]
+10:12:49.389 [http-nio-9200-exec-1] INFO  c.n.c.ChainedDynamicProperty - [checkAndFlip,115] - Flipping property: tcoiss-system.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+10:12:49.393 [http-nio-9200-exec-1] INFO  c.n.l.DynamicServerListLoadBalancer - [restOfInit,150] - DynamicServerListLoadBalancer for client tcoiss-system initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=tcoiss-system,current list of Servers=[192.168.1.148:9201],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:192.168.1.148:9201;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:com.alibaba.cloud.nacos.ribbon.NacosServerList@6e853409
+10:12:50.373 [PollingServerListUpdater-0] INFO  c.n.c.ChainedDynamicProperty - [checkAndFlip,115] - Flipping property: tcoiss-system.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647

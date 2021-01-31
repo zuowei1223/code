@@ -1,6 +1,6 @@
 import { makeMap } from '@/utils/index'
 
-// 参考https://github.com/vuejs/vue/blob/v2.6.10/src/platforms/web/server/util.js
+// 参考https://github.com/vuejs/vue/blob/v2.6.10/src/platforms/web/server/utils.js
 const isAttr = makeMap(
   'accept,accept-charset,accesskey,action,align,alt,async,autocomplete,'
   + 'autofocus,autoplay,autosave,bgcolor,border,buffered,challenge,charset,'

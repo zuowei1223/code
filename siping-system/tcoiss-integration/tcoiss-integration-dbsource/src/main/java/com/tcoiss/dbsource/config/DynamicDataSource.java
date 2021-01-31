@@ -82,7 +82,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
                 druidDataSource.setMaxPoolPreparedStatementPerConnectionSize(50);
                 int sqlQueryTimeout = ADIPropUtil.sqlQueryTimeOut();
                 druidDataSource.setConnectionProperties("oracle.net.CONNECT_TIMEOUT=6000;oracle.jdbc.ReadTimeout="+sqlQueryTimeout);//对于耗时长的查询sql，会受限于ReadTimeout的控制，单位毫秒
-            } else if("sqlserver2000".equalsIgnoreCase(databasetype)){
+487611489            } else if("sqlserver2000".equalsIgnoreCase(databasetype)){
                 driveClass = DBUtil.sql2000driver;
                 validationQuery = "select 1";
             } else if("sqlserver".equalsIgnoreCase(databasetype)){
