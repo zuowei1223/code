@@ -9,6 +9,15 @@ export function listFence(query) {
   })
 }
 
+// 查询电子围栏地图
+export function queryFence(query) {
+  return request({
+    url: '/webservice/fence/queryFence',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询电子围栏详细
 export function getFence(id) {
   return request({
@@ -19,14 +28,20 @@ export function getFence(id) {
 
 // 新增电子围栏
 export function addFence(data) {
-  var url = "http://localhost:8088/tcoiss-schedule-admin/gaode/index?";
-  url = url+"localKey="+data.localKey+"&name="+data.fenceName;
-  window.open(url);
-  /*return request({
-    url: '/webservice/fence/gaode/add',
+  return request({
+    url: '/webservice/fence/gaode/addFence',
     method: 'post',
     data: data
-  })*/
+  })
+}
+
+// 缓存地理围栏
+export function fenceCache(data) {
+  return request({
+    url: '/webservice/fence/gaode/fenceCache',
+    method: 'post',
+    data: data
+  })
 }
 
 // 修改电子围栏

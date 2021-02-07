@@ -2,7 +2,6 @@
  <div>
   <div id="container" style="width:100%; height:900px"></div>
   <div class="info">
-      <div class="input-item">
 		  <el-input
 		    placeholder="关键字"
 		    clearable
@@ -13,10 +12,9 @@
 		  <el-button @click="clickOn('marker')">标记</el-button>
 		  <el-button @click="handleAdd">创建围栏</el-button>
 		  <el-button @click="clickOn('colse')">保存</el-button>
-      </div>
   </div>
   <!-- 添加或修改电子围栏对话框 -->
-  <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+  <!--<el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
       
       <el-form-item label="围栏名称" prop="fenceName">
@@ -33,7 +31,7 @@
       <el-button type="primary" @click="clickOn('polygon')">绘制围栏</el-button>
       <el-button @click="cancel">取 消</el-button>
     </div>
-  </el-dialog>
+  </el-dialog>-->
  </div>
 </template>
 <style>

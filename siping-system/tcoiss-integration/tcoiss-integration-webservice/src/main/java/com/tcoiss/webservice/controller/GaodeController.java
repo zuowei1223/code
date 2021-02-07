@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
-@RequestMapping("/gaode")
+@RequestMapping("/fence/gaode")
 public class GaodeController extends BaseController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class GaodeController extends BaseController {
         return AjaxResult.success(list);
     }
     @PreAuthorize(hasPermi = "webservice:gaode:fenceCache")
-    @GetMapping("/fenceCache")
+    @PostMapping("/fenceCache")
     public AjaxResult fenceCache(ElectronicFence electronicFence) {
         //根据日期和UUID号生成缓存key
         String key = "wl_"+DateUtils.getDate() + UUID.randomUUID();
