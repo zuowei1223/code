@@ -1,31 +1,25 @@
 package com.tcoiss.webservice.controller;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Arrays;
-
-import com.tcoiss.webservice.domain.ElectronicFence;
-import com.tcoiss.webservice.service.IElectronicFenceService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.tcoiss.common.log.annotation.Log;
 import com.tcoiss.common.core.utils.poi.ExcelUtil;
 import com.tcoiss.common.core.web.controller.BaseController;
 import com.tcoiss.common.core.web.domain.AjaxResult;
+import com.tcoiss.common.core.web.page.TableDataInfo;
+import com.tcoiss.common.log.annotation.Log;
 import com.tcoiss.common.log.enums.BusinessType;
 import com.tcoiss.common.security.annotation.PreAuthorize;
+import com.tcoiss.webservice.ApiServer.HttpAPIServer;
+import com.tcoiss.webservice.domain.ElectronicFence;
+import com.tcoiss.webservice.service.IApiService;
+import com.tcoiss.webservice.service.IElectronicFenceService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
-import com.tcoiss.common.core.web.page.TableDataInfo;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 电子围栏Controller
@@ -34,7 +28,7 @@ import com.tcoiss.common.core.web.page.TableDataInfo;
  * @date 2021-01-31
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Controller
+@RestController
 @RequestMapping("/fence" )
 public class ElectronicFenceController extends BaseController {
 
@@ -57,7 +51,7 @@ public class ElectronicFenceController extends BaseController {
     @PreAuthorize(hasPermi = "webservice:fence:export" )
     @Log(title = "电子围栏" , businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response,ElectronicFence electronicFence) throws IOException
+    public void export(HttpServletResponse response, ElectronicFence electronicFence) throws IOException
     {
         List<ElectronicFence> list = iElectronicFenceService.queryList(electronicFence);
         ExcelUtil<ElectronicFence> util = new ExcelUtil<ElectronicFence>(ElectronicFence.class);
@@ -73,30 +67,22 @@ public class ElectronicFenceController extends BaseController {
         return AjaxResult.success(iElectronicFenceService.getById(id));
     }
 
-    /**
-     * 新增电子围栏，跳转到地图的编辑页面
-     */
-    //@PreAuthorize(hasPermi = "webservice:fence:add" )
-    @Log(title = "添加电子围栏" , businessType = BusinessType.INSERT)
-    @RequestMapping("/gaode/add")
-    public String toDraw(Model model,ElectronicFence electronicFence) {
-        model.addAttribute("data",electronicFence);
-        return "gaode/gaode.index";
-    }
+
+
+
 
     /**
-     * 修改电子围栏
+     * 修改电子围栏,根据修改类型分别修改基本信息和围栏信息
      */
     @PreAuthorize(hasPermi = "webservice:fence:edit" )
     @Log(title = "电子围栏" , businessType = BusinessType.UPDATE)
-    @RequestMapping("/gaode/edit")
-    public String toEdit(Model model,String gid) {
-
-        return "gaode.index";
+    @PutMapping
+    public AjaxResult edit(@RequestBody ElectronicFence electronicFence) {
+        return toAjax(iElectronicFenceService.updateById(electronicFence) ? 1 : 0);
     }
 
     /**
-     * 删除电子围栏
+     * 删除电子围栏,
      */
     @PreAuthorize(hasPermi = "webservice:fence:remove" )
     @Log(title = "电子围栏" , businessType = BusinessType.DELETE)

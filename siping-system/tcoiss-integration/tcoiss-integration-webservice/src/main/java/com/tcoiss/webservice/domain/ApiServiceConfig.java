@@ -1,18 +1,18 @@
 package com.tcoiss.webservice.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.tcoiss.common.core.annotation.Excel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * API服务配置对象 api_service_config
@@ -83,6 +83,9 @@ private static final long serialVersionUID=1L;
     /** 排序号 */
     @Excel(name = "排序号")
     private Long orderNo;
+
+    /** 测试数据*/
+    private String test_param;
 
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();

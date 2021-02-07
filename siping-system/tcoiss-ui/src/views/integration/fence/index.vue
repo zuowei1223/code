@@ -10,82 +10,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <!--<el-form-item label="平台编号" prop="fenceGid">
-        <el-input
-          v-model="queryParams.fenceGid"
-          placeholder="请输入平台编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>-->
       <el-form-item label="名称" prop="fenceName">
         <el-input
           v-model="queryParams.fenceName"
           placeholder="请输入名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <!--<el-form-item label="监控状态" prop="fenceEnable">
-        <el-input
-          v-model="queryParams.fenceEnable"
-          placeholder="请输入监控状态"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>-->
-      <el-form-item label="过期日期" prop="validTime">
-        <el-input
-          v-model="queryParams.validTime"
-          placeholder="请输入过期日期"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="监控日期" prop="fenceRepeat">
-        <el-input
-          v-model="queryParams.fenceRepeat"
-          placeholder="请输入监控日期"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <!--<el-form-item label="监控时段" prop="fenceTime">
-        <el-input
-          v-model="queryParams.fenceTime"
-          placeholder="请输入监控时段"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>-->
-      <!--<el-form-item label="描述信息" prop="fenceDesc">
-        <el-input
-          v-model="queryParams.fenceDesc"
-          placeholder="请输入描述信息"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>-->
-      <!--<el-form-item label="配置触发围栏所需动作" prop="alertCondition">
-        <el-input
-          v-model="queryParams.alertCondition"
-          placeholder="请输入配置触发围栏所需动作"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>-->
-      <el-form-item label="创建人ID" prop="createorId">
-        <el-input
-          v-model="queryParams.createorId"
-          placeholder="请输入创建人ID"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -149,13 +77,7 @@
       <el-table-column label="围栏本地编码" align="center" prop="localKey" />
       <el-table-column label="平台编号" align="center" prop="fenceGid" />
       <el-table-column label="名称" align="center" prop="fenceName" />
-      <el-table-column label="围栏坐标集" align="center" prop="fencePoints" />
-      <el-table-column label="监控状态" align="center" prop="fenceEnable" />
-      <el-table-column label="过期日期" align="center" prop="validTime" />
-      <el-table-column label="监控日期" align="center" prop="fenceRepeat" />
-      <el-table-column label="监控时段" align="center" prop="fenceTime" />
       <el-table-column label="描述信息" align="center" prop="fenceDesc" />
-      <el-table-column label="配置触发围栏所需动作" align="center" prop="alertCondition" />
       <el-table-column label="创建人ID" align="center" prop="createorId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -191,21 +113,11 @@
         <el-form-item label="本地编码" prop="localKey">
           <el-input v-model="form.localKey" placeholder="请输入围栏本地编码" />
         </el-form-item>
-
         <el-form-item label="名称" prop="fenceName">
           <el-input v-model="form.fenceName" placeholder="请输入名称" />
         </el-form-item>
-
-        <el-form-item label="过期日期" prop="validTime">
-          <el-input v-model="form.validTime" placeholder="请输入过期日期" />
-        </el-form-item>
-
         <el-form-item label="描述信息" prop="fenceDesc">
           <el-input v-model="form.fenceDesc" placeholder="请输入描述信息" />
-        </el-form-item>
-
-        <el-form-item label="创建人ID" prop="createorId">
-          <el-input v-model="form.createorId" placeholder="请输入创建人ID" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -220,6 +132,7 @@
 import { listFence, getFence, delFence, addFence, updateFence } from "@/api/integration/fence";
 
 export default {
+	
   name: "Fence",
   components: {
   },

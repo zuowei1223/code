@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="tcoiss-api-system" />
+        <module name="tcoiss-api-webservice" />
         <module name="tcoiss-auth" />
         <module name="tcoiss-common-core" />
         <module name="tcoiss-common-datascope" />
@@ -25,5 +26,8 @@
         <module name="tociss-integration-report" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="tcoiss-integration-admin" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

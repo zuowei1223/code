@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>tcoiss-api-system</module>
+        <module>tcoiss-api-webservice</module>
     </modules>
     <description>
         tcoiss-api系统接口

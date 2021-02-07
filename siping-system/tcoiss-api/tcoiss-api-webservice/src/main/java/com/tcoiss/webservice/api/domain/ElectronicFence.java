@@ -1,4 +1,4 @@
-package com.tcoiss.webservice.domain;
+package com.tcoiss.webservice.api.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -70,7 +70,7 @@ private static final long serialVersionUID=1L;
     private String fenceDesc;
 
     /** 配置触发围栏所需动作 */
-   @Excel(name = "配置触发围栏所需动作")
+    @Excel(name = "配置触发围栏所需动作")
     private String alertCondition;
 
     /** 创建时间 */
@@ -79,10 +79,6 @@ private static final long serialVersionUID=1L;
     /** 创建人ID */
     @Excel(name = "创建人ID")
     private Long createorId;
-
-    /** 创建人 */
-    @Excel(name = "创建人")
-    private String createor;
 
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();

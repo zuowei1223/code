@@ -1,7 +1,7 @@
 package com.tcoiss.webservice.mapper;
 
-import com.tcoiss.webservice.domain.ApiServiceConfig;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tcoiss.webservice.domain.ApiServiceConfig;
 
 /**
  * API服务配置Mapper接口

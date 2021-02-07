@@ -45,3 +45,12 @@ export function delFence(id) {
     method: 'delete'
   })
 }
+//根据地址查询围栏信息
+export function queryByAddr(location) {
+  return request({
+    url: '/webservice/fence/queryByAddr',
+    method: 'get',
+    params: {'location':location}
+  })
+}
+

@@ -1,14 +1,11 @@
 package com.tcoiss.webservice.controller;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Arrays;
-
 import com.tcoiss.common.core.utils.SecurityUtils;
 import com.tcoiss.common.core.utils.poi.ExcelUtil;
 import com.tcoiss.common.core.web.controller.BaseController;
 import com.tcoiss.common.core.web.domain.AjaxResult;
 import com.tcoiss.common.core.web.page.TableDataInfo;
+import com.tcoiss.common.log.annotation.Log;
 import com.tcoiss.common.log.enums.BusinessType;
 import com.tcoiss.common.security.annotation.PreAuthorize;
 import com.tcoiss.webservice.domain.ApiServiceConfig;
@@ -16,17 +13,12 @@ import com.tcoiss.webservice.service.IApiService;
 import com.tcoiss.webservice.service.IApiServiceConfigService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.tcoiss.common.log.annotation.Log;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -112,8 +104,8 @@ public class ApiServiceConfigController extends BaseController {
      */
     @PreAuthorize(hasPermi="${integration:apiService}:test" )
     @Log(title = "API服务测试" , businessType = BusinessType.DELETE)
-    @DeleteMapping("apiTest/{ids}" )
-    public AjaxResult apiTest(@PathVariable Long[] ids) {
-        return iApiService.apiTest(Arrays.asList(ids));
+    @GetMapping("apiTest/{id}" )
+    public AjaxResult apiTest(@PathVariable("id" ) Long id) {
+        return AjaxResult.success(iApiService.apiTest(id));
     }
 }

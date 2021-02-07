@@ -1,22 +1,18 @@
 package com.tcoiss.webservice.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.google.gson.Gson;
-import com.tcoiss.common.core.web.domain.AjaxResult;
+import com.tcoiss.common.core.exception.api.ApiException;
 import com.tcoiss.webservice.ApiServer.HttpAPIServer;
-import com.tcoiss.webservice.ApiServer.HttpResult;
+import com.tcoiss.webservice.ApiServer.InvokeContext;
+import com.tcoiss.webservice.ApiServer.InvokerBuilder;
 import com.tcoiss.webservice.domain.ApiServiceConfig;
 import com.tcoiss.webservice.mapper.ApiServiceConfigMapper;
 import com.tcoiss.webservice.service.IApiService;
-import com.tcoiss.webservice.utils.TemplateUtils;
-import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
 @Service
 public class ApiServiceImpl implements IApiService {
 
@@ -27,77 +23,47 @@ public class ApiServiceImpl implements IApiService {
     private HttpAPIServer httpAPIServer;
 
     @Override
-    public AjaxResult apiTest(List<Long> asList)  {
+    public Map<String, Object> apiTest(Long id)  {
         //todo 根据选择的id对创建0的挨个进行接口测试，测试成功的状态改为启用1
-        for (Long id: asList) {
-            //查询接口配置信息
-            ApiServiceConfig serviceConfig = apiServiceConfigMapper.selectById(id);
-            if(serviceConfig.getDataLevel()!=0){
-                continue;
-            }
-            //获取请求地址
-            String apiUrl = serviceConfig.getApiUrl();
-            String paramer = serviceConfig.getParamTemplate();
-            try {
-                if(serviceConfig.getDataType().equals("post")&&serviceConfig.getDataType().equals("json")){
-                    //解析参数
-                    Map paramMap = new Gson().fromJson(paramer, Map.class);
-                    HttpResult httpResult  = httpAPIServer.doPost(apiUrl,paramMap);
-                    return AjaxResult.success(httpResult);
-                }else if(serviceConfig.getDataType().equals("get")){
-                    Map<String,Object> paramMap = new HashMap<>();//paramer
-                    String result = httpAPIServer.doGet(apiUrl,paramMap);
-                    return AjaxResult.success(result);
-                }else{
-                    return AjaxResult.error(-1,"请求方式异常");
-                }
-            } catch (Exception e) {
-                return AjaxResult.error(99,"系统异常请检查代码");
-            }
+        //查询接口配置信息
+        ApiServiceConfig serviceConfig = apiServiceConfigMapper.selectById(id);
+        if(serviceConfig.getDataLevel()!=0){
+            throw new ApiException("-1",null,"接口配置未生效");
+        }
+        //初始化接口服务
+        httpAPIServer = (HttpAPIServer) new InvokerBuilder().buildInvoker(serviceConfig.getApiCode());
+        InvokeContext context = new InvokeContext();
+        context.setEndpoint(serviceConfig.getApiUrl());
+        context.setOperationCode(serviceConfig.getApiCode());
+        context.setParameters("");
+        Map resultMap = httpAPIServer.Invoke(context);
+        if(resultMap == null){
+            throw new ApiException("code404",new Object[] { serviceConfig.getApiCode() },"http请求连接异常");
+            //return AjaxResult.error("连接异常,请检查地址是否正确");
+        }else{
+            return resultMap;
         }
 
-        return AjaxResult.success();
     }
 
     @Override
-    public AjaxResult executeByApiCode(String apiCode, Map<String, Object> map) {
+    public Map<String, Object> executeByApiCode(String apiCode, Object param) {
         QueryWrapper<ApiServiceConfig> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("api_code",apiCode);
         //查询接口配置信息
         ApiServiceConfig serviceConfig = apiServiceConfigMapper.selectOne(queryWrapper);
         if(serviceConfig.getDataLevel()!=0){
-            return AjaxResult.error(-1,"查询到接口未启用");
+            throw new ApiException("-1",new Object[]{apiCode},"接口配置未启用");
         }
-        //获取请求地址
-        String apiUrl = serviceConfig.getApiUrl();
-        String paramer = serviceConfig.getParamTemplate();
-        try {
-            if(serviceConfig.getDataType().equals("post")&&serviceConfig.getDataType().equals("json")){
-                //freemarker解析参数
-                Map paramMap = new Gson().fromJson(paramer, Map.class);
+        httpAPIServer = (HttpAPIServer) new InvokerBuilder().buildInvoker(apiCode);
+        InvokeContext context = new InvokeContext();
+        context.setEndpoint(serviceConfig.getApiUrl());
+        context.setOperationCode(serviceConfig.getApiCode());
+        context.setParameters(param);
+        return httpAPIServer.Invoke(context);
 
-                HttpResult httpResult  = httpAPIServer.doPost(apiUrl,paramMap);
-                return AjaxResult.success(httpResult);
-            }else if(serviceConfig.getDataType().equals("get")){
-                //paramer =
-                Map<String,Object> paramMap = new HashMap<>();//paramer
-                String result = httpAPIServer.doGet(apiUrl,paramMap);
-                return AjaxResult.success(result);
-            }else{
-                return AjaxResult.error(-1,"请求方式异常");
-            }
-        } catch (Exception e) {
-            return AjaxResult.error(99,"系统异常请检查代码");
-        }
     }
-    private Template buildRequestTemplate(String requestTemplate) {
-        try {
-            Template template = TemplateUtils.createTemplate(requestTemplate);
-            return template;
-        } catch (Exception e) {
-            return null;
-        }
-    }
+
 
 
 }

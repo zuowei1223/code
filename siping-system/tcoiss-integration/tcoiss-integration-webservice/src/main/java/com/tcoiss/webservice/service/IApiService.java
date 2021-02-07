@@ -7,8 +7,8 @@ import java.util.Map;
 
 public interface IApiService {
 
-    AjaxResult apiTest(List<Long> asList) ;
+    Map apiTest(Long id) ;
 
     //根据请求编码，以及请求参数对象（map）执行api请求
-    AjaxResult executeByApiCode(String apiCode, Map<String,Object> map);
+    Map executeByApiCode(String apiCode, Object param);
 }

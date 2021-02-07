@@ -22,6 +22,18 @@ import Pagination from "@/components/Pagination";
 // 自定义表格工具扩展
 import RightToolbar from "@/components/RightToolbar"
 
+import VueAMap from 'vue-amap';
+Vue.use(VueAMap);
+
+// 初始化vue-amap
+VueAMap.initAMapApiLoader({
+  // 高德key
+  key: '3fa060bd1711d61ee47bb8983d7b1101',
+  // 插件集合 （插件按需引入）
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+	v: '1.4.4'
+});
+
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey

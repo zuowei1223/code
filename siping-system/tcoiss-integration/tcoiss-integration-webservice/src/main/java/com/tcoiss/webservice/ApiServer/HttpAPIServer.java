@@ -1,5 +1,9 @@
 package com.tcoiss.webservice.ApiServer;
 
+import com.alibaba.fastjson.JSON;
+import com.tcoiss.common.core.exception.api.ApiException;
+import com.tcoiss.common.core.utils.DateUtils;
+import com.tcoiss.common.core.utils.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -7,6 +11,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -14,17 +19,64 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class HttpAPIServer {
+public class HttpAPIServer extends Invoker{
 
     @Autowired
     private CloseableHttpClient httpClient;
 
     @Autowired
     private RequestConfig config;
+
+    /*private InvokeContext invokeContext;
+
+    private InvokeContext getInvokeContext(){
+        return invokeContext;
+    }
+
+    private void setInvokeContext(InvokeContext invokeContext){
+        this.invokeContext = invokeContext;
+    }*/
+
+    public Map<String,Object> Invoke(InvokeContext invokeContext){
+        Map<String,Object> resultMap = new HashMap<>();
+        try{
+            String targerUrl = "";
+            //Object params = invokeContext.getParameters();
+            /*if(){
+
+            }else{
+
+            }*/
+            String response = "";
+            String reqBody = generateRequestString(invokeContext);
+            invokeContext.setEndpoint(targerUrl);
+            invokeContext.setRequestTime(DateUtils.getTime());
+            if(targerUrl.startsWith("https")){//需要秘钥
+
+            }
+            //根据请求方式
+            if(StringUtils.equals("post",invokeContext.getRequestType())){
+                response = doPostJson(targerUrl,reqBody);
+            }else if (StringUtils.equals("get",invokeContext.getRequestType())){
+                //拼装请求地址
+                targerUrl = targerUrl+reqBody;
+                response = doGet(targerUrl);
+            }
+            //response 不为null时，解析响应为Map
+            if(StringUtils.isEmpty(response)){
+                resultMap = JSON.parseObject(response);
+            }
+        }catch (Exception e){
+            throw new ApiException("9003",null,"HTTP请求["+invokeContext.getOperationCode()+"]失败");
+        }
+        return resultMap;
+    }
+
 
 
     /**
@@ -52,6 +104,7 @@ public class HttpAPIServer {
         return null;
     }
 
+
     /**
      * 带参数的get请求，如果状态码为200，则返回body，如果不为200，则返回null
      *
@@ -72,6 +125,40 @@ public class HttpAPIServer {
         // 调用不带参数的get请求
         return this.doGet(uriBuilder.build().toString());
 
+    }
+    /**
+     * 带参数的post请求
+     *
+     * @param url
+     * @param json
+     * @return
+     * @throws Exception
+     */
+    public String doPostJson(String url, String json) throws Exception {
+        System.out.println("请求报文："+ json);
+        // 声明httpPost请求
+        HttpPost httpPost = new HttpPost(url);
+        // 加入配置信息
+        httpPost.setConfig(config);
+
+        // 判断map是否为空，不为空则进行遍历，封装from表单对象
+        if (json != null) {
+            // 给httppost对象设置json格式的参数
+            StringEntity httpEntity = new StringEntity(json,"utf-8");
+            // 设置请求格式
+            httpPost.setHeader("Content-type","application/json");
+            // 传参
+            httpPost.setEntity(httpEntity);
+
+        }
+        // 发起请求
+        CloseableHttpResponse response = this.httpClient.execute(httpPost);
+        // 判断状态码是否为200
+        if (response.getStatusLine().getStatusCode() == 200) {
+            // 返回响应体的内容
+            return EntityUtils.toString(response.getEntity(), "UTF-8");
+        }
+        return null;
     }
 
     /**

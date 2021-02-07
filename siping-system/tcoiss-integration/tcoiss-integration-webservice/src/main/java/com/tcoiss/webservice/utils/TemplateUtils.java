@@ -28,41 +28,23 @@ public class TemplateUtils {
         return new Template("ID:" + (tempSeq++), new StringReader(content), conf);
     }
 
-    public static Map getUtilMethods() {
-        return utils;
-    }
+    public static void main(String[] args) throws Exception {
 
-    public static void addUtils(Map root) {
-        root.put("ut", utils);
-    }
-
-    public static void main(String[] args)
-    {
-        Map template = new HashMap() {{
-            put("first", "该订单信息${orderNo},共支付${money} ");
-            put("keyword1", "${orderNo}");
-            put("keyword2", "${orderTime}");
-            put("keyword3", "${money}");
-            put("keyword4", "${pay}");
-            put("remark", "说明${orderNo},通过${pay}支付了${money} ");
-        }};
-        List wxMpTemplateData = new ArrayList<>(template.size());
-        JSONObject jsonObject= JSON.parseObject("{\n" +
-                " \"orderNo\": \"5555555\",\n" +
-                " \"money\": \"8888888\",\n" +
-                " \"orderTime\":\"2020-09-03 15:46:56\",\n" +
+        /*String content  = "{\n" +
+                " \"orderNo\": ${orderNo},\n" +
+                " \"money\": ${money},\n" +
+                " \"orderTime\":${orderTime},\n" +
                 " \"pay\":\"支付宝\"\n" +
-                " }");
-        /*template.forEach((key, value) -> {
-            try {
-                Template tpl = new Template(null, value, null);
-                Writer out = new StringWriter(2048);
-                tpl.process(jsonObject,out);
-                wxMpTemplateData.add(new WxMpTemplateData(key,out.toString()));
-            } catch (IOException | TemplateException e) {
-                e.printStackTrace();
-            }
-        });*/
+                " }";*/
+        String content = "&orderNo=${orderNo}&money=${money}&orderTime=${orderTime}";
+        Template template = TemplateUtils.createTemplate(content);
+        StringWriter out = new StringWriter();
+        Map<String,Object> root = new HashMap<>();
+        root.put("orderNo","1");
+        //root.put("money","250");
+        root.put("orderTime","2");
+        template.process(root,out);
+        System.out.println(out.toString());
 
     }
 }

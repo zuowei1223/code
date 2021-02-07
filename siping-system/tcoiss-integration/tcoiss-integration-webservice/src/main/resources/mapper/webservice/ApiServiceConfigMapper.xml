@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tcoiss.webservice.mapper.ApiServiceConfigMapper">
+<mapper namespace="com.tcoiss.webservice.api.mapper.ApiServiceConfigMapper">
     
     <resultMap type="ApiServiceConfig" id="ApiServiceConfigResult">
         <result property="id"    column="id"    />
@@ -19,6 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="dataLevel"    column="data_level"    />
         <result property="orderNo"    column="order_no"    />
+        <result property="testParam"    column="test_param"    />
     </resultMap>
 
 

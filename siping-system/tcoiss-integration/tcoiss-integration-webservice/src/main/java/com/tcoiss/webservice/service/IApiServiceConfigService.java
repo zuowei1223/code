@@ -1,7 +1,8 @@
 package com.tcoiss.webservice.service;
 
-import com.tcoiss.webservice.domain.ApiServiceConfig;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tcoiss.webservice.domain.ApiServiceConfig;
+
 import java.util.List;
 
 /**
@@ -16,4 +17,10 @@ public interface IApiServiceConfigService extends IService<ApiServiceConfig> {
      * 查询列表
      */
     List<ApiServiceConfig> queryList(ApiServiceConfig apiServiceConfig);
+
+    /**
+     * 根据apiCode 查询接口配置
+     */
+    ApiServiceConfig getOperationByCode(String apiConfig);
+
 }

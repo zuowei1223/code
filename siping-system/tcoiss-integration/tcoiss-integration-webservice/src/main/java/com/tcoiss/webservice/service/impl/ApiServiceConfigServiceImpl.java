@@ -1,16 +1,15 @@
 package com.tcoiss.webservice.service.impl;
 
-import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import org.apache.commons.lang3.StringUtils;
-import com.tcoiss.webservice.mapper.ApiServiceConfigMapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tcoiss.webservice.domain.ApiServiceConfig;
+import com.tcoiss.webservice.mapper.ApiServiceConfigMapper;
 import com.tcoiss.webservice.service.IApiServiceConfigService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * API服务配置Service业务层处理
@@ -41,4 +40,12 @@ public class ApiServiceConfigServiceImpl extends ServiceImpl<ApiServiceConfigMap
         }
         return this.list(lqw);
     }
+
+    @Override
+    public ApiServiceConfig getOperationByCode(String apiConfig) {
+
+        return null;
+    }
+
+
 }
