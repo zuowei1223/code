@@ -16,6 +16,7 @@ import { download } from '@/utils/request'
 import './assets/icons' // icon
 import './permission' // permission control
 import { getDicts } from "@/api/system/dict/data";
+import { getService } from "@/api/integration/trackservice";
 import { getConfigKey } from "@/api/system/config";
 import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, handleTree } from "@/utils/ruoyi";
 import Pagination from "@/components/Pagination";
@@ -35,6 +36,7 @@ VueAMap.initAMapApiLoader({
 });
 
 // 全局方法挂载
+Vue.prototype.getService = getService
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
 Vue.prototype.parseTime = parseTime

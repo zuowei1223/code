@@ -1,13 +1,17 @@
-package com.tcoiss.webservice.ApiServer;
+package com.tcoiss.webservice.apiServer;
 
 import com.tcoiss.common.core.exception.api.ApiException;
+import com.tcoiss.common.core.utils.StringUtils;
 import com.tcoiss.common.core.utils.bean.BeanUtils;
 import freemarker.template.Template;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Invoker {
     Template requestTemplate;
@@ -22,8 +26,13 @@ public class Invoker {
         Object params = context.getParameters();
         StringWriter out = new StringWriter();
         try {
-            Map root = new HashMap();
-            BeanUtils.copyProperties(root, params);
+            Map root ;
+            if(params instanceof Map){
+                root =(Map) params;
+            }else {
+                root = objectToMap(params);
+            }
+            //BeanUtils.copyProperties(params, root);
             //TemplateUtils.addUtils(root);
             requestTemplate.process(root, out);
             String reqString = out.toString();
@@ -38,5 +47,24 @@ public class Invoker {
             }
         }
         return out.toString();
+    }
+
+    /**
+     * 将Object对象里面的属性和值转化成Map对象
+     *
+     * @param obj
+     * @return
+     * @throws IllegalAccessException
+     */
+    public static Map<String, Object> objectToMap(Object obj) throws IllegalAccessException {
+        Map<String, Object> map = new HashMap<>();
+        Class<?> clazz = obj.getClass();
+        for (Field field : clazz.getDeclaredFields()) {
+            field.setAccessible(true);
+            String fieldName = field.getName();
+            Object value = StringUtils.nvl(field.get(obj),"");
+            map.put(fieldName, value);
+        }
+        return map;
     }
 }

@@ -1,4 +1,4 @@
-package com.tcoiss.webservice.ApiServer;
+package com.tcoiss.webservice.apiServer;
 
 import lombok.Data;
 import lombok.Generated;

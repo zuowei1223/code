@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,33 +46,37 @@ private static final long serialVersionUID=1L;
     @Excel(name = "名称")
     private String fenceName;
 
-    /** 围栏坐标集 */
-    @Excel(name = "围栏坐标集")
-    private String fencePoints;
-
     /** 监控状态 */
     @Excel(name = "监控状态")
-    private String fenceEnable;
+    private String serviceId;
 
-    /** 过期日期 */
-    @Excel(name = "过期日期")
-    private String validTime;
+    /** 省份 */
+    @Excel(name = "省份")
+    @TableField(exist = false)
+    private String province;
 
-    /** 监控日期 */
-    @Excel(name = "监控日期")
-    private String fenceRepeat;
+    /** 城市 */
+    @Excel(name = "城市")
+    @TableField(exist = false)
+    private String city;
 
-    /** 监控时段 */
-    @Excel(name = "监控时段")
-    private String fenceTime;
+    /** 区域 */
+    @Excel(name = "区域")
+    @TableField(exist = false)
+    private String district;
+
+    /** 街道 */
+    @Excel(name = "街道")
+    @TableField(exist = false)
+    private String street;
+
+    /** 行政区划 */
+    @Excel(name = "行政区划")
+    private String adcodeName;
 
     /** 描述信息 */
     @Excel(name = "描述信息")
     private String fenceDesc;
-
-    /** 配置触发围栏所需动作 */
-   @Excel(name = "配置触发围栏所需动作")
-    private String alertCondition;
 
     /** 创建时间 */
     private Date createTime;
@@ -86,4 +91,8 @@ private static final long serialVersionUID=1L;
 
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();
+
+    /** 坐标对象集合*/
+    @TableField(exist = false)
+    private List<FencePoints> points;
 }

@@ -1,52 +1,32 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="API名称" prop="apiName">
+      <el-form-item label="服务名称" prop="fwName">
         <el-input
-          v-model="queryParams.apiName"
-          placeholder="请输入API名称"
+          v-model="queryParams.fwName"
+          placeholder="请输入服务名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="请求方式" prop="requestType">
-        <el-select v-model="queryParams.requestType" placeholder="请选择请求方式" clearable size="small">
-          <el-option
-            v-for="dict in requestTypeOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="所属应用" prop="appName">
+      <el-form-item label="平台ID" prop="gaodeKey">
         <el-input
-          v-model="queryParams.appName"
-          placeholder="请输入所属应用"
+          v-model="queryParams.gaodeKey"
+          placeholder="请输入平台ID"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建人" prop="createName">
+      <el-form-item label="轨迹服务ID" prop="serviceId">
         <el-input
-          v-model="queryParams.createName"
-          placeholder="请输入创建人"
+          v-model="queryParams.serviceId"
+          placeholder="请输入轨迹服务ID"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="数据级别" prop="dataLevel">
-        <el-select v-model="queryParams.dataLevel" placeholder="请选择数据级别" clearable size="small">
-          <el-option
-            v-for="dict in dataLevelOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
-        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -62,7 +42,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['integration:apiServiceConfig:add']"
+          v-hasPermi="['webservice:trackservice:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -73,7 +53,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['integration:apiServiceConfig:edit']"
+          v-hasPermi="['webservice:trackservice:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -84,69 +64,52 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['integration:apiServiceConfig:remove']"
+          v-hasPermi="['webservice:trackservice:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
           type="warning"
-          plain
+		  plain
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['integration:apiServiceConfig:export']"
+          v-hasPermi="['webservice:trackservice:export']"
         >导出</el-button>
-      </el-col>
-
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-search"
-          size="mini"
-          @click="handleApiTest"
-          v-hasPermi="['integration:apiServiceConfig:test']"
-        >测试</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="apiServiceConfigList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="trackserviceList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="API名称" align="center" prop="apiName" />
-      <el-table-column label="API编码" align="center" prop="apiCode" />
-      <el-table-column label="请求方式" align="center" prop="requestType" :formatter="requestTypeFormat" />
-      <el-table-column label="集成对象" align="center" prop="apiObj" />
-      <el-table-column label="所属应用" align="center" prop="appName" />
-      <el-table-column label="API地址" align="center" prop="apiUrl" />
-      <el-table-column label="内容格式" align="center" prop="dataType" />
-      <el-table-column label="创建人id" align="center" prop="createId" />
-      <el-table-column label="创建人名称" align="center" prop="createName" />
+      <el-table-column label="服务名称" align="center" prop="fwName" />
+      <el-table-column label="平台ID" align="center" prop="gaodeKey" :formatter="keyFormat" />
+      <el-table-column label="轨迹服务ID" align="center" prop="serviceId" />
+      <el-table-column label="服务描述" align="center" prop="serviceDesc" />
+      <el-table-column label="创建人编号" align="center" prop="creatorId" />
+      <el-table-column label="创建人姓名" align="center" prop="creatorName" />
+      <el-table-column label="创建日期" align="center" prop="createDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="数据级别" align="center" prop="dataLevel" :formatter="dataLevelFormat" />
-      <el-table-column label="排序号" align="center" prop="orderNo" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-search"
-            @click="handleApiTest(scope.row)"
-            v-hasPermi="['integration:apiServiceConfig:test']"
-          >测试</el-button>
-          <el-button
-            size="mini"
-            type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['integration:apiServiceConfig:edit']"
+            v-hasPermi="['webservice:trackservice:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['integration:apiServiceConfig:remove']"
+            v-hasPermi="['webservice:trackservice:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -160,39 +123,30 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改API服务配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="50%" append-to-body>
+    <!-- 添加或修改轨迹服务配置对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="API名称" prop="apiName">
-          <el-input v-model="form.apiName" placeholder="请输入API名称" />
+        <el-form-item label="服务名称" prop="fwName">
+          <el-input v-model="form.fwName" placeholder="请输入服务名称" />
         </el-form-item>
-        <el-form-item label="API编码" prop="apiCode">
-          <el-input v-model="form.apiCode" placeholder="请输入API编码" />
-        </el-form-item>
-        <el-form-item label="请求方式" prop="requestType">
-          <el-select v-model="form.requestType" placeholder="请选择请求方式">
+        <el-form-item label="平台ID" prop="gaodeKey">
+          <el-select v-model="form.gaodeKey" placeholder="请选择key">
             <el-option
-              v-for="dict in requestTypeOptions"
+              v-for="dict in keyOptions"
               :key="dict.dictValue"
               :label="dict.dictLabel"
               :value="dict.dictValue"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="集成对象" prop="apiObj">
-          <el-input v-model="form.apiObj" placeholder="请输入集成对象" />
-        </el-form-item>
-        <el-form-item label="所属应用" prop="appName">
-          <el-input v-model="form.appName" placeholder="请输入所属应用" />
-        </el-form-item>
-        <el-form-item label="API地址" prop="apiUrl">
-          <el-input v-model="form.apiUrl" placeholder="请输入API地址" />
-        </el-form-item>
-        <el-form-item label="内容格式" prop="dataType">
-          <el-input v-model="form.dataType" placeholder="请输入内容格式" />
-        </el-form-item>
-        <el-form-item label="参数模板" prop="paramTemplate">
-          <el-input v-model="form.paramTemplate" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="描述信息" prop="serviceDesc">
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="请输入内容"
+            value=""
+            v-model="form.serviceDesc">
+          </el-input>
         </el-form-item>
         <el-form-item label="数据级别" prop="dataLevel">
           <el-select v-model="form.dataLevel" placeholder="请选择数据级别">
@@ -214,10 +168,10 @@
 </template>
 
 <script>
-import { listApiServiceConfig, getApiServiceConfig, delApiServiceConfig, addApiServiceConfig, updateApiServiceConfig,testApiServiceConfig } from "@/api/integration/apiServiceConfig";
+import { listTrackservice, getTrackservice, delTrackservice, addTrackservice, updateTrackservice } from "@/api/integration/trackservice";
 
 export default {
-  name: "ApiServiceConfig",
+  name: "Trackservice",
   components: {
   },
   data() {
@@ -234,61 +188,54 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // API服务配置表格数据
-      apiServiceConfigList: [],
+      // 轨迹服务配置表格数据
+      trackserviceList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
-      // 请求方式字典
-      requestTypeOptions: [],
+      // 平台ID字典
+      keyOptions: [],
       // 数据级别字典
       dataLevelOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        apiName: null,
-        requestType: null,
-        appName: null,
-        createName: null,
-        dataLevel: null,
+        fwName: null,
+        key: null,
+        serviceId: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        requestType: [
-          { required: true, message: "请求方式不能为空", trigger: "change" }
-        ],
-        apiUrl: [
-          { required: true, message: "API地址不能为空", trigger: "blur" }
-        ],
       }
     };
   },
   created() {
     this.getList();
-    this.getDicts("request_type").then(response => {
-      this.requestTypeOptions = response.data;
+    this.getDicts("gaode_key").then(response => {
+      this.keyOptions = response.data;
+      console.log(this.keyOptions);
     });
     this.getDicts("data_level").then(response => {
       this.dataLevelOptions = response.data;
     });
   },
   methods: {
-    /** 查询API服务配置列表 */
+    /** 查询轨迹服务配置列表 */
     getList() {
       this.loading = true;
-      listApiServiceConfig(this.queryParams).then(response => {
-        this.apiServiceConfigList = response.rows;
+      listTrackservice(this.queryParams).then(response => {
+        this.trackserviceList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
     },
-    // 请求方式字典翻译
-    requestTypeFormat(row, column) {
-      return this.selectDictLabel(this.requestTypeOptions, row.requestType);
+    // 平台ID字典翻译
+    keyFormat(row, column) {
+      return this.selectDictLabel(this.keyOptions, row.gaodeKey);
     },
     // 数据级别字典翻译
     dataLevelFormat(row, column) {
@@ -303,19 +250,13 @@ export default {
     reset() {
       this.form = {
         id: null,
-        apiName: null,
-        apiCode: null,
-        requestType: null,
-        apiObj: null,
-        appName: null,
-        apiUrl: null,
-        dataType: null,
-        paramTemplate: null,
-        createId: null,
-        createName: null,
-        createTime: null,
-        dataLevel: null,
-        orderNo: null
+        fwName: null,
+        key: null,
+        serviceId: null,
+        creatorId: null,
+        creatorName: null,
+        createDate: null,
+        dataLevel: null
       };
       this.resetForm("form");
     },
@@ -339,16 +280,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加API服务配置";
+      this.title = "添加轨迹服务配置";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getApiServiceConfig(id).then(response => {
+      getTrackservice(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改API服务配置";
+        this.title = "修改轨迹服务配置";
       });
     },
     /** 提交按钮 */
@@ -356,13 +297,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateApiServiceConfig(this.form).then(response => {
+            updateTrackservice(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addApiServiceConfig(this.form).then(response => {
+            addTrackservice(this.form).then(response => {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -374,12 +315,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$confirm('是否确认删除API服务配置编号为"' + ids + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除轨迹服务配置编号为"' + ids + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delApiServiceConfig(ids);
+          return delTrackservice(ids);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -387,17 +328,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('integration/apiServiceConfig/export', {
+      this.download('webservice/trackservice/export', {
         ...this.queryParams
-      }, `integration_apiServiceConfig.xlsx`)
-    },
-    /** 测试API操作 */
-    handleApiTest(row) {
-      if(row.dataType==1){
-        this.msgSuccess("api已启用无需测试");
-      }
-      const ids = row.id || this.ids;
-      return testApiServiceConfig(ids);
+      }, `webservice_trackservice.xlsx`)
     }
   }
 };

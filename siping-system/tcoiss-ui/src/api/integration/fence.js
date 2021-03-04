@@ -47,8 +47,8 @@ export function fenceCache(data) {
 // 修改电子围栏
 export function updateFence(data) {
   return request({
-    url: '/webservice/fence',
-    method: 'put',
+    url: '/webservice/fence/gaode/editFence',
+    method: 'post',
     data: data
   })
 }
@@ -56,7 +56,25 @@ export function updateFence(data) {
 // 删除电子围栏
 export function delFence(id) {
   return request({
-    url: '/webservice/fence/' + id,
+    url: '/webservice/fence/gaode/' + id,
     method: 'delete'
   })
 }
+
+/*export function getDistrict(data) {
+  return request({
+    url: '/webservice/fence/gaode/queryDistrict',
+    method: 'post',
+    data: data
+  })
+}*/
+
+export function getDistrictOpints(data) {
+  return request({
+    url: '/webservice/fence/gaode/getDistrictOpints',
+    method: 'post',
+    data: data
+  })
+}
+
+

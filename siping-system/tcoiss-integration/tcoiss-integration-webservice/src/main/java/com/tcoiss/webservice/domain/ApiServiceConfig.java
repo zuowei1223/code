@@ -89,4 +89,6 @@ private static final long serialVersionUID=1L;
 
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();
+
+
 }

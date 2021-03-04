@@ -28,23 +28,23 @@ public class TemplateUtils {
         return new Template("ID:" + (tempSeq++), new StringReader(content), conf);
     }
 
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
 
-        /*String content  = "{\n" +
+        String content  = "{\n" +
                 " \"orderNo\": ${orderNo},\n" +
                 " \"money\": ${money},\n" +
                 " \"orderTime\":${orderTime},\n" +
                 " \"pay\":\"支付宝\"\n" +
-                " }";*/
-        String content = "&orderNo=${orderNo}&money=${money}&orderTime=${orderTime}";
+                " }";
+        //String content = "&orderNo=${orderNo}&money=${money}&orderTime=${orderTime}";
         Template template = TemplateUtils.createTemplate(content);
         StringWriter out = new StringWriter();
         Map<String,Object> root = new HashMap<>();
         root.put("orderNo","1");
-        //root.put("money","250");
+        root.put("money","250");
         root.put("orderTime","2");
         template.process(root,out);
         System.out.println(out.toString());
 
-    }
+    }*/
 }

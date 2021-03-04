@@ -15,7 +15,6 @@
         <module>tcoiss-integration-dbsource</module>
         <module>tcoiss-integration-webservice</module>
         <module>tociss-integration-report</module>
-        <module>tcoiss-integration-admin</module>
     </modules>
 
     <dependencyManagement>

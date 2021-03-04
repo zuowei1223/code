@@ -1,4 +1,4 @@
-package com.tcoiss.webservice.ApiServer;
+package com.tcoiss.webservice.apiServer;
 
 import com.tcoiss.common.core.exception.api.ApiException;
 import com.tcoiss.common.core.utils.StringUtils;
@@ -9,29 +9,11 @@ import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
 public class InvokerBuilder {
     //private static Log logger=Logger.get(InvokerBuilder.class);
-    @Autowired
-    private  IApiServiceConfigService iApiServiceConfigService;
 
-    public Invoker buildInvoker(String operationCode) {
-        ApiServiceConfig operation= null;
-        try {
-            //查询api配置信息
-            operation = iApiServiceConfigService.getOperationByCode(operationCode);
-        } catch (Exception e) {
-            // e.printStackTrace();
-            //logger.error("根据service[" + operationCode + "]创建失败");
-            throw e;
-        }
-        if (operation == null) {
-            throw new ApiException("9001", null,"该操作调用[" + operationCode + "]未进行配置,请检查!");
-        }
-        return buildInvoker(operation);
-    }
 
-    private Invoker buildInvoker(ApiServiceConfig operation) {
+    public Invoker buildInvoker(ApiServiceConfig operation) {
         /*if(operation.isClosed()){
             return null;
         }*/
@@ -60,7 +42,7 @@ public class InvokerBuilder {
         if ("SOCKET".equalsIgnoreCase(epType)) {
             //invoker = new SocketInvoker();
         } else if ("http".equalsIgnoreCase(epType)) {
-            invoker = new HttpAPIServer();
+            invoker = new HttpInvoker();
         } else if ("RMI".equalsIgnoreCase(epType)) {
             //invoker = new RMIInvoker();
         } else if ("FTP".equalsIgnoreCase(epType)) {
@@ -68,6 +50,7 @@ public class InvokerBuilder {
         } else if("SFTP".equalsIgnoreCase(epType)) {
             //invoker = new SftpInvoker();
         } else {
+            invoker = new HttpInvoker();
             //invoker = new WsInvoker();
         }
         invoker.endpoint = operation.getApiUrl();

@@ -1,8 +1,6 @@
-package com.tcoiss.webservice.ApiServer;
+package com.tcoiss.webservice.apiServer;
 
 import lombok.Data;
-
-import java.security.Timestamp;
 
 @Data
 public class InvokeContext {
@@ -15,4 +13,5 @@ public class InvokeContext {
     private String responseTime;
     private String endpoint;
     private String requestType;
+    private String dataType;
 }

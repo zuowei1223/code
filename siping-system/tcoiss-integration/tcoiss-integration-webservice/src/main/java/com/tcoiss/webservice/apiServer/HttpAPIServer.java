@@ -1,9 +1,6 @@
-package com.tcoiss.webservice.ApiServer;
+package com.tcoiss.webservice.apiServer;
 
 import com.alibaba.fastjson.JSON;
-import com.tcoiss.common.core.exception.api.ApiException;
-import com.tcoiss.common.core.utils.DateUtils;
-import com.tcoiss.common.core.utils.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -19,64 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class HttpAPIServer extends Invoker{
+public class HttpAPIServer {
 
     @Autowired
     private CloseableHttpClient httpClient;
 
     @Autowired
     private RequestConfig config;
-
-    /*private InvokeContext invokeContext;
-
-    private InvokeContext getInvokeContext(){
-        return invokeContext;
-    }
-
-    private void setInvokeContext(InvokeContext invokeContext){
-        this.invokeContext = invokeContext;
-    }*/
-
-    public Map<String,Object> Invoke(InvokeContext invokeContext){
-        Map<String,Object> resultMap = new HashMap<>();
-        try{
-            String targerUrl = "";
-            //Object params = invokeContext.getParameters();
-            /*if(){
-
-            }else{
-
-            }*/
-            String response = "";
-            String reqBody = generateRequestString(invokeContext);
-            invokeContext.setEndpoint(targerUrl);
-            invokeContext.setRequestTime(DateUtils.getTime());
-            if(targerUrl.startsWith("https")){//需要秘钥
-
-            }
-            //根据请求方式
-            if(StringUtils.equals("post",invokeContext.getRequestType())){
-                response = doPostJson(targerUrl,reqBody);
-            }else if (StringUtils.equals("get",invokeContext.getRequestType())){
-                //拼装请求地址
-                targerUrl = targerUrl+reqBody;
-                response = doGet(targerUrl);
-            }
-            //response 不为null时，解析响应为Map
-            if(StringUtils.isEmpty(response)){
-                resultMap = JSON.parseObject(response);
-            }
-        }catch (Exception e){
-            throw new ApiException("9003",null,"HTTP请求["+invokeContext.getOperationCode()+"]失败");
-        }
-        return resultMap;
-    }
-
 
 
     /**
@@ -134,7 +84,7 @@ public class HttpAPIServer extends Invoker{
      * @return
      * @throws Exception
      */
-    public String doPostJson(String url, String json) throws Exception {
+    public String doPostJson(String url, String json,String dataType) throws Exception {
         System.out.println("请求报文："+ json);
         // 声明httpPost请求
         HttpPost httpPost = new HttpPost(url);
@@ -146,7 +96,8 @@ public class HttpAPIServer extends Invoker{
             // 给httppost对象设置json格式的参数
             StringEntity httpEntity = new StringEntity(json,"utf-8");
             // 设置请求格式
-            httpPost.setHeader("Content-type","application/json");
+            httpPost.setHeader("Content-type",dataType);
+            //httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
             // 传参
             httpPost.setEntity(httpEntity);
 
@@ -165,11 +116,12 @@ public class HttpAPIServer extends Invoker{
      * 带参数的post请求
      *
      * @param url
-     * @param map
+     * @param json
      * @return
      * @throws Exception
      */
-    public HttpResult doPost(String url, Map<String, Object> map) throws Exception {
+    public String doPost(String url, String json) throws Exception {
+        Map<String,Object> map = JSON.parseObject(json);
         // 声明httpPost请求
         HttpPost httpPost = new HttpPost(url);
         // 加入配置信息
@@ -190,8 +142,12 @@ public class HttpAPIServer extends Invoker{
 
         // 发起请求
         CloseableHttpResponse response = this.httpClient.execute(httpPost);
-        return new HttpResult(response.getStatusLine().getStatusCode(), EntityUtils.toString(
-                response.getEntity(), "UTF-8"));
+        // 判断状态码是否为200
+        if (response.getStatusLine().getStatusCode() == 200) {
+            // 返回响应体的内容
+            return EntityUtils.toString(response.getEntity(), "UTF-8");
+        }
+        return null;
     }
 
     /**
@@ -201,7 +157,7 @@ public class HttpAPIServer extends Invoker{
      * @return
      * @throws Exception
      */
-    public HttpResult doPost(String url) throws Exception {
+    public String doPost(String url) throws Exception {
         return this.doPost(url, null);
     }
 }

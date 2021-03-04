@@ -9,13 +9,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="localKey"    column="local_key"    />
         <result property="fenceGid"    column="fence_gid"    />
         <result property="fenceName"    column="fence_name"    />
-        <result property="fencePoints"    column="fence_points"    />
-        <result property="fenceEnable"    column="fence_enable"    />
-        <result property="validTime"    column="valid_time"    />
-        <result property="fenceRepeat"    column="fence_repeat"    />
-        <result property="fenceTime"    column="fence_time"    />
+        <result property="serviceId"    column="service_id"    />
         <result property="fenceDesc"    column="fence_desc"    />
-        <result property="alertCondition"    column="alert_condition"    />
         <result property="createTime"    column="create_time"    />
         <result property="createorId"    column="createor_id"    />
         <result property="createor"    column="createor"    />

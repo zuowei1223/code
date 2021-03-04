@@ -7,13 +7,10 @@ import com.tcoiss.common.core.web.page.TableDataInfo;
 import com.tcoiss.common.log.annotation.Log;
 import com.tcoiss.common.log.enums.BusinessType;
 import com.tcoiss.common.security.annotation.PreAuthorize;
-import com.tcoiss.webservice.ApiServer.HttpAPIServer;
 import com.tcoiss.webservice.domain.ElectronicFence;
-import com.tcoiss.webservice.service.IApiService;
 import com.tcoiss.webservice.service.IElectronicFenceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -64,7 +61,7 @@ public class ElectronicFenceController extends BaseController {
     @PreAuthorize(hasPermi = "webservice:fence:query" )
     @GetMapping(value = "/{id}" )
     public AjaxResult getInfo(@PathVariable("id" ) Long id) {
-        return AjaxResult.success(iElectronicFenceService.getById(id));
+        return AjaxResult.success(iElectronicFenceService.getFenceById(id));
     }
 
 
@@ -83,11 +80,11 @@ public class ElectronicFenceController extends BaseController {
 
     /**
      * 删除电子围栏,
-     */
+     *//*
     @PreAuthorize(hasPermi = "webservice:fence:remove" )
     @Log(title = "电子围栏" , businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}" )
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(iElectronicFenceService.removeByIds(Arrays.asList(ids)) ? 1 : 0);
-    }
+    }*/
 }

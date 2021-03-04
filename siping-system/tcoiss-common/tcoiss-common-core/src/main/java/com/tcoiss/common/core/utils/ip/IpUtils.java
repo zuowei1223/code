@@ -53,13 +53,13 @@ public class IpUtils
         {
             ip = request.getRemoteAddr();
         }
-        return ip.equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : ip;
+        return ip.equals("0:0:0:0:0:0:0:1") ? "192.168.0.80" : ip;
     }
 
     public static boolean internalIp(String ip)
     {
         byte[] addr = textToNumericFormatV4(ip);
-        return internalIp(addr) || "127.0.0.1".equals(ip);
+        return internalIp(addr) || "192.168.0.80".equals(ip);
     }
 
     private static boolean internalIp(byte[] addr)
@@ -190,7 +190,7 @@ public class IpUtils
         catch (UnknownHostException e)
         {
         }
-        return "127.0.0.1";
+        return "192.168.0.80";
     }
 
     public static String getHostName()

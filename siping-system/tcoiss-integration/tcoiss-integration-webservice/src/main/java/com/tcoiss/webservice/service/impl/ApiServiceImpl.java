@@ -2,9 +2,10 @@ package com.tcoiss.webservice.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tcoiss.common.core.exception.api.ApiException;
-import com.tcoiss.webservice.ApiServer.HttpAPIServer;
-import com.tcoiss.webservice.ApiServer.InvokeContext;
-import com.tcoiss.webservice.ApiServer.InvokerBuilder;
+import com.tcoiss.webservice.apiServer.HttpAPIServer;
+import com.tcoiss.webservice.apiServer.HttpInvoker;
+import com.tcoiss.webservice.apiServer.InvokeContext;
+import com.tcoiss.webservice.apiServer.InvokerBuilder;
 import com.tcoiss.webservice.domain.ApiServiceConfig;
 import com.tcoiss.webservice.mapper.ApiServiceConfigMapper;
 import com.tcoiss.webservice.service.IApiService;
@@ -31,12 +32,12 @@ public class ApiServiceImpl implements IApiService {
             throw new ApiException("-1",null,"接口配置未生效");
         }
         //初始化接口服务
-        httpAPIServer = (HttpAPIServer) new InvokerBuilder().buildInvoker(serviceConfig.getApiCode());
+        HttpInvoker httpInvoker = (HttpInvoker) new InvokerBuilder().buildInvoker(serviceConfig);
         InvokeContext context = new InvokeContext();
         context.setEndpoint(serviceConfig.getApiUrl());
         context.setOperationCode(serviceConfig.getApiCode());
         context.setParameters("");
-        Map resultMap = httpAPIServer.Invoke(context);
+        Map resultMap = httpInvoker.Invoke(httpAPIServer,context);
         if(resultMap == null){
             throw new ApiException("code404",new Object[] { serviceConfig.getApiCode() },"http请求连接异常");
             //return AjaxResult.error("连接异常,请检查地址是否正确");
@@ -50,17 +51,20 @@ public class ApiServiceImpl implements IApiService {
     public Map<String, Object> executeByApiCode(String apiCode, Object param) {
         QueryWrapper<ApiServiceConfig> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("api_code",apiCode);
+        queryWrapper.eq("data_level",1);
         //查询接口配置信息
         ApiServiceConfig serviceConfig = apiServiceConfigMapper.selectOne(queryWrapper);
-        if(serviceConfig.getDataLevel()!=0){
-            throw new ApiException("-1",new Object[]{apiCode},"接口配置未启用");
+        if(serviceConfig==null||serviceConfig.getDataLevel()!=1){
+            throw new ApiException("-1",new Object[]{apiCode},"接口未配置或未启用");
         }
-        httpAPIServer = (HttpAPIServer) new InvokerBuilder().buildInvoker(apiCode);
+        HttpInvoker httpInvoker = (HttpInvoker) new InvokerBuilder().buildInvoker(serviceConfig);
         InvokeContext context = new InvokeContext();
         context.setEndpoint(serviceConfig.getApiUrl());
         context.setOperationCode(serviceConfig.getApiCode());
+        context.setRequestType(serviceConfig.getRequestType());
         context.setParameters(param);
-        return httpAPIServer.Invoke(context);
+        context.setDataType(serviceConfig.getDataType());
+        return httpInvoker.Invoke(httpAPIServer,context);
 
     }
 
