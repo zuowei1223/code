@@ -36,11 +36,7 @@ private static final long serialVersionUID=1L;
 
     /** 围栏本地编码 */
     @Excel(name = "围栏本地编码")
-    private String localKey;
-
-    /** 平台编号 */
-    @Excel(name = "平台编号")
-    private String fenceGid;
+    private String fenceCode;
 
     /** 名称 */
     @Excel(name = "名称")
@@ -50,29 +46,13 @@ private static final long serialVersionUID=1L;
     @Excel(name = "监控状态")
     private String serviceId;
 
-    /** 省份 */
-    @Excel(name = "省份")
-    @TableField(exist = false)
-    private String province;
+    /** 围栏属性 */
+    @Excel(name = "围栏属性")
+    private String fencePop;
 
-    /** 城市 */
-    @Excel(name = "城市")
-    @TableField(exist = false)
-    private String city;
-
-    /** 区域 */
-    @Excel(name = "区域")
-    @TableField(exist = false)
-    private String district;
-
-    /** 街道 */
-    @Excel(name = "街道")
-    @TableField(exist = false)
-    private String street;
-
-    /** 行政区划 */
-    @Excel(name = "行政区划")
-    private String adcodeName;
+    /** 所属城市 */
+    @Excel(name = "所属城市")
+    private String cityCode;
 
     /** 描述信息 */
     @Excel(name = "描述信息")
@@ -92,7 +72,4 @@ private static final long serialVersionUID=1L;
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();
 
-    /** 坐标对象集合*/
-    @TableField(exist = false)
-    private List<FencePoints> points;
 }

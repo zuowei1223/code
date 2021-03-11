@@ -9,15 +9,6 @@ export function listFence(query) {
   })
 }
 
-// 查询电子围栏地图
-export function queryFence(query) {
-  return request({
-    url: '/webservice/fence/queryFence',
-    method: 'get',
-    params: query
-  })
-}
-
 // 查询电子围栏详细
 export function getFence(id) {
   return request({
@@ -29,25 +20,17 @@ export function getFence(id) {
 // 新增电子围栏
 export function addFence(data) {
   return request({
-    url: '/webservice/fence/gaode/addFence',
+    url: '/webservice/fence/addFence',
     method: 'post',
     data: data
   })
 }
 
-// 缓存地理围栏
-export function fenceCache(data) {
-  return request({
-    url: '/webservice/fence/gaode/fenceCache',
-    method: 'post',
-    data: data
-  })
-}
 
 // 修改电子围栏
 export function updateFence(data) {
   return request({
-    url: '/webservice/fence/gaode/editFence',
+    url: '/webservice/fence/editFence',
     method: 'post',
     data: data
   })
@@ -69,12 +52,6 @@ export function delFence(id) {
   })
 }*/
 
-export function getDistrictOpints(data) {
-  return request({
-    url: '/webservice/fence/gaode/getDistrictOpints',
-    method: 'post',
-    data: data
-  })
-}
+
 
 

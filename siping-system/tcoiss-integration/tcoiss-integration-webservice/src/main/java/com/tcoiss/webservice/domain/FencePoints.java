@@ -25,9 +25,15 @@ public class FencePoints implements Serializable {
 
     private String pointY;
 
-    private String fenceId;
+    private String PointsGroupId;
 
     private String fenceName;
+
+    private String fenceCode;
+
+    private String adcodeName;
+
+    private String adcode;
 
     public String getPoints(){
         return pointX +","+pointY;

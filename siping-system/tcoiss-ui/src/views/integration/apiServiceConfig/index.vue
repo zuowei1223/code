@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="70px">
       <el-form-item label="API名称" prop="apiName">
         <el-input
           v-model="queryParams.apiName"
@@ -24,15 +24,6 @@
         <el-input
           v-model="queryParams.appName"
           placeholder="请输入所属应用"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="创建人" prop="createName">
-        <el-input
-          v-model="queryParams.createName"
-          placeholder="请输入创建人"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -113,18 +104,14 @@
 
     <el-table v-loading="loading" :data="apiServiceConfigList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="API名称" align="center" prop="apiName" />
       <el-table-column label="API编码" align="center" prop="apiCode" />
       <el-table-column label="请求方式" align="center" prop="requestType" :formatter="requestTypeFormat" />
-      <el-table-column label="集成对象" align="center" prop="apiObj" />
       <el-table-column label="所属应用" align="center" prop="appName" />
-      <el-table-column label="API地址" align="center" prop="apiUrl" />
       <el-table-column label="内容格式" align="center" prop="dataType" />
       <el-table-column label="创建人id" align="center" prop="createId" />
       <el-table-column label="创建人名称" align="center" prop="createName" />
       <el-table-column label="数据级别" align="center" prop="dataLevel" :formatter="dataLevelFormat" />
-      <el-table-column label="排序号" align="center" prop="orderNo" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

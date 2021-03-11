@@ -45,6 +45,12 @@ private static final long serialVersionUID=1L;
     @Excel(name = "轨迹服务ID")
     private String serviceId;
 
+    @Excel(name = "轨迹服务城市")
+    private String serviceCity;
+
+    @Excel(name = "轨迹服务省份")
+    private String serviceProvince;
+
     /** 轨迹服务ID */
     @Excel(name = "轨迹服务描述")
     private String serviceDesc;

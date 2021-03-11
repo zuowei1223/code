@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tcoiss.common.core.exception.api.ApiException;
 import com.tcoiss.common.core.utils.SecurityUtils;
+import com.tcoiss.webservice.domain.AddressVo;
 import com.tcoiss.webservice.service.IApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,22 @@ public class TrackServiceServiceImpl extends ServiceImpl<TrackServiceMapper, Tra
             lqw.le(TrackService::getFenceNum ,trackService.getFenceNum());
         }
         return this.list(lqw);
+    }
+
+    @Override
+    public TrackService getOneByAddrss(AddressVo addressVo) {
+        LambdaQueryWrapper<TrackService> lqw = Wrappers.lambdaQuery();
+        lqw.eq(TrackService::getServiceCity,addressVo.getCity());
+        lqw.eq(TrackService::getServiceProvince,addressVo.getProvince());
+        lqw.eq(TrackService::getDataLevel,1l);
+        lqw.le(TrackService::getFenceNum ,1000l);
+        if(this.list(lqw)==null||this.list(lqw).size()==0){
+            throw new ApiException("404",new Object[] { addressVo },"未查询到轨迹服务");
+        }
+        if(this.list(lqw).size()>1){
+            throw new ApiException("400",new Object[] { addressVo },"查询到多个轨迹服务");
+        }
+        return this.list(lqw).get(0);
     }
 
     @Override

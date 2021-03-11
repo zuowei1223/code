@@ -235,6 +235,29 @@ public class RedisService
     }
 
     /**
+     * @Description: 获取自增长值
+     * @param key key
+     * @return
+     */
+    public  Long getIncr(String key) {
+        RedisAtomicLong entityIdCounter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
+        Long increment = entityIdCounter.incrementAndGet();
+        entityIdCounter.expire(0, TimeUnit.SECONDS);
+        return increment;
+    }
+
+    /**
+     * @Description: 初始化自增长值
+     * @param key key
+     * @param value 当前值
+     */
+    public void setIncr(String key, int value) {
+        RedisAtomicLong counter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
+        counter.set(value);
+        counter.expire(0, TimeUnit.SECONDS);
+    }
+
+    /**
      * 获取有过期时间的自增长ID
      * @param key
      * @param expireTime

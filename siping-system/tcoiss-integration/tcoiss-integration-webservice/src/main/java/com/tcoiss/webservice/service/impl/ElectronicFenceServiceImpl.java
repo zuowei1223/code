@@ -28,22 +28,13 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMapper, ElectronicFence> implements IElectronicFenceService {
-    @Autowired
-    private IApiService iApiService;
-    @Autowired
-    private ITrackServiceService iTrackServiceService;
-    @Autowired
-    private IFencePointsService iFencePointsService;
 
 
     @Override
     public List<ElectronicFence> queryList(ElectronicFence electronicFence) {
         LambdaQueryWrapper<ElectronicFence> lqw = Wrappers.lambdaQuery();
-        if (electronicFence.getLocalKey() != null){
-            lqw.eq(ElectronicFence::getLocalKey ,electronicFence.getLocalKey());
-        }
-        if (electronicFence.getFenceGid() != null){
-            lqw.eq(ElectronicFence::getFenceGid ,electronicFence.getFenceGid());
+        if (electronicFence.getFenceCode() != null){
+            lqw.eq(ElectronicFence::getFenceCode ,electronicFence.getFenceCode());
         }
         if (StringUtils.isNotBlank(electronicFence.getFenceName())){
             lqw.like(ElectronicFence::getFenceName ,electronicFence.getFenceName());
@@ -52,109 +43,40 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
             lqw.eq(ElectronicFence::getCreateorId ,electronicFence.getCreateorId());
         }
         List<ElectronicFence> list = this.list(lqw);
-        for(ElectronicFence fence:list){
-            List<FencePoints> fencePointsList = iFencePointsService.queryListByFenceId(fence.getLocalKey());
-            fence.setPoints(fencePointsList);
-        }
+
         return list;
     }
 
     @Override
-    public ElectronicFence getFenceById(Long id) {
-        ElectronicFence electronicFence = this.getById(id);
-        List<FencePoints> fencePointsList = iFencePointsService.queryListByFenceId(electronicFence.getLocalKey());
-        electronicFence.setPoints(fencePointsList);
-        return electronicFence;
+    public ElectronicFence getByFenceName(String fenceName) {
+        LambdaQueryWrapper<ElectronicFence> lqw = Wrappers.lambdaQuery();
+        if (StringUtils.isNotBlank(fenceName)){
+            lqw.eq(ElectronicFence::getFenceName ,fenceName);
+        }
+        List<ElectronicFence> list = this.list(lqw);
+        if(list==null||list.size()==0){
+            throw new ApiException("404",new Object[]{fenceName},
+                    "未查询到围栏信息：");
+        }
+        return list.get(0);
     }
 
     @Override
-    public int saveFence(ElectronicFence fence, List<FencePoints> coordinate, String apiCode) {
-
-        //先分配服务ID再调接口再保存到本地入库
-        FenceVo vo = new FenceVo();
-        vo.setName(fence.getFenceName());
-        vo.setSid(fence.getServiceId());
-        LambdaQueryWrapper<TrackService> lqw = Wrappers.lambdaQuery();
-        lqw.eq(TrackService::getServiceId,fence.getServiceId());
-        lqw.eq(TrackService::getDataLevel,1);
-        TrackService trackService = iTrackServiceService.getOne(lqw);
-        if(trackService==null){
-            throw new ApiException("9999",new Object[] { fence.getServiceId() },"未查询到相应的轨迹服务配置");
+    public boolean checkFenceName(ElectronicFence electronicFence) {
+        LambdaQueryWrapper<ElectronicFence> lqw = Wrappers.lambdaQuery();
+        if (StringUtils.isNotBlank(electronicFence.getFenceName())){
+            lqw.like(ElectronicFence::getFenceName ,electronicFence.getFenceName());
         }
-        vo.setKey(trackService.getGaodeKey());
-        List<String> points= coordinate.stream().map(fencePoints->{return fencePoints.getPoints();}).collect(Collectors.toList());
-        vo.setPoints(String.join(";",points));
-        /*List<String> points = new ArrayList<>();
-        List<String> gids = new ArrayList<>();
-        if(fence.getFencePoints().contains("|")){
-            points = Arrays.asList(fence.getFencePoints().split("\\|"));
-        }else{
-            points.add(fence.getFencePoints());
-        }*/
-        Map resultMap = iApiService.executeByApiCode(apiCode,vo);
-        if(resultMap == null){
-            throw new ApiException("code404",new Object[] { apiCode },"http请求连接异常");
-        }else{
-            if(Integer.valueOf(resultMap.get("errcode").toString())==10000) {//创建成功
-                Map<String, Object> dataMap = JSON.parseObject(resultMap.get("data").toString());
-                fence.setFenceGid(dataMap.get("gfid").toString());
-                //将平台gfid更新到数据库中并在服务配置中加1
-                iTrackServiceService.addFenceNum(trackService);
-                //将坐标数据保存
-                coordinate.forEach(item-> {
-                    item.setFenceName(fence.getFenceName());
-                    item.setFenceId(fence.getLocalKey());
-                });
-                iFencePointsService.saveBatch(coordinate);
-                return this.save(fence) ? 1 : 0;
-            }else{
-                throw new ApiException("9999",new Object[]{apiCode,resultMap.get("errcode").toString()},
-                        "接口调用异常："+resultMap.get("errmsg").toString());
-            }
+        List<ElectronicFence> list = this.list(lqw);
+        if(list!=null&&list.size()>0){
+            return true;
         }
+        return false;
     }
 
-    @Override
-    public int saveDistrictFence(ElectronicFence fence, List<FencePoints> coordinate, String apiCode) {
-        Map<String,Object> paramer = new HashMap<>();
-        LambdaQueryWrapper<TrackService> lqw = Wrappers.lambdaQuery();
-        lqw.eq(TrackService::getServiceId,fence.getServiceId());
-        lqw.eq(TrackService::getDataLevel,1);
-        TrackService trackService = iTrackServiceService.getOne(lqw);
-        if(trackService==null){
-            throw new ApiException("9999",new Object[] { fence.getServiceId() },"未查询到相应的轨迹服务配置");
-        }
-        paramer.put("key",trackService.getGaodeKey());
-        paramer.put("sid",fence.getServiceId());
-        paramer.put("name",fence.getFenceName());
-        paramer.put("desc",fence.getFenceDesc()==null?fence.getFenceName():fence.getFenceDesc());
-        paramer.put("adcode",fence.getDistrict());
-        Map resultMap = iApiService.executeByApiCode(apiCode,paramer);
-        if(resultMap == null){
-            throw new ApiException("code404",new Object[] { apiCode },"http请求连接异常");
-        }else{
-            if(Integer.valueOf(resultMap.get("errcode").toString())==10000) {//创建成功
-                Map<String, Object> dataMap = JSON.parseObject(resultMap.get("data").toString());
-                fence.setFenceGid(dataMap.get("gfid").toString());
-                //将平台gfid更新到数据库中并在服务配置中加1
-                iTrackServiceService.addFenceNum(trackService);
-                //将坐标数据保存
-                coordinate.forEach(item-> {
-                    item.setFenceName(fence.getFenceName());
-                    item.setFenceId(fence.getLocalKey());
-                        });
-                iFencePointsService.saveBatch(coordinate);
-                return this.save(fence) ? 1 : 0;
-            }else{
-                throw new ApiException("9999",new Object[]{apiCode,resultMap.get("errcode").toString()},
-                        "接口调用异常："+resultMap.get("errmsg").toString());
-            }
-        }
-    }
-
-    @Override
+    /*@Override
     public AjaxResult getFenceByLocation(AddressVo addressVo) {
-        List<ElectronicFence> list = null;
+        List<Map> list = null;
         //根据地址信息查询地址坐标
         TrackService trackService = new TrackService();
         trackService.setDataLevel(1);
@@ -184,12 +106,19 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
                             List<Map<String,Object>> results = (List<Map<String, Object>>) dataMap.get("results");
                             for(Map<String,Object> result:results){
                                 if(result.get("in").toString().equals("1")){
-                                    ElectronicFence electronicFence = new ElectronicFence();
-                                    electronicFence.setFenceGid(result.get("gfid").toString());
-                                    electronicFence.setFenceName(result.get("gfname").toString());
-                                    return AjaxResult.success("成功",this.queryList(electronicFence).get(0));
+                                    LambdaQueryWrapper<ElectronicFence> lqw = Wrappers.lambdaQuery();
+                                    lqw.eq(ElectronicFence::getFenceGid,result.get("gfid").toString());
+                                    ElectronicFence electronicFence = this.getOne(lqw);
+                                    Map<String,Object> rMap = new HashMap<>();
+                                    rMap.put("fenceName",electronicFence.getFenceName());
+                                    rMap.put("fenceId",electronicFence.getLocalKey());
+                                    rMap.put("fencePop",electronicFence.getFencePop());
+                                    list.add(rMap);
                                 }
 
+                            }
+                            if(list.size()>0){
+                                return AjaxResult.success("成功",list);
                             }
                             return AjaxResult.error(201,"该地址未在任何围栏中");
                         }else{
@@ -206,40 +135,7 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
         return null;
     }
 
-    @Override
-    public boolean updateById(ElectronicFence electronicFence, List<FencePoints> coordinate, String apiCode) {
-        FenceVo vo = new FenceVo();
-        vo.setName(electronicFence.getFenceName());
-        vo.setSid(electronicFence.getServiceId());
-        vo.setGfid(electronicFence.getFenceGid());
-        LambdaQueryWrapper<TrackService> lqw = Wrappers.lambdaQuery();
-        lqw.eq(TrackService::getServiceId,electronicFence.getServiceId());
-        lqw.eq(TrackService::getDataLevel,1);
-        TrackService trackService = iTrackServiceService.getOne(lqw);
-        if(trackService==null){
-            throw new ApiException("9999",new Object[] { electronicFence.getServiceId() },"未查询到相应的轨迹服务配置");
-        }
-        vo.setKey(trackService.getGaodeKey());
-        List<String> points= coordinate.stream().map(fencePoints->{return fencePoints.getPoints();}).collect(Collectors.toList());
-        vo.setPoints(String.join(";",points));
-        Map resultMap = iApiService.executeByApiCode(apiCode,vo);
-        if(resultMap == null){
-            throw new ApiException("code404",new Object[] { apiCode },"http请求连接异常");
-        }else{
-            if(Integer.valueOf(resultMap.get("errcode").toString())==10000) {//创建成功
-                //更新坐标数据
-                coordinate.forEach(item-> {
-                    item.setFenceName(electronicFence.getFenceName());
-                    item.setFenceId(electronicFence.getLocalKey());
-                });
-                iFencePointsService.updateBatch(electronicFence,coordinate);
-                return this.updateById(electronicFence);
-            }else{
-                throw new ApiException("9999",new Object[]{apiCode,resultMap.get("errcode").toString()},
-                        "接口调用异常："+resultMap.get("errmsg").toString());
-            }
-        }
-    }
+
 
     @Override
     public List<FencePoints> getDistrictOpints(String serviceId,String apiCode, Map<String, Object> querstMap) {
@@ -312,6 +208,6 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
         }
 
         return false;
-    }
+    }*/
 
 }

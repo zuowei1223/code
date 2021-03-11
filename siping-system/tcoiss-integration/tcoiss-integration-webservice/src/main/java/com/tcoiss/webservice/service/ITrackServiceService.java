@@ -1,5 +1,6 @@
 package com.tcoiss.webservice.service;
 
+import com.tcoiss.webservice.domain.AddressVo;
 import com.tcoiss.webservice.domain.TrackService;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
@@ -16,6 +17,8 @@ public interface ITrackServiceService extends IService<TrackService> {
      * 查询列表
      */
     List<TrackService> queryList(TrackService trackService);
+
+    TrackService getOneByAddrss(AddressVo addressVo);
 
     boolean saveTrackService(TrackService trackService,String apiCode);
 

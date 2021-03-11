@@ -1,11 +1,13 @@
 package com.tcoiss.webservice.controller;
 
+import com.tcoiss.common.core.utils.SecurityUtils;
 import com.tcoiss.common.core.utils.poi.ExcelUtil;
 import com.tcoiss.common.core.web.controller.BaseController;
 import com.tcoiss.common.core.web.domain.AjaxResult;
 import com.tcoiss.common.core.web.page.TableDataInfo;
 import com.tcoiss.common.log.annotation.Log;
 import com.tcoiss.common.log.enums.BusinessType;
+import com.tcoiss.common.redis.service.RedisService;
 import com.tcoiss.common.security.annotation.PreAuthorize;
 import com.tcoiss.webservice.domain.ElectronicFence;
 import com.tcoiss.webservice.service.IElectronicFenceService;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +35,8 @@ public class ElectronicFenceController extends BaseController {
 
     private final IElectronicFenceService iElectronicFenceService;
 
+    @Autowired
+    private RedisService redisService;
     /**
      * 查询电子围栏列表
      */
@@ -61,10 +67,29 @@ public class ElectronicFenceController extends BaseController {
     @PreAuthorize(hasPermi = "webservice:fence:query" )
     @GetMapping(value = "/{id}" )
     public AjaxResult getInfo(@PathVariable("id" ) Long id) {
-        return AjaxResult.success(iElectronicFenceService.getFenceById(id));
+        return AjaxResult.success(iElectronicFenceService.getById(id));
     }
 
 
+    /**
+     * 新增围栏
+     */
+    @PreAuthorize(hasPermi="${webservice:fence}:add" )
+    @Log(title = "地理围栏" , businessType = BusinessType.INSERT)
+    @PostMapping("/addFence")
+    public AjaxResult addFence(@RequestBody ElectronicFence electronicFence) {
+        //生成围栏编码
+        String code = "gd_"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
+        redisService.setIncr(code,0);
+        //校验是否存在相同的围栏名称
+        if(iElectronicFenceService.checkFenceName(electronicFence)){
+            return AjaxResult.error("围栏名称不能重复");
+        }
+        electronicFence.setFenceCode(code);
+        electronicFence.setCreateor(SecurityUtils.getUsername());
+        electronicFence.setCreateorId(SecurityUtils.getUserId());
+        return toAjax(iElectronicFenceService.save(electronicFence) ? 1 : 0);
+    }
 
 
 
@@ -75,16 +100,20 @@ public class ElectronicFenceController extends BaseController {
     @Log(title = "电子围栏" , businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ElectronicFence electronicFence) {
+        //校验是否存在相同的围栏名称
+        if(iElectronicFenceService.checkFenceName(electronicFence)){
+            return AjaxResult.error("围栏名称不能重复");
+        }
         return toAjax(iElectronicFenceService.updateById(electronicFence) ? 1 : 0);
     }
 
     /**
      * 删除电子围栏,
-     *//*
+     */
     @PreAuthorize(hasPermi = "webservice:fence:remove" )
     @Log(title = "电子围栏" , businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}" )
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(iElectronicFenceService.removeByIds(Arrays.asList(ids)) ? 1 : 0);
-    }*/
+    }
 }

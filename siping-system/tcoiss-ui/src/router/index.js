@@ -93,6 +93,20 @@ export const constantRoutes = [
       }
     ]
   },
+{
+  path: '/fence',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'gaode/points/:fenceId(\\d+)',
+        component: (resolve) => require(['@/views/integration/fence/gaode'], resolve),
+        name: 'Data',
+        meta: { title: '围栏地图', icon: '' }
+      }
+    ]
+  },
+
   {
     path: '/test',
       component: Layout,

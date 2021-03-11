@@ -6,5 +6,6 @@ import lombok.Data;
 public class AddressVo {
     private String address;
     private String city;
+    private String province;
     private String key;
 }

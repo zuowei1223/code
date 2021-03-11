@@ -1,56 +1,84 @@
 import request from '@/utils/request'
 
-// 查询电子围栏列表
-export function listFence(query) {
+// 查询围栏坐标列表
+export function listFencePoints(query) {
   return request({
-    url: '/webservice/fence/list',
+    url: '/webservice/gaode/queryFencePoints',
     method: 'get',
     params: query
   })
 }
 
-// 查询电子围栏详细
-export function getFence(id) {
+
+
+// 查询围栏坐标详细
+export function fencePointsCache(data) {
   return request({
-    url: '/webservice/fence/' + id,
+    url: '/webservice/gaode/fencePointsCache',
+    method: 'post',
+    data: data
+  })
+}
+
+// 查询围栏坐标详细
+export function getFence(FenceId) {
+  return request({
+    url: '/webservice/fence/' + FenceId,
     method: 'get'
   })
 }
 
-// 新增电子围栏
-export function addFence(data) {
-  var url = "http://localhost:8088/tcoiss-schedule-admin/gaode/index?";
-  url = url+"localKey="+data.localKey+"&name="+data.fenceName;
-  window.open(url);
-  /*return request({
-    url: '/webservice/fence/gaode/add',
-    method: 'post',
-    data: data
-  })*/
+// 查询围栏坐标详细
+export function addFencePoints() {
+  return request({
+    url: '/webservice/gaode/addFencePoints',
+    method: 'get',
+  })
 }
 
-// 修改电子围栏
-export function updateFence(data) {
+// 修改围栏坐标
+export function updateFencePoints(data) {
   return request({
-    url: '/webservice/fence',
+    url: '/webservice/gaode/editFencePoints',
     method: 'put',
     data: data
   })
 }
 
-// 删除电子围栏
-export function delFence(id) {
+// 删除围栏坐标
+export function delFencePoints(gid) {
   return request({
-    url: '/webservice/fence/' + id,
+    url: '/webservice/gaode/' + gid,
     method: 'delete'
   })
 }
 //根据地址查询围栏信息
 export function queryByAddr(location) {
   return request({
-    url: '/webservice/fence/queryByAddr',
+    url: '/webservice/gaode/queryByAddr',
     method: 'get',
     params: {'location':location}
+  })
+}
+export function districtCache(data) {
+  return request({
+    url: '/webservice/gaode/districtCache',
+    method: 'post',
+    data: data
+  })
+}
+
+export function deleteCache() {
+  return request({
+    url: '/webservice/gaode/deleteCache',
+    method: 'delete'
+  })
+}
+
+export function listCache() {
+  return request({
+    url: '/webservice/gaode/listCache',
+    method: 'get'
   })
 }
 

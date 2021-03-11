@@ -1,234 +1,601 @@
 <template>
- <div>
-  <div id="container" style="width:100%; height:900px"></div>
-  <div class="info">
-		  <el-input
-		    placeholder="关键字"
-		    clearable
-		    size="small"
-		    id = "tipinput"
-		  />
-		  <el-button @click="queryByAddress">查询</el-button>
-		  <el-button @click="clickOn('marker')">标记</el-button>
-		  <el-button @click="handleAdd">创建围栏</el-button>
-		  <el-button @click="clickOn('colse')">保存</el-button>
-  </div>
-  <!-- 添加或修改电子围栏对话框 -->
-  <!--<el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      
+  <div class="app-container" >
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="70px">
       <el-form-item label="围栏名称" prop="fenceName">
-        <el-input v-model="form.fenceName" placeholder="请输入围栏名称" />
+        <el-input
+          v-model="queryParams.fenceName"
+          placeholder="请输入名称"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
-      <el-form-item label="描述信息" prop="fenceDesc">
-        <el-input v-model="form.fenceDesc" placeholder="请输入描述信息" />
+      <el-form-item prop="cityCode" label="城市">
+        <el-select v-model="queryParams.cityCode" placeholder="请选择城市" :disabled="true" >
+          <el-option
+            v-for="dict in cityOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          ></el-option>
+        </el-select>
       </el-form-item>
-	  <el-form-item label="平台key" prop="localKey">
-	    <el-input v-model="form.localKey" placeholder="请输入平台key" />
-	  </el-form-item>
+
+      <el-form-item label="分组id" prop="pointsGroupId">
+        <el-input
+          v-model="queryParams.pointsGroupId"
+          placeholder="分组id"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="clickOn('polygon')">绘制围栏</el-button>
-      <el-button @click="cancel">取 消</el-button>
+
+    <el-row :gutter="10" class="mb8">
+        <el-col :span="1.5">
+          <el-button
+            type="primary"
+            plain
+            icon="el-icon-plus"
+            size="mini"
+            @click="handleAdd('draw')"
+            :disabled = "openIsAdd"
+            v-hasPermi="['webservice:gaode:add']"
+          >添加手工围栏</el-button>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="primary"
+            plain
+            icon="el-icon-plus"
+            size="mini"
+            @click="handleAdd('qy')"
+            :disabled = "openIsAdd"
+            v-hasPermi="['webservice:gaode:add']"
+          >添加区域围栏</el-button>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="success"
+            plain
+            icon="el-icon-edit"
+            size="mini"
+            @click="handleUpdate"
+            :disabled = "openIsEdit "
+            v-hasPermi="['webservice:gaode:edit']"
+          >开启编辑</el-button>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="danger"
+            plain
+            icon="el-icon-delete"
+            size="mini"
+            @click="handleDeleteCache"
+            v-hasPermi="['webservice:gaode:remove']"
+          >清除缓存</el-button>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="danger"
+            plain
+            icon="el-icon-delete"
+            size="mini"
+            @click="handleDelete"
+            :disabled = "openIsDetele"
+            v-hasPermi="['webservice:gaode:remove']"
+          >删除</el-button>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="primary"
+            plain
+            icon="el-icon-save"
+            size="mini"
+            @click="handleSave()"
+            :disabled = "openIsSave"
+            v-hasPermi="['webservice:gaode:add']"
+          >保存</el-button>
+        </el-col>
+      </el-row>
+    <div id = "dialog">
+      <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+        <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+          <!--<el-form-item label="市" prop="city">
+            <el-select v-model="form.city" placeholder="请选择市" >
+              <el-option
+                v-for="dict in cityOptions"
+                :key="dict.dictValue"
+                :label="dict.dictLabel"
+                :value="parseInt(dict.dictValue)"
+              ></el-option>
+            </el-select>
+          </el-form-item>-->
+          <el-form-item  label="行政区" prop="district" >
+            <el-select v-model="form.district" placeholder="请选择行政区">
+              <el-option
+                v-for="dict in districtOptions"
+                :key="dict.dictValue"
+                :label="dict.dictLabel"
+                :value="dict.dictValue"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div id= "edit" slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="drawDistrict">确定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </el-dialog>
     </div>
-  </el-dialog>-->
- </div>
+    <div id="container" >
+    </div>
+
+  </div>
+
 </template>
 <style>
-	html,
-	body,
-	#container {
-	  width: 100%;
-	  height: 100%;
-	}
-	.info {
-		/* padding: .75rem 1.25rem; */
-		margin-bottom: 1rem;
-		border-radius: .25rem;
-		position: fixed;
-		top: 6rem;
-		background-color: white;
-		width: auto;
-		min-width: 22rem;
-		border-width: 0;
-		right: 1rem;
-	}
-	.input-item{
-	  height: 3rem;
-	}
-	.btn{
-	  width: 6rem;
-	  margin: 0 1rem 0 2rem;
-	}
-</style>
-
-<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=3fa060bd1711d61ee47bb8983d7b1101&plugin=AMap.MouseTool,AMap.Autocomplete,AMap.PlaceSearch"></script>
-<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
-
-<script>
- import { listFence, getFence, delFence, addFence, updateFence,queryByAddr } from "@/api/integration/gaode";
- import $ from 'jquery'
- import Vue from 'vue'
- import VueAMap from 'vue-amap';
- Vue.use(VueAMap);
- var map
- //鼠标工具
- var mouseTool;
- //围栏编辑插件
- var polyEditor;
- //创建右键菜单
- var contextMenu ;
- //地理编码服务
- var geocoder;
- var overlays = [];
- var initFence = [];
- var coordinate = [];
- 
- var tempPolygon ;
- export default {
-  mounted: function () {
-   this.init()
-   // 默认开启围栏绘制
-   this.draw("polygon");
-   //监听围栏绘制事件
-   mouseTool.on('draw',function(e){
-   	overlays.push(e.obj);
-	if(e.obj.CLASS_NAME == 'AMap.Marker'){
-		
-	}else{
-		tempPolygon = new AMap.Polygon({
-		    path: e.obj.getPath(),
-		    fillColor: '#00b0ff', // 多边形填充颜色
-		    borderWeight: 3, // 线条宽度，默认为 1
-		    strokeColor: '#FF33FF', // 线条颜色	
-		    fillOpacity: 0.35,//填充透明度
-		    strokeOpacity: 0.3 //线透明度
-		});
-		map.add(tempPolygon);
-		map.setFitView(polygons);//视口自适应
-		console.log(e.obj.getPath());//获取路径/范围
-	}
-   })
-  },
-  
-  methods: {
-	  init: function () {
-	  		map = new AMap.Map('container', {
-	  		 resizeEnable: true,
-	  		 zoom: 14
-	  		})
-	  		//初始化插件
-	  		AMap.plugin(['AMap.ToolBar', 'AMap.Scale','AMap.MouseTool','AMap.Autocomplete',
-			'AMap.PlaceSearch'/* ,'AMap.PolyEditor,'*/,'AMap.Geocoder' ], function(){
-	  			map.addControl(new AMap.ToolBar())
-	  			map.addControl(new AMap.Scale())
-	  			mouseTool = new AMap.MouseTool(map);
-				contextMenu = new AMap.ContextMenu();
-				//右键添加Marker标记
-				contextMenu.addItem("添加标记", function (e) {
-					var marker = new AMap.Marker({
-						map: map,
-						position: contextMenuPositon //基点位置
-					});
-				}, 3);
-				geocoder = new AMap.Geocoder({
-					// city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-					city: '全国'
-				}) 
-	  		})
-			
-			
-	  },
-   //初始化图层
-   initdraw(list){
-       var path = [];
-       for(var i=0;i<list.length;i+=1){
-           var zb = list[i].split(",");
-           path.push(new AMap.LngLat(zb[0],zb[1]));
-       }
-       var polygon = new AMap.Polygon({
-           path: path,
-           fillColor: '#00b0ff', // 多边形填充颜色
-           borderWeight: 3, // 线条宽度，默认为 1
-           strokeColor: '#FF33FF', // 线条颜色
-           fillOpacity: 0.35,//填充透明度
-           strokeOpacity: 0.3 //线透明度
-       });
-       map.add(polygon);
-       initFence.push(polygon);
-   },
-   /** 新增按钮操作 */
-   handleAdd() {
-     this.reset();
-     this.open = true;
-     this.title = "添加电子围栏";
-   },
-   
-   draw(type) {
-		switch(type){
-		   case 'marker':{
-			   mouseTool.marker({
-				   //同Marker的Option设置
-			   });
-			   break;
-		   }
-		   case 'polygon':{
-			   mouseTool.polygon({
-				   fillColor:'#00b0ff',
-				   strokeColor:'#80d8ff'
-				   //同Polygon的Option设置
-			   });
-			   break;
-		   }
-	   }
-   }, 
-   // 事件绑定
-   clickOn(type){
-        //获取地图上的坐标
-		/* mouseTool.marker({
-			//同Marker的Option设置
-		}); */
-		if(type=="marker"){
-			this.draw("marker");
-			map.on('click', function(e) {
-				//将当前点击的点并根据点击的顺序标好序号保存到list中
-				coordinate.push(e.lnglat.getLng()+','+e.lnglat.getLat());
-				//后台发送请求返回地址信息
-				var location = [e.lnglat.getLng(), e.lnglat.getLat()];
-				geocoder.getAddress(location, function(status, result) {
-					if (status === 'complete' && result.info === 'OK') {
-						// result为对应的地理位置详细信息
-						$("#tipinput").val(result.regeocode.formattedAddress);
-						console.log(result.regeocode.formattedAddress);
-					}
-				})
-			});
-		}else if(type == "polygon"){
-			this.draw("polygon");
-		}else{
-			mouseTool.close(true);
-		}
-		
-    },
-    // 解绑事件
-    
-	//根据地址查询围栏信息
-	queryByAddress(){
-		var address = $("#tipinput").val();
-		//根据地址查询坐标信息
-		geocoder.getLocation(address, function(status, result) {
-			if (status === 'complete' && result.info === 'OK') {
-			  // result中对应详细地理坐标信息
-			  console.log(result);
-			  queryByAddr().then(response => {
-			    this.msgSuccess("查询成功");
-			    //this.open = false;
-			    //this.getList();
-			  });
-			}
-		})
-	}
-	
+  html,
+  body,
+  #container {
+    width: 100%;
+    height: 600px;
   }
- }
+</style>
+<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=3fa060bd1711d61ee47bb8983d7b1101&plugin=AMap.MouseTool"></script>
+<script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+<script>
+  import { listFencePoints, listCache,getFencePoints, getFence,delFencePoints, deleteCache,fencePointsCache,addFencePoints, updateFencePoints,districtCache } from "@/api/integration/gaode";
+  import $ from 'jquery';
+  import Vue from 'vue';
+  import VueAMap from 'vue-amap';
+  Vue.use(VueAMap);
+  var map
+  //鼠标工具
+  var mouseTool;
+  //围栏编辑插件
+  var polyEditor;
+  //创建右键菜单
+  var contextMenu ;
+  //地理编码服务
+  var geocoder;
+  //修改的围栏对象
+  var editPolygon = null ;
+
+  var cachePolygon = [];
+  //查询出来的围栏对象
+  var queryFence = null;
+
+  var infoWindow ;
+
+  //查询出来的坐标对象列表
+  //var queryFencePoints = [];
+
+  export default {
+    mounted: function () {
+      this.init();
+      //初始化地图组件
+      mouseTool.on('draw',function(e){
+        if(e.obj.CLASS_NAME == 'AMap.Marker'){
+
+        }else{
+          this.openIsSave = false;
+          this.openIsAdd = false;
+          var path = e.obj.getPath();
+          var drawPoints = [];
+          for(var i=0;i<path.length;i++){
+            var fencePoints = {};
+            fencePoints.pointX = path[i].getLng();
+            fencePoints.pointY = path[i].getLat();
+            drawPoints.push(fencePoints);
+          }
+          var pointVo = {};
+          pointVo.fenceName = queryFence.fenceName;
+          pointVo.drawPoints = drawPoints;
+          fencePointsCache(pointVo).then(response => {
+            var polygon = new AMap.Polygon({
+              path: path,
+              fillColor: "#13ffff", // 多边形填充颜色
+              strokeColor: "#ffae0c", // 线条颜色
+              strokeWeight: 6,
+              fillOpacity: 0.4,//填充透明度
+              strokeOpacity: 0.4, //线透明度
+              zIndex: 50,
+              bubble: true,
+            });
+            map.add(polygon);
+            cachePolygon.push(polygon)
+          });
+          //关闭鼠标绘制工具
+          mouseTool.close(true);
+        }
+      });
+    },
+    name: "gaode",
+    components: {
+    },
+    data() {
+      return {
+        // 遮罩层
+        loading: true,
+        // 选中数组
+        ids: [],
+        // 非单个禁用
+        single: true,
+        // 非多个禁用
+        multiple: true,
+        // 显示搜索条件
+        showSearch: true,
+        // 总条数
+        total: 0,
+        // 电子围栏表格数据
+        fenceList: [],
+        provinceOptions: [],
+        cityOptions: [],
+        districtOptions: [],
+        openIsAdd: false,
+        openIsEdit: true,
+        openIsDetele: true,
+        openIsSave: true,
+        modelType: "lookUp",
+        // 弹出层标题
+        title: "",
+        // 是否显示弹出层
+        open: false,
+        // 查询参数
+        queryParams: {
+          pageNum: 1,
+          pageSize: 10,
+          fenceName: null,
+          fenceId:null,
+          pointsGroupId:null,
+        },
+        // 表单参数
+        form: {},
+        // 表单校验
+        rules: {
+          district: [
+            { required: true, message: "区域不能为空", trigger: "blur" }
+          ]
+        }      };
+    },
+
+    created() {
+      //先查询所有围栏坐标，id不为空则查询指定围栏
+      const fenceId = this.$route.params && this.$route.params.fenceId;
+      this.getFence(fenceId);
+      this.getDicts("province").then(response => {
+        this.provinceOptions = response.data;
+      });
+      this.getDicts("city").then(response => {
+        this.cityOptions = response.data;
+      });
+      this.getDicts("district").then(response => {
+        this.districtOptions = response.data;
+      });
+      infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
+    },
+    methods: {
+      /** 初始化地图插件*/
+      init: function () {
+        map = new AMap.Map('container', {
+          resizeEnable: true,
+          /*center: [116.471354, 39.994257],*/
+          zoom: 11,
+          showIndoorMap: false
+        })
+        map.setCity(this.queryParams.cityCode);
+        var bounds = map.getBounds();
+        map.setLimitBounds(bounds);
+        // 初始化地图插件
+        AMap.plugin(['AMap.ToolBar', 'AMap.Scale','AMap.MouseTool','AMap.Autocomplete',
+          'AMap.PlaceSearch' ], function(){
+          map.addControl(new AMap.ToolBar())
+          map.addControl(new AMap.Scale())
+          mouseTool = new AMap.MouseTool(map);
+        })
+
+      },
+
+      //初始化图层,
+      initDraw: function(list,fillColor,strokeColor){
+        var path = [];
+        for(var i=0;i<list.length;i+=1){
+          path.push(new AMap.LngLat(list[i].pointX,list[i].pointY));
+        }
+        var polygon = new AMap.Polygon({
+          path: path,
+          fillColor: fillColor, // 多边形填充颜色
+          strokeWeight: 5,
+          strokeColor: strokeColor, // 线条颜色
+          strokeOpacity: 0.4,
+          fillOpacity: 0.4,
+          zIndex: 50,
+          bubble: true,
+          extData:{
+            id: this.queryParams.pointsGroupId
+          }
+        });
+        map.add(polygon);
+        polygon.content = '分组名称：'+list[0].pointName+'，分组ID：' + list[0].pointsGroupId;
+        polygon.on('click', this.polygonClick);
+        return polygon;
+      },
+      polygonClick(e) {
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, new AMap.LngLat(e.lnglat.getLng(),e.lnglat.getLat()));
+      },
+      // 表单重置
+      reset() {
+        this.form = {
+          district: null,
+        };
+        this.resetForm("form");
+      },
+      drawDistrict () {//根据选择的区域返回对应区域坐标
+        var pointsVo = {};
+        this.districtOptions.forEach(item => {
+          if(item.dictValue===this.form.district)
+          {
+            pointsVo.adcodeName = item.dictLabel;
+            pointsVo.adcode = item.dictValue;
+          }
+        });
+        pointsVo.fenceName = queryFence.fenceName;
+        districtCache(pointsVo).then(response =>{
+          this.open = false;
+          this.getCache();
+
+        });
+      },
+      getFence(fenceId){
+        if(fenceId){
+          getFence(fenceId).then(response => {
+            //this.queryParams.fenceId = response.data.fenceId;
+            queryFence = response.data;
+            //根据cityCode
+            this.queryParams.cityCode = queryFence.cityCode;
+            this.queryParams.fenceName = queryFence.fenceName;
+            this.getList();
+          });
+        }else {
+          this.getList()
+        }
+      },
+      /** 查询电子围栏列表 并将数据缓存到页面 */
+      getList() {
+        //this.loading = true;
+        editPolygon = null;
+        //queryFence = null;
+
+        listFencePoints(this.queryParams).then(response => {
+          //清空围栏坐标
+          var allFence = response.data.all;
+          var fence = response.data.fence;
+          if(fence.length==0){
+            this.msgInfo("未查询到指定的围栏数据")
+          }
+          for(var i=0;i<allFence.length;i++){
+            var table = allFence[i];
+            var list = table.drawPoints;
+            this.initDraw(list,"#ff0816","#3c91ff");
+          }
+          for(var i=0;i<fence.length;i++){
+            var table = fence[i];
+            var list = table.drawPoints;
+            var polygon = this.initDraw(list,"#33b7ff","#ff2233");
+            //editPolygon.setExtData("id",table.pointsGruopId);
+            if(fence.length==1||this.queryParams.pointsGroupId){
+              editPolygon = polygon;
+              /*queryFence = fence[i];
+              this.queryParams.cityCode = queryFence.cityCode;*/
+            }
+            //this.queryParams.cityCode = queryFence.cityCode;
+            this.modelType = "lookUp";
+            this.buttonDisabled();
+          }
+          map.setFitView();
+        });
+      },
+      //获取缓存数据
+      getCache(){
+        listCache().then(response => {
+          var list = response.data;
+          for(var i=0;i<list.length;i++){
+            var polygon = this.initDraw(list[i].drawPoints,"#13ffff","#ff0816");
+            cachePolygon.push(polygon);
+          }
+        });
+      },
+      //将绘制的围栏保存到数据库中,页面缓存的表单数据和坐标数据传入后台保存
+      handleSave(){
+        if(this.modelType=="addDistrict"){
+          this.$refs["form"].validate(valid => {
+            if(valid) {
+              addFencePoints().then(response => {
+                this.handleDeleteCache();
+                this.handleQuery();
+                this.msgSuccess("保存成功")
+              });
+            }
+          })
+        }else if(this.modelType=="add"){
+          addFencePoints().then(response => {
+            this.handleDeleteCache();
+            this.handleQuery();
+            this.msgSuccess("保存成功")
+          });
+        }else if(this.modelType=="edit"){//保存修改数据
+          polyEditor.close();
+          this.handleQuery();
+          this.msgSuccess("保存修改成功")
+        }
+      },
+      /** 搜索按钮操作 */
+      handleQuery() {
+        map.clearMap();
+        this.getList();
+      },
+      /** 重置按钮操作 */
+      resetQuery() {
+        this.resetForm("queryForm");
+        this.handleQuery();
+      },
+      // 多选框选中数据
+      handleSelectionChange(selection) {
+        this.ids = selection.map(item => item.id)
+        this.single = selection.length!==1
+        this.multiple = !selection.length
+      },
+      /** 新增按钮操作 关闭列表，打开地图界面*/
+      handleAdd(type) {
+        //不能做编辑和删除操作
+        this.buttonDisabled();
+        if(type=="draw"){
+          this.draw("polygon");
+          this.modelType = "add";
+        }else{
+          this.modelType = "addDistrict";
+          this.reset();
+          this.open = true;
+          this.title = "选择区域";
+        }
+      },
+      // 取消按钮,
+      cancel() {
+        this.open = false;
+        this.reset();
+      },
+      /** 修改按钮操作 */
+      handleUpdate() {
+        if(editPolygon==null){
+          this.msgInfo("请查询您具体需要修改的gid")
+        }
+        if(this.modelType == "edit"){
+          this.msgInfo("当前已是编辑模式，请勿重复操作,如需退出可重新查询");
+          return
+        }
+        this.modelType = "edit";
+        this.buttonDisabled();
+        var gid = this.queryParams.pointsGroupId;
+        AMap.plugin(["AMap.PolyEditor"],function(){
+          polyEditor = new AMap.PolyEditor(map,editPolygon);
+          polyEditor.open();
+          //polyEditor.setTarget(editPolygon);
+          /*polygon.on('dblclick', () => {
+            polyEditor.setTarget(polygon);
+            polyEditor.open();
+          })*/
+          polyEditor.on('end', function(event) {
+            var path = event.target.getPath();
+            var drawPoints = []
+            for(var i=0;i<path.length;i++){
+              var fencePoints = {};
+              fencePoints.pointX = path[i].getLng();
+              fencePoints.pointY = path[i].getLat();
+              drawPoints.push(fencePoints);
+            }
+            var pointVo = {};
+            //pointVo.fenceName = queryFence.fenceName;
+            pointVo.pointsGroupId = gid;
+            /*pointVo.pointsName = queryFence.pointsName;*/
+            pointVo.drawPoints = drawPoints;
+            updateFencePoints(pointVo).then(response => {
+              //this.msgSuccess("成功");
+            });
+          })
+        });
+
+      },
+      /** 删除按钮操作 */
+      handleDelete() {
+        if(editPolygon == null){
+          this.msgInfo("请查询您具体需要删除的gid")
+          return;
+        }
+        var gid = this.queryParams.pointsGroupId
+        this.$confirm('是否确认删除分组id为' + gid + '的数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return delFencePoints(gid);
+        }).then(() => {
+          this.handleQuery();
+          this.msgSuccess("删除成功");
+        })
+      },
+      /** 清空缓存操作 */
+      handleDeleteCache () {
+        this.modelType = "lookUp";
+        this.buttonDisabled();
+        deleteCache().then(response=>{
+          this.msgSuccess(response.msg);
+          if(cachePolygon.length>0){
+            cachePolygon.forEach(item =>{
+              map.remove(item);
+            })
+            cachePolygon = [];
+          }
+        });
+
+      },
+
+      buttonDisabled (){
+        if(this.modelType == "lookUp"){
+          this.openIsAdd = false;
+          this.openIsSave = true;
+          if(editPolygon==null){
+            this.openIsEdit = true;
+            this.openIsDetele = true;
+          }else{
+            this.openIsEdit = false;
+            this.openIsDetele = false;
+          }
+        }else if(this.modelType == "add"||this.modelType=="addDistrict"){
+          this.openIsDetele = true;
+          this.openIsEdit = true;
+          this.openIsSave = false;
+        }else if(this.modelType == "edit"){
+          this.openIsSave = false;
+          this.openIsAdd = true;
+          this.openIsDetele = true;
+        }
+
+
+      },
+
+      /** 绘制围栏*/
+      draw(type) {
+        switch(type){
+          case 'marker':{
+            mouseTool.marker({
+              //同Marker的Option设置
+            });
+            break;
+          }
+          case 'polygon':{
+            mouseTool.polygon({
+              strokeWeight: 6,
+              strokeOpacity: 0.4,
+              fillOpacity: 0.4,
+              fillColor:'#00b0ff',
+              strokeColor:'#80d8ff',
+              zIndex: 50,
+              bubble: true,
+              //同Polygon的Option设置
+            });
+            break;
+          }
+        }
+      }
+    }
+  }
 </script>

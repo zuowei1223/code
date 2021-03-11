@@ -10,23 +10,24 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="平台ID" prop="gaodeKey">
+      <el-form-item label="服务省份" prop="serviceProvince">
         <el-input
-          v-model="queryParams.gaodeKey"
-          placeholder="请输入平台ID"
+          v-model="queryParams.serviceProvince"
+          placeholder="请输入服务省份"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="轨迹服务ID" prop="serviceId">
+      <el-form-item label="服务城市" prop="serviceCity">
         <el-input
-          v-model="queryParams.serviceId"
-          placeholder="请输入轨迹服务ID"
+          v-model="queryParams.serviceCity"
+          placeholder="请输入服务城市"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
+
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -84,8 +85,10 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="服务名称" align="center" prop="fwName" />
-      <el-table-column label="平台ID" align="center" prop="gaodeKey" :formatter="keyFormat" />
+      <el-table-column label="平台key" align="center" prop="gaodeKey" :formatter="keyFormat" />
       <el-table-column label="轨迹服务ID" align="center" prop="serviceId" />
+      <el-table-column label="服务省份" align="center" prop="serviceProvince" :formatter="provinceFormat" />
+      <el-table-column label="服务城市" align="center" prop="serviceCity" :formatter="cityFormat" />
       <el-table-column label="服务描述" align="center" prop="serviceDesc" />
       <el-table-column label="创建人编号" align="center" prop="creatorId" />
       <el-table-column label="创建人姓名" align="center" prop="creatorName" />
@@ -129,7 +132,7 @@
         <el-form-item label="服务名称" prop="fwName">
           <el-input v-model="form.fwName" placeholder="请输入服务名称" />
         </el-form-item>
-        <el-form-item label="平台ID" prop="gaodeKey">
+        <el-form-item label="平台key" prop="gaodeKey">
           <el-select v-model="form.gaodeKey" placeholder="请选择key">
             <el-option
               v-for="dict in keyOptions"
@@ -139,6 +142,27 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="服务省份" prop="serviceProvince">
+          <el-select v-model="form.serviceProvince" placeholder="请选择服务省份">
+            <el-option
+              v-for="dict in provinceOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="服务城市" prop="serviceCity">
+          <el-select v-model="form.serviceCity" placeholder="请选择服务城市">
+            <el-option
+              v-for="dict in cityOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="描述信息" prop="serviceDesc">
           <el-input
             type="textarea"
@@ -198,6 +222,8 @@ export default {
       keyOptions: [],
       // 数据级别字典
       dataLevelOptions: [],
+      provinceOptions: [],
+      cityOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -222,6 +248,12 @@ export default {
     this.getDicts("data_level").then(response => {
       this.dataLevelOptions = response.data;
     });
+    this.getDicts("province").then(response => {
+      this.provinceOptions = response.data;
+    });
+    this.getDicts("city").then(response => {
+      this.cityOptions = response.data;
+    });
   },
   methods: {
     /** 查询轨迹服务配置列表 */
@@ -241,6 +273,15 @@ export default {
     dataLevelFormat(row, column) {
       return this.selectDictLabel(this.dataLevelOptions, row.dataLevel);
     },
+    cityFormat(row, column) {
+      return this.selectDictLabel(this.cityOptions, row.serviceCity);
+    },
+
+    provinceFormat(row, column) {
+      return this.selectDictLabel(this.provinceOptions, row.serviceProvince);
+    },
+
+
     // 取消按钮
     cancel() {
       this.open = false;

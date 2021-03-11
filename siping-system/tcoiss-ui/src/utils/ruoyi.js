@@ -88,6 +88,7 @@ export function selectDictLabels(datas, value, separator) {
 	var temp = value.split(currentSeparator);
 	Object.keys(value.split(currentSeparator)).some((val) => {
         Object.keys(datas).some((key) => {
+
             if (datas[key].dictValue == ('' + temp[val])) {
 				actions.push(datas[key].dictLabel + currentSeparator);
 			}

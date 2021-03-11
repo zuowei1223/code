@@ -22,20 +22,8 @@ public interface IElectronicFenceService extends IService<ElectronicFence> {
      */
     List<ElectronicFence> queryList(ElectronicFence electronicFence);
 
-    ElectronicFence getFenceById(Long id);
 
-    /**
-     * 新增围栏
-     */
-    int saveFence(ElectronicFence fence, List<FencePoints> coordinate, String apiCode);
+    ElectronicFence getByFenceName(String fenceName);
 
-    boolean removeByIds(List<Long> ids,String apiCode);
-
-    boolean updateById(ElectronicFence electronicFence, List<FencePoints> coordinate, String apiCode);
-
-    List<FencePoints> getDistrictOpints(String serviceId,String apiCode, Map<String, Object> querstMap);
-
-    int saveDistrictFence(ElectronicFence fence, List<FencePoints> coordinate, String saveDistrictFence);
-
-    AjaxResult getFenceByLocation(AddressVo addressVo);
+    boolean checkFenceName(ElectronicFence electronicFence);
 }
