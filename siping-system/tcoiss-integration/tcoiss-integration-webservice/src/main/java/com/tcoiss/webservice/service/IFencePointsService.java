@@ -20,6 +20,8 @@ public interface IFencePointsService extends IService<FencePoints> {
 
     boolean removeByGid(Long gid,String apiCode);
 
+    boolean removeByFenceCode(String fenceCode);
+
     int saveFencePoints(PointsVo pointsVo, String saveFence);
 
     boolean updateByVo(PointsVo pointsVo, String apiCode);
@@ -29,5 +31,7 @@ public interface IFencePointsService extends IService<FencePoints> {
     int saveDistrictFence(PointsVo pointsVo, String apiCode);
 
     AjaxResult getFenceByLocation(AddressVo addressVo);
+
+    List<Map<String,Object>> getDistrictInfo(PointsVo pointsVo, String apiCode, Map<String, Object> querstMap);
 }
 

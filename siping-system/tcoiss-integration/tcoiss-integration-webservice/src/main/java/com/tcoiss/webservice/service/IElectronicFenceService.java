@@ -26,4 +26,7 @@ public interface IElectronicFenceService extends IService<ElectronicFence> {
     ElectronicFence getByFenceName(String fenceName);
 
     boolean checkFenceName(ElectronicFence electronicFence);
+
+    boolean syncFence(ElectronicFence electronicFence,int enable);
+
 }

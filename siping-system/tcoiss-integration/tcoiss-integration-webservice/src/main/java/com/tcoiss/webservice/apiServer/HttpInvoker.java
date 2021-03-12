@@ -21,12 +21,10 @@ public class HttpInvoker extends Invoker{
             String response = "";
             String reqBody = generateRequestString(invokeContext);
             invokeContext.setRequestTime(DateUtils.getTime());
-            /*if(targerUrl.startsWith("https")){//需要秘钥
-                targerUrl = targerUrl+"a33e36c0e15b373a2ebd7fc4aa1ec0c2";
-            }*/
+
             //根据请求方式
-            if(StringUtils.equals("post",invokeContext.getRequestType())&&StringUtils.equals("json",invokeContext.getDataType())){
-                response = httpAPIServer.doPostJson(targerUrl,reqBody,invokeContext.getDataType());
+            if(StringUtils.equals("post",invokeContext.getRequestType())&&StringUtils.equals("application/json",invokeContext.getDataType())){
+                response = httpAPIServer.doPostJson(targerUrl,reqBody,invokeContext);
             }else if (StringUtils.equals("post",invokeContext.getRequestType())){
                 response = httpAPIServer.doPost(targerUrl,reqBody);
 

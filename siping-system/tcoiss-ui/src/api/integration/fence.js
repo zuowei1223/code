@@ -39,7 +39,7 @@ export function updateFence(data) {
 // 删除电子围栏
 export function delFence(id) {
   return request({
-    url: '/webservice/fence/gaode/' + id,
+    url: '/webservice/fence/' + id,
     method: 'delete'
   })
 }

@@ -68,6 +68,14 @@ export function districtCache(data) {
   })
 }
 
+export function getDistrictByCity(data) {
+  return request({
+    url: '/webservice/gaode/getDistrictByCity',
+    method: 'post',
+    data: data
+  })
+}
+
 export function deleteCache() {
   return request({
     url: '/webservice/gaode/deleteCache',

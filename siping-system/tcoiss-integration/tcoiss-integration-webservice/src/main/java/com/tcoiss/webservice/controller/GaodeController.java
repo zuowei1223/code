@@ -27,6 +27,8 @@ public class GaodeController extends BaseController {
 
     private String fenceAddKey = "FENCE_ADD_TOKEN";
 
+    private String districtKey = "DISTRICT_POINT_TOKEN";
+
     private final IFencePointsService iFencePointsService;
     private final static long EXPIRE_TIME = Constants.TOKEN_EXPIRE * 60;
 
@@ -86,7 +88,7 @@ public class GaodeController extends BaseController {
         querstMap.put("subdistrict",1);
         querstMap.put("filter",pointsVo.getAdcode());
         querstMap.put("extensions","all");
-        pointsList = iFencePointsService.getDistrictOpints(pointsVo,"getDistrictOpints",querstMap);
+        pointsList = iFencePointsService.getDistrictOpints(pointsVo,"getDistrictInfo",querstMap);
         //生成分组id并保存到redis
         List<PointsVo> list = redisService.getCacheObject(fenceAddKey);
         if(list!=null&&list.size()>0){
@@ -97,6 +99,20 @@ public class GaodeController extends BaseController {
         }
         redisService.setCacheObject(fenceAddKey,list,EXPIRE_TIME, TimeUnit.SECONDS);
         return  AjaxResult.success("成功");
+    }
+
+    /**
+     * 根据相应的区域查询相应的区域信息
+     */
+    @PreAuthorize(hasPermi = "webservice:gaode:list")
+    @PostMapping("/getDistrictByCity")
+    public AjaxResult getDistrictByCity( @RequestBody PointsVo pointsVo) {
+        Map<String,Object> querstMap = new HashMap<>();
+        querstMap.put("keywords",pointsVo.getAdcodeName());
+        querstMap.put("subdistrict",1);
+        querstMap.put("filter",pointsVo.getAdcode());
+        querstMap.put("extensions","base");
+        return  AjaxResult.success(iFencePointsService.getDistrictInfo(pointsVo,"getDistrictInfo",querstMap));
     }
 
 

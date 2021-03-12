@@ -1,6 +1,7 @@
 package com.tcoiss.webservice.apiServer;
 
 import com.alibaba.fastjson.JSON;
+import com.tcoiss.common.core.utils.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -84,7 +85,7 @@ public class HttpAPIServer {
      * @return
      * @throws Exception
      */
-    public String doPostJson(String url, String json,String dataType) throws Exception {
+    public String doPostJson(String url, String json,InvokeContext invokeContext) throws Exception {
         System.out.println("请求报文："+ json);
         // 声明httpPost请求
         HttpPost httpPost = new HttpPost(url);
@@ -96,8 +97,10 @@ public class HttpAPIServer {
             // 给httppost对象设置json格式的参数
             StringEntity httpEntity = new StringEntity(json,"utf-8");
             // 设置请求格式
-            httpPost.setHeader("Content-type",dataType);
-            //httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
+            httpPost.setHeader("Content-type",invokeContext.getDataType());
+            if(url.startsWith("https")&& StringUtils.isNotEmpty(invokeContext.getAccessToken())){//需要登录
+                httpPost.setHeader("access_token",invokeContext.getAccessToken());
+            }
             // 传参
             httpPost.setEntity(httpEntity);
 

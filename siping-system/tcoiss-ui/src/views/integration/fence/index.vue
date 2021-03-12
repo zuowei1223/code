@@ -121,6 +121,13 @@
             </el-select>
           </el-form-item>
 
+
+            <el-input
+              type="hidden"
+              placeholder="请输入内容"
+              v-model="form.city">
+            </el-input>
+
           <el-form-item label="围栏属性" prop="fencePop">
             <el-select v-model="form.fencePop" collapse-tags multiple placeholder="请选择">
               <el-option
@@ -150,12 +157,6 @@
   </div>
 </template>
 <style>
-  html,
-  body,
-  #container {
-    width: 100%;
-    height: 100%;
-  }
 </style>
 <script>
 import { listFence, getFence, delFence, addFence, updateFence,fenceCache,getDistrictOpints } from "@/api/integration/fence";
@@ -267,6 +268,11 @@ export default {
       this.serviceIdOptions.forEach(item =>{
         if(item.serviceId == value){
           this.form.cityCode = item.serviceCity;
+          this.cityOptions.forEach(city=>{
+            if(item.serviceCity==city.dictValue){
+              this.form.city = city.dictLabel;
+            }
+          })
         }
       })
     },

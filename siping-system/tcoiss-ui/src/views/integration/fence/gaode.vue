@@ -8,10 +8,11 @@
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
+          :disabled="true"
         />
       </el-form-item>
       <el-form-item prop="cityCode" label="城市">
-        <el-select v-model="queryParams.cityCode" placeholder="请选择城市" :disabled="true" >
+        <el-select v-model="cityCode" placeholder="请选择城市" :disabled="true" >
           <el-option
             v-for="dict in cityOptions"
             :key="dict.dictValue"
@@ -120,10 +121,10 @@
           <el-form-item  label="行政区" prop="district" >
             <el-select v-model="form.district" placeholder="请选择行政区">
               <el-option
-                v-for="dict in districtOptions"
-                :key="dict.dictValue"
-                :label="dict.dictLabel"
-                :value="dict.dictValue"
+                v-for="district in districtOptions"
+                :key="district.adcode"
+                :label="district.name"
+                :value="district.adcode"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -152,7 +153,7 @@
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=3fa060bd1711d61ee47bb8983d7b1101&plugin=AMap.MouseTool"></script>
 <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
 <script>
-  import { listFencePoints, listCache,getFencePoints, getFence,delFencePoints, deleteCache,fencePointsCache,addFencePoints, updateFencePoints,districtCache } from "@/api/integration/gaode";
+  import { listFencePoints, listCache,getFencePoints, getFence,delFencePoints, deleteCache,fencePointsCache,addFencePoints, updateFencePoints,getDistrictByCity,districtCache } from "@/api/integration/gaode";
   import $ from 'jquery';
   import Vue from 'vue';
   import VueAMap from 'vue-amap';
@@ -168,55 +169,15 @@
   var geocoder;
   //修改的围栏对象
   var editPolygon = null ;
-
   var cachePolygon = [];
   //查询出来的围栏对象
   var queryFence = null;
-
   var infoWindow ;
 
-  //查询出来的坐标对象列表
-  //var queryFencePoints = [];
+  var city = "";
 
   export default {
     mounted: function () {
-      this.init();
-      //初始化地图组件
-      mouseTool.on('draw',function(e){
-        if(e.obj.CLASS_NAME == 'AMap.Marker'){
-
-        }else{
-          this.openIsSave = false;
-          this.openIsAdd = false;
-          var path = e.obj.getPath();
-          var drawPoints = [];
-          for(var i=0;i<path.length;i++){
-            var fencePoints = {};
-            fencePoints.pointX = path[i].getLng();
-            fencePoints.pointY = path[i].getLat();
-            drawPoints.push(fencePoints);
-          }
-          var pointVo = {};
-          pointVo.fenceName = queryFence.fenceName;
-          pointVo.drawPoints = drawPoints;
-          fencePointsCache(pointVo).then(response => {
-            var polygon = new AMap.Polygon({
-              path: path,
-              fillColor: "#13ffff", // 多边形填充颜色
-              strokeColor: "#ffae0c", // 线条颜色
-              strokeWeight: 6,
-              fillOpacity: 0.4,//填充透明度
-              strokeOpacity: 0.4, //线透明度
-              zIndex: 50,
-              bubble: true,
-            });
-            map.add(polygon);
-            cachePolygon.push(polygon)
-          });
-          //关闭鼠标绘制工具
-          mouseTool.close(true);
-        }
-      });
     },
     name: "gaode",
     components: {
@@ -235,11 +196,13 @@
         showSearch: true,
         // 总条数
         total: 0,
+        cityCode: null,
         // 电子围栏表格数据
         fenceList: [],
         provinceOptions: [],
         cityOptions: [],
         districtOptions: [],
+        openName: false,
         openIsAdd: false,
         openIsEdit: true,
         openIsDetele: true,
@@ -277,9 +240,6 @@
       this.getDicts("city").then(response => {
         this.cityOptions = response.data;
       });
-      this.getDicts("district").then(response => {
-        this.districtOptions = response.data;
-      });
       infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
     },
     methods: {
@@ -291,9 +251,10 @@
           zoom: 11,
           showIndoorMap: false
         })
-        map.setCity(this.queryParams.cityCode);
-        var bounds = map.getBounds();
-        map.setLimitBounds(bounds);
+        console.log(city);
+        map.setCity(city);
+        /*var bounds = map.getBounds();
+        map.setLimitBounds(bounds);*/
         // 初始化地图插件
         AMap.plugin(['AMap.ToolBar', 'AMap.Scale','AMap.MouseTool','AMap.Autocomplete',
           'AMap.PlaceSearch' ], function(){
@@ -301,6 +262,43 @@
           map.addControl(new AMap.Scale())
           mouseTool = new AMap.MouseTool(map);
         })
+
+        //初始化地图组件
+        mouseTool.on('draw',function(e){
+          if(e.obj.CLASS_NAME == 'AMap.Marker'){
+
+          }else{
+            this.openIsSave = false;
+            this.openIsAdd = false;
+            var path = e.obj.getPath();
+            var drawPoints = [];
+            for(var i=0;i<path.length;i++){
+              var fencePoints = {};
+              fencePoints.pointX = path[i].getLng();
+              fencePoints.pointY = path[i].getLat();
+              drawPoints.push(fencePoints);
+            }
+            var pointVo = {};
+            pointVo.fenceName = queryFence.fenceName;
+            pointVo.drawPoints = drawPoints;
+            fencePointsCache(pointVo).then(response => {
+              var polygon = new AMap.Polygon({
+                path: path,
+                fillColor: "#13ffff", // 多边形填充颜色
+                strokeColor: "#ffae0c", // 线条颜色
+                strokeWeight: 6,
+                fillOpacity: 0.4,//填充透明度
+                strokeOpacity: 0.4, //线透明度
+                zIndex: 50,
+                bubble: true,
+              });
+              map.add(polygon);
+              cachePolygon.push(polygon)
+            });
+              //关闭鼠标绘制工具
+              mouseTool.close(true);
+            }
+          });
 
       },
 
@@ -342,39 +340,48 @@
       drawDistrict () {//根据选择的区域返回对应区域坐标
         var pointsVo = {};
         this.districtOptions.forEach(item => {
-          if(item.dictValue===this.form.district)
+          if(item.adcode===this.form.district)
           {
-            pointsVo.adcodeName = item.dictLabel;
-            pointsVo.adcode = item.dictValue;
+            pointsVo.adcodeName = item.name;
+            pointsVo.adcode = item.adcode;
           }
         });
         pointsVo.fenceName = queryFence.fenceName;
         districtCache(pointsVo).then(response =>{
           this.open = false;
           this.getCache();
-
         });
       },
       getFence(fenceId){
+
         if(fenceId){
           getFence(fenceId).then(response => {
             //this.queryParams.fenceId = response.data.fenceId;
             queryFence = response.data;
             //根据cityCode
-            this.queryParams.cityCode = queryFence.cityCode;
+            this.cityCode = queryFence.cityCode;
+            city = queryFence.city;
+            this.init();
             this.queryParams.fenceName = queryFence.fenceName;
+            var data = {};
+            data.adcode = queryFence.cityCode;
+            data.adcodeName = city;
+            data.fenceName = queryFence.fenceName;
+            getDistrictByCity(data).then(response => {
+              this.districtOptions = response.data;
+            });
             this.getList();
           });
         }else {
-          this.getList()
+          this.init();
+          this.getList();
         }
+
       },
       /** 查询电子围栏列表 并将数据缓存到页面 */
       getList() {
         //this.loading = true;
         editPolygon = null;
-        //queryFence = null;
-
         listFencePoints(this.queryParams).then(response => {
           //清空围栏坐标
           var allFence = response.data.all;
@@ -401,7 +408,6 @@
             this.modelType = "lookUp";
             this.buttonDisabled();
           }
-          map.setFitView();
         });
       },
       //获取缓存数据
@@ -457,7 +463,6 @@
       /** 新增按钮操作 关闭列表，打开地图界面*/
       handleAdd(type) {
         //不能做编辑和删除操作
-        this.buttonDisabled();
         if(type=="draw"){
           this.draw("polygon");
           this.modelType = "add";
@@ -467,6 +472,7 @@
           this.open = true;
           this.title = "选择区域";
         }
+        this.buttonDisabled();
       },
       // 取消按钮,
       cancel() {

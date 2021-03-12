@@ -75,6 +75,9 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
         for(FencePoints fencePoints1:gids) {
             if(StringUtils.isNotBlank(fencePoints.getFenceName())||StringUtils.isNotBlank(fencePoints.getPointsGroupId())){
                 LambdaQueryWrapper<FencePoints> lqw2 = Wrappers.lambdaQuery();
+                /*if(StringUtils.isNotBlank(fencePoints.getFenceCode())){
+                    lqw2.eq(FencePoints::getFenceCode, fencePoints.getFenceCode());
+                }*/
                 if(StringUtils.isNotBlank(fencePoints.getFenceName())){
                     lqw2.eq(FencePoints::getFenceName, fencePoints.getFenceName());
                 }
@@ -333,6 +336,35 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
         }
     }
 
+    @Override
+    public List<Map<String,Object>> getDistrictInfo(PointsVo pointsVo, String apiCode, Map<String, Object> querstMap) {
+        ElectronicFence fence = iElectronicFenceService.getByFenceName(pointsVo.getFenceName());
+        LambdaQueryWrapper<TrackService> lqw = Wrappers.lambdaQuery();
+        lqw.eq(TrackService::getServiceId,fence.getServiceId());
+        lqw.eq(TrackService::getDataLevel,1);
+        TrackService trackService = iTrackServiceService.getOne(lqw);
+        if(trackService==null){
+            throw new ApiException("9999",new Object[] { fence.getServiceId() },"未查询到相应的轨迹服务配置");
+        }
+        querstMap.put("key",trackService.getGaodeKey());
+        Map resultMap = iApiService.executeByApiCode(apiCode,querstMap);
+        if(resultMap == null){
+            throw new ApiException("code404",new Object[] { apiCode },"http请求连接异常");
+        }else{
+            if(Integer.valueOf(resultMap.get("infocode").toString())==10000) {//创建成功
+                //更新坐标数据
+                List<Object> citys = (List<Object>) resultMap.get("districts");
+                Map<String,Object> city = (Map<String, Object>) citys.get(0);
+                List<Map<String,Object>> districts = (List<Map<String,Object>>) city.get("districts");
+                return districts;
+            }else{
+                throw new ApiException("9999",new Object[]{apiCode,resultMap.get("infocode").toString()},
+                        "接口调用异常："+resultMap.get("info").toString());
+            }
+        }
+
+    }
+
     private boolean deleteByGid(String gid) {
         LambdaQueryWrapper<FencePoints> lqw = Wrappers.lambdaQuery();
         lqw.eq(FencePoints::getPointsGroupId,gid);
@@ -370,5 +402,21 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
         }
 
     }
+
+    @Override
+    public boolean removeByFenceCode(String fenceCode) {
+        boolean flag = true;
+        LambdaQueryWrapper<FencePoints> lqw = Wrappers.lambdaQuery();
+        lqw.select(FencePoints::getPointsGroupId,FencePoints::getFenceCode);
+        lqw.groupBy(FencePoints::getPointsGroupId,FencePoints::getFenceCode);
+        List<FencePoints> gids = this.list(lqw);
+        for(FencePoints fencePoints:gids){
+            if(fenceCode.equals(fencePoints.getFenceCode())){
+                flag = this.removeByGid(Long.parseLong(fencePoints.getPointsGroupId()),"deleteFence");
+            }
+        }
+        return flag;
+    }
+
 
 }

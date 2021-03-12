@@ -104,7 +104,7 @@ public class ApiServiceConfigController extends BaseController {
      */
     @PreAuthorize(hasPermi="${integration:apiService}:test" )
     @Log(title = "API服务测试" , businessType = BusinessType.DELETE)
-    @GetMapping("apiTest/{id}" )
+    @GetMapping("/apiTest/{id}" )
     public AjaxResult apiTest(@PathVariable("id" ) Long id) {
         return AjaxResult.success(iApiService.apiTest(id));
     }

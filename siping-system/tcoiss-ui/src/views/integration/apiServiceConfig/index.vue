@@ -109,8 +109,6 @@
       <el-table-column label="请求方式" align="center" prop="requestType" :formatter="requestTypeFormat" />
       <el-table-column label="所属应用" align="center" prop="appName" />
       <el-table-column label="内容格式" align="center" prop="dataType" />
-      <el-table-column label="创建人id" align="center" prop="createId" />
-      <el-table-column label="创建人名称" align="center" prop="createName" />
       <el-table-column label="数据级别" align="center" prop="dataLevel" :formatter="dataLevelFormat" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -179,7 +177,7 @@
           <el-input v-model="form.dataType" placeholder="请输入内容格式" />
         </el-form-item>
         <el-form-item label="参数模板" prop="paramTemplate">
-          <el-input v-model="form.paramTemplate" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.paramTemplate" type="textarea" rows="5" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="数据级别" prop="dataLevel">
           <el-select v-model="form.dataLevel" placeholder="请选择数据级别">

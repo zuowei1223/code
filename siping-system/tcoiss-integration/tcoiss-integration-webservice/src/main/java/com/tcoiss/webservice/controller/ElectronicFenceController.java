@@ -1,6 +1,7 @@
 package com.tcoiss.webservice.controller;
 
 import com.tcoiss.common.core.utils.SecurityUtils;
+import com.tcoiss.common.core.utils.StringUtils;
 import com.tcoiss.common.core.utils.poi.ExcelUtil;
 import com.tcoiss.common.core.web.controller.BaseController;
 import com.tcoiss.common.core.web.domain.AjaxResult;
@@ -35,8 +36,7 @@ public class ElectronicFenceController extends BaseController {
 
     private final IElectronicFenceService iElectronicFenceService;
 
-    @Autowired
-    private RedisService redisService;
+
     /**
      * 查询电子围栏列表
      */
@@ -80,7 +80,7 @@ public class ElectronicFenceController extends BaseController {
     public AjaxResult addFence(@RequestBody ElectronicFence electronicFence) {
         //生成围栏编码
         String code = "gd_"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
-        redisService.setIncr(code,0);
+        //redisService.setIncr(code,0);
         //校验是否存在相同的围栏名称
         if(iElectronicFenceService.checkFenceName(electronicFence)){
             return AjaxResult.error("围栏名称不能重复");
@@ -88,7 +88,7 @@ public class ElectronicFenceController extends BaseController {
         electronicFence.setFenceCode(code);
         electronicFence.setCreateor(SecurityUtils.getUsername());
         electronicFence.setCreateorId(SecurityUtils.getUserId());
-        return toAjax(iElectronicFenceService.save(electronicFence) ? 1 : 0);
+        return toAjax(iElectronicFenceService.syncFence(electronicFence,1) ? 1 : 0);
     }
 
 
@@ -98,13 +98,13 @@ public class ElectronicFenceController extends BaseController {
      */
     @PreAuthorize(hasPermi = "webservice:fence:edit" )
     @Log(title = "电子围栏" , businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PutMapping("/editFence")
     public AjaxResult edit(@RequestBody ElectronicFence electronicFence) {
         //校验是否存在相同的围栏名称
         if(iElectronicFenceService.checkFenceName(electronicFence)){
             return AjaxResult.error("围栏名称不能重复");
         }
-        return toAjax(iElectronicFenceService.updateById(electronicFence) ? 1 : 0);
+        return toAjax(iElectronicFenceService.syncFence(electronicFence,0) ? 1 : 0);
     }
 
     /**
@@ -114,6 +114,11 @@ public class ElectronicFenceController extends BaseController {
     @Log(title = "电子围栏" , businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}" )
     public AjaxResult remove(@PathVariable Long[] ids) {
-        return toAjax(iElectronicFenceService.removeByIds(Arrays.asList(ids)) ? 1 : 0);
+        int num = 0;
+        for(Long id:ids){
+            ElectronicFence electronicFence = iElectronicFenceService.getById(id);
+            num = iElectronicFenceService.syncFence(electronicFence,0)? 1 : 0;
+        }
+        return toAjax(num);
     }
 }

@@ -54,6 +54,9 @@ private static final long serialVersionUID=1L;
     @Excel(name = "所属城市")
     private String cityCode;
 
+    /** 城市 */
+    @Excel(name = "城市")
+    private String city;
     /** 描述信息 */
     @Excel(name = "描述信息")
     private String fenceDesc;
