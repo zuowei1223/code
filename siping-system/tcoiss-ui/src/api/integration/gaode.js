@@ -1,55 +1,47 @@
 import request from '@/utils/request'
 
 // 查询围栏坐标列表
-export function listFencePoints(query) {
+export function listFence(query) {
   return request({
-    url: '/webservice/gaode/queryFencePoints',
+    url: '/webservice/gaode/queryFence',
     method: 'get',
     params: query
   })
 }
 
-
-
-// 查询围栏坐标详细
-export function fencePointsCache(data) {
+// 查询围栏坐标列表
+export function checkFence(query) {
   return request({
-    url: '/webservice/gaode/fencePointsCache',
-    method: 'post',
-    data: data
-  })
-}
-
-// 查询围栏坐标详细
-export function getFence(FenceId) {
-  return request({
-    url: '/webservice/fence/' + FenceId,
-    method: 'get'
-  })
-}
-
-// 查询围栏坐标详细
-export function addFencePoints() {
-  return request({
-    url: '/webservice/gaode/addFencePoints',
+    url: '/webservice/gaode/checkFence',
     method: 'get',
+    params: query
   })
 }
 
-// 修改围栏坐标
-export function updateFencePoints(data) {
+// 保存缓存
+export function saveCache(data) {
   return request({
-    url: '/webservice/gaode/editFencePoints',
-    method: 'put',
-    data: data
+    url: '/webservice/gaode/saveCache',
+    method: 'post',
+    data:data
   })
 }
+
+export function updateFence(data) {
+  return request({
+    url: '/webservice/gaode',
+    method: 'put',
+    data:data
+  })
+}
+
 
 // 删除围栏坐标
-export function delFencePoints(gid) {
+export function delFence(data) {
   return request({
-    url: '/webservice/gaode/' + gid,
-    method: 'delete'
+    url: '/webservice/gaode/delFence',
+    method: 'post',
+    data:data
   })
 }
 //根据地址查询围栏信息
@@ -60,33 +52,23 @@ export function queryByAddr(location) {
     params: {'location':location}
   })
 }
-export function districtCache(data) {
-  return request({
-    url: '/webservice/gaode/districtCache',
-    method: 'post',
-    data: data
-  })
-}
 
-export function getDistrictByCity(data) {
+export function getDistrictByCity(query) {
   return request({
     url: '/webservice/gaode/getDistrictByCity',
-    method: 'post',
-    data: data
+    method: 'get',
+    params: query
   })
 }
 
-export function deleteCache() {
+// 查询电子围栏详细
+export function getFence(id) {
   return request({
-    url: '/webservice/gaode/deleteCache',
-    method: 'delete'
-  })
-}
-
-export function listCache() {
-  return request({
-    url: '/webservice/gaode/listCache',
+    url: '/webservice/fence/' + id,
     method: 'get'
   })
 }
+
+
+
 

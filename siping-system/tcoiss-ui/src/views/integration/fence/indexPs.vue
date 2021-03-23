@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="编码" prop="localKey">
+      <el-form-item label="编码" prop="fenceCode">
         <el-input
-          v-model="queryParams.localKey"
+          v-model="queryParams.fenceCode"
           placeholder="编码"
           clearable
           size="small"
@@ -32,8 +32,8 @@
         plain
             icon="el-icon-plus"
             size="mini"
+            :disabled = "true"
             @click="handleAdd"
-            v-hasPermi="['webservice:fence:add']"
           >新增</el-button>
         </el-col>
         <el-col :span="1.5">
@@ -44,7 +44,6 @@
             size="mini"
             :disabled="multiple"
             @click="handleDelete"
-            v-hasPermi="['webservice:fence:remove']"
           >删除</el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -55,14 +54,12 @@
       <!--<el-table-column label="编号" align="center" prop="id" />-->
       <el-table-column label="围栏编码" align="center" prop="fenceCode" >
         <template slot-scope="scope">
-          <router-link :to="'/fence/gaode/points/' + scope.row.id" class="link-type">
+          <router-link :to="'/fence/gaodePs/' + scope.row.id" class="link-type">
             <span>{{ scope.row.fenceCode }}</span>
           </router-link>
         </template>
       </el-table-column>
       <el-table-column label="围栏名称" align="center" prop="fenceName" />
-      <el-table-column label="围栏属性" align="center" prop="fencePop" :formatter="popFormat" />
-      <el-table-column label="轨迹服务ID" align="center" prop="serviceId" />
       <el-table-column label="所属城市" align="center" prop="cityCode"  :formatter="cityFormat" />
       <el-table-column label="描述信息" align="center" prop="fenceDesc" />
       <el-table-column label="创建人" align="center" prop="createor" />
@@ -73,14 +70,12 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['webservice:fence:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['webservice:fence:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -159,11 +154,11 @@
 <style>
 </style>
 <script>
-import { listFence, getFence, delFence, addFence, updateFence,fenceCache,getDistrictOpints } from "@/api/integration/fence";
+import { listFence, getFence, delFence, addFence, updateFence } from "@/api/integration/fence";
 export default {
   mounted: function () {
   },
-  name: "Fence",
+  name: "FencePs",
   components: {
   },
   data() {
@@ -236,6 +231,7 @@ export default {
     /** 查询电子围栏列表 并将数据缓存到页面 */
     getList() {
       this.loading = true;
+      this.queryParams.fencePop = "0";
       listFence(this.queryParams).then(response => {
         this.fenceList = response.rows;
         this.total = response.total;

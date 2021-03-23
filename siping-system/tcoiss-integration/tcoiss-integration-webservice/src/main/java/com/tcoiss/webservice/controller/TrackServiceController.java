@@ -41,7 +41,7 @@ public class TrackServiceController extends BaseController {
     /**
      * 查询轨迹服务配置列表
      */
-    @PreAuthorize(hasPermi = "webservice:trackservice:list")
+    //@PreAuthorize(hasPermi = "webservice:trackservice:list")
     @GetMapping("/list")
     public TableDataInfo list(TrackService trackService) {
         startPage();
@@ -52,7 +52,7 @@ public class TrackServiceController extends BaseController {
     /**
      * 查询满足条件的轨迹服务配置集合
      */
-    @PreAuthorize(hasPermi = "webservice:trackservice:list")
+    //@PreAuthorize(hasPermi = "webservice:trackservice:list")
     @GetMapping("/getService")
     public AjaxResult getService(TrackService trackService) {
         trackService.setFenceNum(1000L);
@@ -64,7 +64,7 @@ public class TrackServiceController extends BaseController {
     /**
      * 导出轨迹服务配置列表
      */
-    @PreAuthorize(hasPermi = "webservice:trackservice:export" )
+    //@PreAuthorize(hasPermi = "webservice:trackservice:export" )
     @Log(title = "轨迹服务配置" , businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response,TrackService trackService) throws IOException
@@ -77,7 +77,7 @@ public class TrackServiceController extends BaseController {
     /**
      * 获取轨迹服务配置详细信息
      */
-    @PreAuthorize(hasPermi = "webservice:trackservice:query" )
+    //@PreAuthorize(hasPermi = "webservice:trackservice:query" )
     @GetMapping(value = "/{id}" )
     public AjaxResult getInfo(@PathVariable("id" ) Long id) {
         return AjaxResult.success(iTrackServiceService.getById(id));
@@ -86,7 +86,7 @@ public class TrackServiceController extends BaseController {
     /**
      * 新增轨迹服务配置
      */
-    @PreAuthorize(hasPermi = "webservice:trackservice:add" )
+    //@PreAuthorize(hasPermi = "webservice:trackservice:add" )
     @Log(title = "轨迹服务配置" , businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TrackService trackService) {
@@ -97,7 +97,7 @@ public class TrackServiceController extends BaseController {
     /**
      * 修改轨迹服务配置
      */
-    @PreAuthorize(hasPermi = "webservice:trackservice:edit" )
+    //@PreAuthorize(hasPermi = "webservice:trackservice:edit" )
     @Log(title = "轨迹服务配置" , businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TrackService trackService) {
@@ -107,7 +107,7 @@ public class TrackServiceController extends BaseController {
     /**
      * 删除轨迹服务配置
      */
-    @PreAuthorize(hasPermi = "webservice:trackservice:remove" )
+    //@PreAuthorize(hasPermi = "webservice:trackservice:remove" )
     @Log(title = "轨迹服务配置" , businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}" )
     public AjaxResult remove(@PathVariable Long[] ids) {

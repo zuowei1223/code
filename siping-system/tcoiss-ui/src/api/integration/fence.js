@@ -9,6 +9,7 @@ export function listFence(query) {
   })
 }
 
+
 // 查询电子围栏详细
 export function getFence(id) {
   return request({
@@ -44,13 +45,6 @@ export function delFence(id) {
   })
 }
 
-/*export function getDistrict(data) {
-  return request({
-    url: '/webservice/fence/gaode/queryDistrict',
-    method: 'post',
-    data: data
-  })
-}*/
 
 
 

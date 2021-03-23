@@ -3,8 +3,8 @@ package com.tcoiss.webservice.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tcoiss.common.core.web.domain.AjaxResult;
 import com.tcoiss.webservice.domain.AddressVo;
+import com.tcoiss.webservice.domain.ElectronicFence;
 import com.tcoiss.webservice.domain.FencePoints;
-import com.tcoiss.webservice.domain.PointsVo;
 
 import java.util.List;
 import java.util.Map;
@@ -16,22 +16,24 @@ import java.util.Map;
  * @date 2021-02-21
  */
 public interface IFencePointsService extends IService<FencePoints> {
-    Map<String,List<PointsVo>> queryList(FencePoints fencePoints);
+    List<ElectronicFence> queryList(ElectronicFence electronicFence);
 
-    boolean removeByGid(Long gid,String apiCode);
+    boolean removeByCode(String fenceCode,String apiCode);
 
-    boolean removeByFenceCode(String fenceCode);
-
-    int saveFencePoints(PointsVo pointsVo, String saveFence);
-
-    boolean updateByVo(PointsVo pointsVo, String apiCode);
-
-    List<PointsVo> getDistrictOpints(PointsVo pointsVo, String apiCode, Map<String, Object> querstMap);
-
-    int saveDistrictFence(PointsVo pointsVo, String apiCode);
+    int saveDistrictFence(ElectronicFence fence, String apiCode);
 
     AjaxResult getFenceByLocation(AddressVo addressVo);
 
-    List<Map<String,Object>> getDistrictInfo(PointsVo pointsVo, String apiCode, Map<String, Object> querstMap);
+    List<Map<String,Object>> getDistrictInfo(ElectronicFence fence, String apiCode);
+
+    boolean checkFenceName(ElectronicFence electronicFence);
+
+    ElectronicFence districtFence(ElectronicFence electronicFence, String apiCode);
+
+    int saveOrUpdateFence(ElectronicFence fence);
+
+    int updateByCode(ElectronicFence fence);
+
+    /*List<ElectronicFence> queryFenceByName(ElectronicFence electronicFence);*/
 }
 

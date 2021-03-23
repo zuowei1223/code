@@ -55,7 +55,7 @@ public class TrackServiceServiceImpl extends ServiceImpl<TrackServiceMapper, Tra
 
     @Override
     public TrackService getOneByAddrss(AddressVo addressVo) {
-        LambdaQueryWrapper<TrackService> lqw = Wrappers.lambdaQuery();
+        /*LambdaQueryWrapper<TrackService> lqw = Wrappers.lambdaQuery();
         lqw.eq(TrackService::getServiceCity,addressVo.getCity());
         lqw.eq(TrackService::getServiceProvince,addressVo.getProvince());
         lqw.eq(TrackService::getDataLevel,1l);
@@ -66,7 +66,8 @@ public class TrackServiceServiceImpl extends ServiceImpl<TrackServiceMapper, Tra
         if(this.list(lqw).size()>1){
             throw new ApiException("400",new Object[] { addressVo },"查询到多个轨迹服务");
         }
-        return this.list(lqw).get(0);
+        return this.list(lqw).get(0);*/
+        return  null;
     }
 
     @Override

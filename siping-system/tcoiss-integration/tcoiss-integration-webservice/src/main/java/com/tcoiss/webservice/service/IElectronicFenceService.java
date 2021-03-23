@@ -23,7 +23,7 @@ public interface IElectronicFenceService extends IService<ElectronicFence> {
     List<ElectronicFence> queryList(ElectronicFence electronicFence);
 
 
-    ElectronicFence getByFenceName(String fenceName);
+    ElectronicFence getByFenceCode(String fenceCode);
 
     boolean checkFenceName(ElectronicFence electronicFence);
 

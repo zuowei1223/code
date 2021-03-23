@@ -1,14 +1,12 @@
 package com.tcoiss.webservice.controller;
 
 import com.tcoiss.common.core.utils.SecurityUtils;
-import com.tcoiss.common.core.utils.StringUtils;
 import com.tcoiss.common.core.utils.poi.ExcelUtil;
 import com.tcoiss.common.core.web.controller.BaseController;
 import com.tcoiss.common.core.web.domain.AjaxResult;
 import com.tcoiss.common.core.web.page.TableDataInfo;
 import com.tcoiss.common.log.annotation.Log;
 import com.tcoiss.common.log.enums.BusinessType;
-import com.tcoiss.common.redis.service.RedisService;
 import com.tcoiss.common.security.annotation.PreAuthorize;
 import com.tcoiss.webservice.domain.ElectronicFence;
 import com.tcoiss.webservice.service.IElectronicFenceService;
@@ -20,12 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * 电子围栏Controller
- * 
+ *
  * @author zw
  * @date 2021-01-31
  */
@@ -36,11 +33,10 @@ public class ElectronicFenceController extends BaseController {
 
     private final IElectronicFenceService iElectronicFenceService;
 
-
     /**
      * 查询电子围栏列表
      */
-    @PreAuthorize(hasPermi = "webservice:fence:list")
+    //@PreAuthorize(hasPermi="${integration:fence}:list")
     @GetMapping("/list")
     public TableDataInfo list(ElectronicFence electronicFence) {
         startPage();
@@ -51,7 +47,7 @@ public class ElectronicFenceController extends BaseController {
     /**
      * 导出电子围栏列表
      */
-    @PreAuthorize(hasPermi = "webservice:fence:export" )
+    //@PreAuthorize(hasPermi = "${integration:fence}:export" )
     @Log(title = "电子围栏" , businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, ElectronicFence electronicFence) throws IOException
@@ -64,7 +60,7 @@ public class ElectronicFenceController extends BaseController {
     /**
      * 获取电子围栏详细信息
      */
-    @PreAuthorize(hasPermi = "webservice:fence:query" )
+    //@PreAuthorize(hasPermi = "${integration:fence}:query" )
     @GetMapping(value = "/{id}" )
     public AjaxResult getInfo(@PathVariable("id" ) Long id) {
         return AjaxResult.success(iElectronicFenceService.getById(id));
@@ -74,7 +70,7 @@ public class ElectronicFenceController extends BaseController {
     /**
      * 新增围栏
      */
-    @PreAuthorize(hasPermi="${webservice:fence}:add" )
+    //@PreAuthorize(hasPermi="${integration:fence}:add" )
     @Log(title = "地理围栏" , businessType = BusinessType.INSERT)
     @PostMapping("/addFence")
     public AjaxResult addFence(@RequestBody ElectronicFence electronicFence) {
@@ -96,7 +92,7 @@ public class ElectronicFenceController extends BaseController {
     /**
      * 修改电子围栏,根据修改类型分别修改基本信息和围栏信息
      */
-    @PreAuthorize(hasPermi = "webservice:fence:edit" )
+    //@PreAuthorize(hasPermi = "${integration:fence}:edit" )
     @Log(title = "电子围栏" , businessType = BusinessType.UPDATE)
     @PutMapping("/editFence")
     public AjaxResult edit(@RequestBody ElectronicFence electronicFence) {
@@ -104,13 +100,13 @@ public class ElectronicFenceController extends BaseController {
         if(iElectronicFenceService.checkFenceName(electronicFence)){
             return AjaxResult.error("围栏名称不能重复");
         }
-        return toAjax(iElectronicFenceService.syncFence(electronicFence,0) ? 1 : 0);
+        return toAjax(iElectronicFenceService.syncFence(electronicFence,1) ? 1 : 0);
     }
 
     /**
      * 删除电子围栏,
      */
-    @PreAuthorize(hasPermi = "webservice:fence:remove" )
+    //@PreAuthorize(hasPermi = "${integration:fence}:remove" )
     @Log(title = "电子围栏" , businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}" )
     public AjaxResult remove(@PathVariable Long[] ids) {

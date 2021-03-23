@@ -353,7 +353,6 @@
         });
       },
       getFence(fenceId){
-
         if(fenceId){
           getFence(fenceId).then(response => {
             //this.queryParams.fenceId = response.data.fenceId;

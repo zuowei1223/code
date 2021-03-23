@@ -28,8 +28,6 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
     private RedisService redisService;
     @Autowired
     private IApiService iApiService;
-    @Autowired
-    private IFencePointsService iFencePointsService;
 
     @Override
     public List<ElectronicFence> queryList(ElectronicFence electronicFence) {
@@ -38,26 +36,26 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
             lqw.eq(ElectronicFence::getFenceCode ,electronicFence.getFenceCode());
         }
         if (StringUtils.isNotBlank(electronicFence.getFenceName())){
-            lqw.like(ElectronicFence::getFenceName ,electronicFence.getFenceName());
+            lqw.eq(ElectronicFence::getFenceName ,electronicFence.getFenceName());
         }
         if (electronicFence.getCreateorId() != null){
             lqw.eq(ElectronicFence::getCreateorId ,electronicFence.getCreateorId());
         }
+        lqw.eq(ElectronicFence::getFencePop ,electronicFence.getFencePop());
         List<ElectronicFence> list = this.list(lqw);
 
         return list;
     }
 
     @Override
-    public ElectronicFence getByFenceName(String fenceName) {
+    public ElectronicFence getByFenceCode(String fenceCode) {
         LambdaQueryWrapper<ElectronicFence> lqw = Wrappers.lambdaQuery();
-        if (StringUtils.isNotBlank(fenceName)){
-            lqw.eq(ElectronicFence::getFenceName ,fenceName);
+        if (StringUtils.isNotBlank(fenceCode)){
+            lqw.eq(ElectronicFence::getFenceCode ,fenceCode);
         }
         List<ElectronicFence> list = this.list(lqw);
         if(list==null||list.size()==0){
-            throw new ApiException("404",new Object[]{fenceName},
-                    "未查询到围栏信息：");
+            return null;
         }
         return list.get(0);
     }
@@ -95,10 +93,9 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
         Map<String,Object> resultMap = iApiService.executeKdByApiCode("syncKdFence",map,accessToken);
         if(resultMap.get("errorCode").equals("success")){
             if(enable==1) {
-                return this.save(electronicFence);
+                return this.saveOrUpdate(electronicFence);
             }else{
                 //删除围栏地图数据
-                iFencePointsService.removeByFenceCode(electronicFence.getFenceCode());
                 return this.removeById(electronicFence.getId());
             }
         }else{

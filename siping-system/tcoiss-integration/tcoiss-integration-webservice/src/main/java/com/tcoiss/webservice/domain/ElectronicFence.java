@@ -50,6 +50,10 @@ private static final long serialVersionUID=1L;
     @Excel(name = "围栏属性")
     private String fencePop;
 
+    /** 围栏类型 */
+    @Excel(name = "围栏类型")
+    private String fenceType;
+
     /** 所属城市 */
     @Excel(name = "所属城市")
     private String cityCode;
@@ -57,6 +61,16 @@ private static final long serialVersionUID=1L;
     /** 城市 */
     @Excel(name = "城市")
     private String city;
+
+    @Excel(name = "区域编码")
+    private String adcode;
+
+    @Excel(name = "区域名称")
+    private String adcodeName;
+
+    @Excel(name = "高德ID")
+    private String gdId;
+
     /** 描述信息 */
     @Excel(name = "描述信息")
     private String fenceDesc;
@@ -71,6 +85,12 @@ private static final long serialVersionUID=1L;
     /** 创建人 */
     @Excel(name = "创建人")
     private String createor;
+
+    @TableField(exist = false)
+    private List<FencePoints> points;
+
+    @TableField(exist = false)
+    private String type;
 
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();
