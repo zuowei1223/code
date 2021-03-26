@@ -21,6 +21,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -59,8 +61,8 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
         if(StringUtils.isNotBlank(electronicFence.getFenceName())){
             lqw.eq(ElectronicFence::getFenceName, electronicFence.getFenceName());
         }
-        if(StringUtils.isNotBlank(electronicFence.getAdcodeName())){
-            lqw.eq(ElectronicFence::getAdcodeName, electronicFence.getAdcodeName());
+        if(StringUtils.isNotBlank(electronicFence.getAdcode())){
+            lqw.eq(ElectronicFence::getAdcode, electronicFence.getAdcode());
         }
         lqw.eq(ElectronicFence::getCityCode, electronicFence.getCityCode());
         if(StringUtils.isNotBlank(electronicFence.getFencePop())){
@@ -248,7 +250,12 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
     public AjaxResult getFenceByLocation(AddressVo addressVo) {
         List<Map<String,Object>> list = new ArrayList<>();
         Map<String ,Object> map = new HashMap<>();
-        map.put("address",addressVo.getAddress());
+        try {
+            String address = URLEncoder.encode(addressVo.getAddress(),"utf-8");
+            map.put("address",address);
+        } catch (UnsupportedEncodingException e) {
+            return AjaxResult.error(9999,"系统异常");
+        }
         map.put("city","");
         /*TrackService trackService = this.getTrackService(addressVo.getCityName());*/
         map.put("key","a33e36c0e15b373a2ebd7fc4aa1ec0c2");
@@ -259,9 +266,15 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
             if (Integer.valueOf(resultMap.get("status").toString()) == 1) {//成功
                 //获取地址坐标数据
                 List<Map<String, Object>> geocodes = (List<Map<String, Object>>) resultMap.get("geocodes");
+                if(geocodes==null||geocodes.size()==0){
+                    return AjaxResult.error(408,"无法解析地址信息");
+                }
                 Map<String, Object> geocode = geocodes.get(0);
                 String location = geocode.get("location").toString();
                 String province = geocode.get("province").toString();
+                if(geocode.get("city")==null){
+                    return AjaxResult.error(407,"根据地址信息无法定位城市");
+                }
                 String city = geocode.get("city").toString();
                 String cityCode = geocode.get("citycode").toString();
                 TrackService trackService = this.getTrackService(cityCode);
@@ -287,13 +300,15 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
                                 lqw.eq(ElectronicFence::getGdId,gfid);
                                 lqw.eq(ElectronicFence::getFencePop,addressVo.getAddressPop());
                                 List<ElectronicFence> fences = iElectronicFenceService.list(lqw);
-                                resultJoson.put("fenceName",fences.get(0).getFenceName());
-                                resultJoson.put("fenceCode",fences.get(0).getFenceCode());
-                                resultJoson.put("province",province);
-                                resultJoson.put("district",district);
-                                resultJoson.put("city",city);
-                                resultJoson.put("street",street);
-                                list.add(resultJoson);
+                                if(fences!=null&&fences.size()>0){
+                                    resultJoson.put("fenceName",fences.get(0).getFenceName());
+                                    resultJoson.put("fenceCode",fences.get(0).getFenceCode());
+                                    resultJoson.put("province",province);
+                                    resultJoson.put("district",district);
+                                    resultJoson.put("city",city);
+                                    resultJoson.put("street",street);
+                                    list.add(resultJoson);
+                                }
                             }
                         });
                         if(list.size()>1){

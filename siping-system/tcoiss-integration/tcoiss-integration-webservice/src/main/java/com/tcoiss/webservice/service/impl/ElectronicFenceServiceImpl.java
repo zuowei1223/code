@@ -38,6 +38,9 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
         if (StringUtils.isNotBlank(electronicFence.getFenceName())){
             lqw.eq(ElectronicFence::getFenceName ,electronicFence.getFenceName());
         }
+        if (StringUtils.isNotBlank(electronicFence.getCityCode())){
+            lqw.eq(ElectronicFence::getCityCode ,electronicFence.getCityCode());
+        }
         if (electronicFence.getCreateorId() != null){
             lqw.eq(ElectronicFence::getCreateorId ,electronicFence.getCreateorId());
         }
