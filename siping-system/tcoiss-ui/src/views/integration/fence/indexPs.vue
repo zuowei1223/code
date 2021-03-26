@@ -19,6 +19,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item prop="cityCode" label="服务城市">
+        <el-select v-model="queryParams.cityCode" placeholder="请选择城市" >
+          <el-option
+            v-for="dict in cityOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          ></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -60,7 +70,8 @@
         </template>
       </el-table-column>
       <el-table-column label="围栏名称" align="center" prop="fenceName" />
-      <el-table-column label="所属城市" align="center" prop="cityCode"  :formatter="cityFormat" />
+      <el-table-column label="服务城市" align="center" prop="cityCode"  :formatter="cityFormat" />
+      <el-table-column label="所属区域" align="center" prop="adcodeName"  />
       <el-table-column label="描述信息" align="center" prop="fenceDesc" />
       <el-table-column label="创建人" align="center" prop="createor" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

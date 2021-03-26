@@ -82,7 +82,7 @@
                   v-for="dict in cityOptions"
                   :key="dict.dictValue"
                   :label="dict.dictLabel"
-                  :value="parseInt(dict.dictValue)"
+                  :value="dict.dictValue"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -267,16 +267,17 @@ export default {
         }
         var fence = {};
         fence = polygon.getExtData().fence;
-        if(points.length>100){
+        /*if(points.length>100){
           this.msgError("保存失败，当前编辑的围栏：【"+fence.name+"】顶点数超过了100个");
           return;
         }else{
-          fence.points = points
-          saveCache(fence).then(response => {
-            this.handleQuery();
-            this.msgSuccess("保存成功");
-          });
-        }
+
+        }*/
+        fence.points = points
+        saveCache(fence).then(response => {
+          this.handleQuery();
+          this.msgSuccess("保存成功");
+        });
       }
 
     },
@@ -428,18 +429,26 @@ export default {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
-        }).then(function() {
+        }).then(() =>{
+          this.openIsClose = true;
+          this.openIsAdd = false;
+          this.openIsSave = true;
           opType = "";
           polyEditor.setTarget();
           polyEditor.close();//关闭编辑*/
+          if(!fence.fenceCode){
+            map.remove(polygon);
+          }
           $(".top-input").show();
-        })
+        }).catch(() => {
+            console.log("cancel");
+        });
       }else{
-        opType = "";
-        polyEditor.close();//关闭编辑*/
         this.openIsClose = true;
         this.openIsAdd = false;
         this.openIsSave = true;
+        opType = "";
+        polyEditor.close();//关闭编辑*/
         $(".top-input").show();
       }
     },
@@ -495,7 +504,7 @@ export default {
               $(".top-input").hide();
               tempFence = this.form
               map.setZoom(16,false);
-              map.setCity(this.form.cityCode);
+             /* map.setCity(this.form.cityCode);*/
               if(this.form.fenceType == "1"){
                 var fence = response.data;
                 var polygon = this.initPolygon(fence,"#3c91ff","#ff0816");
