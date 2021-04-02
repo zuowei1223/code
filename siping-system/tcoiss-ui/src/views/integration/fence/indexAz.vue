@@ -83,14 +83,12 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['webservice:fence:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['webservice:fence:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -109,18 +107,8 @@
           <el-form-item label="围栏名称" prop="fenceName">
             <el-input v-model="form.fenceName" placeholder="请输入围栏名称" />
           </el-form-item>
-          <el-form-item label="轨迹服务" prop="serviceId">
-            <el-select v-model="form.serviceId" placeholder="请选择服务" @change="getCity">
-              <el-option
-                v-for="service in serviceIdOptions"
-                :key="service.serviceId"
-                :label="service.serviceId"
-                :value="parseInt(service.serviceId)"
-              ></el-option>
-            </el-select>
-          </el-form-item>
 
-          <el-form-item label="所属城市" prop="cityCode">
+          <el-form-item label="服务城市" prop="cityCode">
             <el-select v-model="form.cityCode" placeholder="请选择城市" :disabled="true">
               <el-option
                 v-for="dict in cityOptions"
@@ -131,23 +119,10 @@
             </el-select>
           </el-form-item>
 
-
-            <el-input
-              type="hidden"
-              placeholder="请输入内容"
-              v-model="form.city">
-            </el-input>
-
-          <el-form-item label="围栏属性" prop="fencePop">
-            <el-select v-model="form.fencePop" collapse-tags multiple placeholder="请选择">
-              <el-option
-                v-for="item in popOptions"
-                :key="item.dictValue"
-                :label="item.dictLabel"
-                :value="parseInt(item.dictValue)"
-              ></el-option>
-            </el-select>
+          <el-form-item label="所属区域" prop="adcodeName">
+            <el-input placeholder="请输入内容" v-model="form.adcodeName" :disabled="true"></el-input>
           </el-form-item>
+
           <el-form-item label="描述信息" prop="fenceDesc">
             <el-input
               type="textarea"

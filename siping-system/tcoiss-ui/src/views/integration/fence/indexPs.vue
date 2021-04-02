@@ -105,18 +105,8 @@
           <el-form-item label="围栏名称" prop="fenceName">
             <el-input v-model="form.fenceName" placeholder="请输入围栏名称" />
           </el-form-item>
-          <el-form-item label="轨迹服务" prop="serviceId">
-            <el-select v-model="form.serviceId" placeholder="请选择服务" @change="getCity">
-              <el-option
-                v-for="service in serviceIdOptions"
-                :key="service.serviceId"
-                :label="service.serviceId"
-                :value="parseInt(service.serviceId)"
-              ></el-option>
-            </el-select>
-          </el-form-item>
 
-          <el-form-item label="所属城市" prop="cityCode">
+          <el-form-item label="服务城市" prop="cityCode">
             <el-select v-model="form.cityCode" placeholder="请选择城市" :disabled="true">
               <el-option
                 v-for="dict in cityOptions"
@@ -127,23 +117,10 @@
             </el-select>
           </el-form-item>
 
-
-            <el-input
-              type="hidden"
-              placeholder="请输入内容"
-              v-model="form.city">
-            </el-input>
-
-          <el-form-item label="围栏属性" prop="fencePop">
-            <el-select v-model="form.fencePop" collapse-tags multiple placeholder="请选择">
-              <el-option
-                v-for="item in popOptions"
-                :key="item.dictValue"
-                :label="item.dictLabel"
-                :value="parseInt(item.dictValue)"
-              ></el-option>
-            </el-select>
+          <el-form-item label="所属区域" prop="adcodeName">
+            <el-input placeholder="请输入内容" v-model="form.adcodeName" :disabled="true"></el-input>
           </el-form-item>
+
           <el-form-item label="描述信息" prop="fenceDesc">
             <el-input
               type="textarea"
@@ -209,13 +186,8 @@ export default {
       rules: {
         fenceName: [
           { required: true, message: "名称不能为空", trigger: "blur" }
-        ],
-        serviceId: [
-          { required: true, message: "服务ID不能为空", trigger: "blur" }
-        ],
-        fencePop: [
-          { required: true, message: "属性不能为空", trigger: "blur" }
         ]
+
       }
     };
   },
@@ -318,25 +290,20 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-
       this.$refs["form"].validate(valid => {
         if (valid) {
           console.log(this.form.fencePop);
-          this.form.fencePop = this.form.fencePop.toString();
-          /*if(this.valueArr!=null&&this.valueArr.length>0){
-            this.form.fencePop = this.valueArr.toString();
-          }*/
           if (this.form.id != null) {
             updateFence(this.form).then(response => {
               this.msgSuccess("修改成功");
-            this.open = false;
-            this.getList();
-          });
+              this.open = false;
+              this.getList();
+            });
           } else {
             addFence(this.form).then(response => {
               this.msgSuccess("新增成功");
-            this.open = false;
-            this.getList();
+              this.open = false;
+              this.getList();
           });
           }
         }
