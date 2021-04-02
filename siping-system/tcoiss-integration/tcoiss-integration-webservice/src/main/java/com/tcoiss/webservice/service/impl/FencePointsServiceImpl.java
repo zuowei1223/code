@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tcoiss.common.core.constant.Constants;
 import com.tcoiss.common.core.exception.api.ApiException;
 import com.tcoiss.common.core.utils.SecurityUtils;
+import com.tcoiss.common.core.utils.bean.BeanUtils;
 import com.tcoiss.common.core.web.domain.AjaxResult;
 import com.tcoiss.common.redis.service.RedisService;
 import com.tcoiss.webservice.domain.*;
@@ -47,7 +48,11 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
     @Autowired
     private IApiService iApiService;
 
+    @Autowired
+    private RedisService redisService;
 
+    private final static String fence_key = "FENCE_INFO";
+    private final static long EXPIRE_TIME = Constants.TOKEN_EXPIRE * 90;
 
 
     /**
@@ -57,47 +62,40 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
      */
     @Override
     public List<ElectronicFence> queryList(ElectronicFence electronicFence) {
+        //全表查询时查询缓存是否存在
         LambdaQueryWrapper<ElectronicFence> lqw = Wrappers.lambdaQuery();
         if(StringUtils.isNotBlank(electronicFence.getFenceName())){
-            lqw.eq(ElectronicFence::getFenceName, electronicFence.getFenceName());
+            lqw.like(ElectronicFence::getFenceName, electronicFence.getFenceName());
         }
         if(StringUtils.isNotBlank(electronicFence.getAdcode())){
             lqw.eq(ElectronicFence::getAdcode, electronicFence.getAdcode());
         }
-        lqw.eq(ElectronicFence::getCityCode, electronicFence.getCityCode());
+        if(StringUtils.isNotBlank(electronicFence.getCityCode())){
+            lqw.eq(ElectronicFence::getCityCode, electronicFence.getCityCode());
+        }
         if(StringUtils.isNotBlank(electronicFence.getFencePop())){
             lqw.eq(ElectronicFence::getFencePop, electronicFence.getFencePop());
         }
-        LambdaQueryWrapper<ElectronicFence> lqw2 = Wrappers.lambdaQuery();
-        lqw2.eq(ElectronicFence::getFencePop,electronicFence.getFencePop());
-        List<ElectronicFence> list = iElectronicFenceService.list(lqw2);
         List<ElectronicFence> list1 = iElectronicFenceService.list(lqw);
-        list.forEach(fence ->{
-            this.setPoints(fence);
-            if(list1!=null&&list1.size()>0) {
-                list1.forEach(fence2 -> {
-                    if (fence2.getFenceCode().equals(fence.getFenceCode())) {
-                        fence.setType("queryFence");
-                    }
-                });
+        return list1;
+    }
+
+    /*private void setPoints(ElectronicFence fence) {
+        String fencePoints = fence.getFencePoints();
+        List<List<FencePoints>> list0 = new ArrayList<>();
+        for(String polyline: fencePoints.split("\\|")){
+            List<FencePoints> list = new ArrayList<>();
+            for (String s1 : polyline.split(";")){
+                String[] points = s1.split(",");
+                FencePoints points1 = new FencePoints();
+                points1.setPointX(points[0]);
+                points1.setPointY(points[1]);
+                list.add(points1);
             }
-
-        });
-        return list;
-    }
-
-    /**
-     * 根据名称查询指定的围栏
-     * @param fence
-     * @return
-     */
-    private void setPoints(ElectronicFence fence) {
-        LambdaQueryWrapper<FencePoints> lqw = Wrappers.lambdaQuery();
-        lqw.eq(FencePoints::getFenceCode,fence.getFenceCode());
-        List<FencePoints> points = this.list(lqw);
-        fence.setPoints(points);
-
-    }
+            list0.add(list);
+        }
+        fence.setPoints(list0);
+    }*/
 
     private TrackService getTrackService(String cityCode){
         LambdaQueryWrapper<TrackService> lqw = Wrappers.lambdaQuery();
@@ -123,7 +121,6 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
         }else{
             //根据编码查询查询到则修改，未查询到则新增
             ElectronicFence fence1 = iElectronicFenceService.getByFenceCode(fence.getFenceCode());
-            this.setPoints(fence1);
             if(fence1.equals(fence)){//未修改则直接返回，修改了则保存当前围栏对象
                 return 1;
             }
@@ -147,12 +144,7 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
         vo.setName(fence.getFenceName());
         vo.setSid(trackService.getServiceId());
         vo.setKey(trackService.getGaodeKey());
-        List<FencePoints> pointsList = fence.getPoints();
-        pointsList.forEach(point ->{
-            point.setFenceCode(fence.getFenceCode());
-        });
-        List<String> points= pointsList.stream().map(fencePoints->{return fencePoints.getPoints();}).collect(Collectors.toList());
-        vo.setPoints(String.join(";",points));
+        vo.setPoints(fence.getFencePoints());
         Map resultMap = iApiService.executeByApiCode(apiCode,vo);
         if(resultMap == null){
             throw new ApiException("500",new Object[] { apiCode },"http请求连接异常");
@@ -164,7 +156,7 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
                 //将平台gfid更新到数据库中并在服务配置中加1
                 iTrackServiceService.addFenceNum(trackService);
                 //保存坐标数据
-                this.saveBatch(pointsList);
+                /*this.saveBatch(pointsList);*/
                 fence.setCreateor(SecurityUtils.getUsername());
                 fence.setCreateorId(SecurityUtils.getUserId());
                 return iElectronicFenceService.syncFence(fence,1)? 1 : 0;
@@ -182,33 +174,20 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
         vo.setSid(trackService.getServiceId());
         vo.setGfid(electronicFence.getGdId());
         vo.setKey(trackService.getGaodeKey());
-        List<FencePoints> pointsList = electronicFence.getPoints();
-        List<String> points= pointsList.stream().map(fencePoints->{return fencePoints.getPoints();}).collect(Collectors.toList());
-        vo.setPoints(String.join(";",points));
+        String points = electronicFence.getFencePoints();
+        vo.setPoints(points);
         Map resultMap = iApiService.executeByApiCode(apiCode,vo);
         if(resultMap == null){
             throw new ApiException("500",new Object[] { apiCode },"http请求连接异常");
         }else{
             if(Integer.valueOf(resultMap.get("errcode").toString())==10000) {//创建成功
                 //更新本地数据
-                return this.updateBatchByFence(pointsList,electronicFence.getFenceCode())?1:0;
+                return iElectronicFenceService.updateById(electronicFence)?1:0;
             }else{
                 throw new ApiException("9999",new Object[]{apiCode,resultMap.get("errcode").toString()},
                         "接口调用异常："+resultMap.get("errdetail").toString());
             }
         }
-    }
-
-    private boolean updateBatchByFence(List<FencePoints> points,String fenceCode){
-        Map<String,Object> objectMap = new HashMap<>();
-        objectMap.put("fence_code",fenceCode);
-        if(this.removeByMap(objectMap)){
-            points.forEach(item ->{
-                item.setFenceCode(fenceCode);
-            });
-            return this.saveBatch(points);
-        }
-        return false;
     }
 
     @Override
@@ -218,12 +197,8 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
         paramer.put("key",trackService.getGaodeKey());
         paramer.put("sid",trackService.getServiceId());
         paramer.put("name",fence.getFenceName());
-        paramer.put("desc",fence.getFenceDesc());
+        paramer.put("desc",fence.getFenceDesc()==null?fence.getFenceName():fence.getFenceDesc());
         paramer.put("adcode",fence.getAdcode());
-        List<FencePoints> pointsList = fence.getPoints();
-        pointsList.forEach(point ->{
-            point.setFenceCode(fence.getFenceCode());
-        });
         Map resultMap = iApiService.executeByApiCode(apiCode,paramer);
         if(resultMap == null){
             throw new ApiException("500",new Object[] { apiCode },"http请求连接异常");
@@ -232,8 +207,6 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
                 Map<String, Object> dataMap = JSON.parseObject(resultMap.get("data").toString());
                 //将平台gfid更新到数据库中并在服务配置中加1
                 iTrackServiceService.addFenceNum(trackService);
-                //保存坐标数据
-                this.saveBatch(pointsList);
                 String gfid = dataMap.get("gfid").toString();
                 fence.setGdId(gfid);
                 fence.setCreateor(SecurityUtils.getUsername());
@@ -244,6 +217,7 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
                         "接口调用异常："+resultMap.get("errdetail").toString());
             }
         }
+
     }
 
     @Override
@@ -364,13 +338,15 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
 
     @Override
     public ElectronicFence districtFence(ElectronicFence electronicFence, String apiCode) {
+        String code = "gd_"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
+        electronicFence.setFenceCode(code);
+        //List<ElectronicFence> fences = new ArrayList<>();
         Map<String,Object> querstMap = new HashMap<>();
         querstMap.put("keywords",electronicFence.getAdcodeName());
         querstMap.put("subdistrict",1);
         querstMap.put("filter",electronicFence.getAdcode());
         querstMap.put("extensions","all");
         TrackService trackService = this.getTrackService(electronicFence.getCityCode());
-        List<FencePoints> list = new ArrayList<>();
         querstMap.put("key",trackService.getGaodeKey());
         Map resultMap = iApiService.executeByApiCode(apiCode,querstMap);
         if(resultMap == null){
@@ -380,19 +356,27 @@ public class FencePointsServiceImpl extends ServiceImpl<FencePointsMapper, Fence
                 //更新坐标数据
                 List<Object> districts = (List<Object>) resultMap.get("districts");
                 Map<String,Object> district = (Map<String, Object>) districts.get(0);
-                String polyline = district.get("polyline").toString();
-                if(polyline.contains("\\|")){
-                    throw new ApiException("500",new Object[]{electronicFence.getAdcode()},
-                            "该区域存在多个片区不支持创建区域围栏");
-                }
-                for (String s1 : polyline.split(";")){
-                    String[] points = s1.split(",");
-                    FencePoints fencePoints = new FencePoints();
-                    fencePoints.setPointX(points[0]);
-                    fencePoints.setPointY(points[1]);
-                    list.add(fencePoints);
-                }
-                electronicFence.setPoints(list);
+                String polylines = district.get("polyline").toString();
+                electronicFence.setFencePoints(polylines);
+                /*int i = 0;
+                for(String polyline: polylines.split("\\|")){
+                    i++;
+                    ElectronicFence fence = new ElectronicFence();
+                    BeanUtils.copyProperties(electronicFence,fence);
+                    fence.setFenceName(electronicFence.getFenceName()+i);
+                    List<FencePoints> list = new ArrayList<>();
+                    for (String s1 : polyline.split(";")){
+                        String[] points = s1.split(",");
+                        FencePoints fencePoints = new FencePoints();
+                        fencePoints.setPointX(points[0]);
+                        fencePoints.setPointY(points[1]);
+                        fencePoints.setFenceCode(code);
+                        fencePoints.setDistrictId(i);
+                        list.add(fencePoints);
+                    }
+                    fence.setPoints(list);
+                    fences.add(fence);
+                }*/
                 return electronicFence;
             }else{
                 throw new ApiException("9999",new Object[]{apiCode,resultMap.get("infocode").toString()},

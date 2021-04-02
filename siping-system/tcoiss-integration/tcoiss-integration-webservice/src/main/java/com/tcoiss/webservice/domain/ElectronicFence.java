@@ -75,6 +75,9 @@ private static final long serialVersionUID=1L;
     @Excel(name = "描述信息")
     private String fenceDesc;
 
+    @Excel(name = "坐标集")
+    private String fencePoints;
+
     /** 创建时间 */
     private Date createTime;
 
@@ -85,12 +88,6 @@ private static final long serialVersionUID=1L;
     /** 创建人 */
     @Excel(name = "创建人")
     private String createor;
-
-    @TableField(exist = false)
-    private List<FencePoints> points;
-
-    @TableField(exist = false)
-    private String type;
 
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();

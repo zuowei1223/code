@@ -10,6 +10,7 @@ import com.tcoiss.common.log.enums.BusinessType;
 import com.tcoiss.common.security.annotation.PreAuthorize;
 import com.tcoiss.webservice.domain.ElectronicFence;
 import com.tcoiss.webservice.service.IElectronicFenceService;
+import com.tcoiss.webservice.service.IFencePointsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,8 @@ import java.util.List;
 public class ElectronicFenceController extends BaseController {
 
     private final IElectronicFenceService iElectronicFenceService;
+
+    private final IFencePointsService iFencePointsService;
 
     /**
      * 查询电子围栏列表
@@ -94,7 +97,7 @@ public class ElectronicFenceController extends BaseController {
      */
     //@PreAuthorize(hasPermi = "${integration:fence}:edit" )
     @Log(title = "电子围栏" , businessType = BusinessType.UPDATE)
-    @PutMapping("/editFence")
+    @PostMapping("/editFence")
     public AjaxResult edit(@RequestBody ElectronicFence electronicFence) {
         //校验是否存在相同的围栏名称
         if(iElectronicFenceService.checkFenceName(electronicFence)){
@@ -113,7 +116,7 @@ public class ElectronicFenceController extends BaseController {
         int num = 0;
         for(Long id:ids){
             ElectronicFence electronicFence = iElectronicFenceService.getById(id);
-            num = iElectronicFenceService.syncFence(electronicFence,0)? 1 : 0;
+            num = iFencePointsService.removeByCode(electronicFence.getFenceCode(),"deleteFence")? 1 : 0;
         }
         return toAjax(num);
     }

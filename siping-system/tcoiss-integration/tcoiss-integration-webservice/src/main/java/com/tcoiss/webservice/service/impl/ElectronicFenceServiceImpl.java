@@ -67,7 +67,10 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
     public boolean checkFenceName(ElectronicFence electronicFence) {
         LambdaQueryWrapper<ElectronicFence> lqw = Wrappers.lambdaQuery();
         if (StringUtils.isNotBlank(electronicFence.getFenceName())){
-            lqw.like(ElectronicFence::getFenceName ,electronicFence.getFenceName());
+            lqw.eq(ElectronicFence::getFenceName ,electronicFence.getFenceName());
+        }
+        if("1".equals(electronicFence.getFenceType())){
+            lqw.eq(ElectronicFence::getAdcode ,electronicFence.getAdcode());
         }
         List<ElectronicFence> list = this.list(lqw);
         if(list!=null&&list.size()>0){

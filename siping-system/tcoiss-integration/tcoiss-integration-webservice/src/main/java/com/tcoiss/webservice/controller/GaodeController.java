@@ -46,20 +46,15 @@ public class GaodeController extends BaseController {
     @GetMapping("/checkFence")
     public AjaxResult checkFence(ElectronicFence electronicFence) {
         if(iFencePointsService.checkFenceName(electronicFence)){
-            return AjaxResult.error("围栏名称不能重复");
+            return AjaxResult.error("手工围栏名称不能重复或该区域围栏已存在");
         }
         //校验围栏类型，区域围栏时需要获取区域坐标
-        if("1".equals(electronicFence.getFenceType())){
-            if(StringUtils.isBlank(electronicFence.getAdcode())){
-                return AjaxResult.error("请选择围栏区域");
-            }
-            if(StringUtils.isBlank(electronicFence.getFenceDesc())){
-                return AjaxResult.error("创建区域围栏时描述信息不能空");
-            }
+        /*if("1".equals(electronicFence.getFenceType())){
             ElectronicFence fence = iFencePointsService.districtFence(electronicFence,"getDistrictInfo");
-            return AjaxResult.success(fence);
-        }
-        return AjaxResult.success(electronicFence);
+            int num = iFencePointsService.saveDistrictFence(fence,"saveDistrictFence");
+            return toAjax(num);
+        }*/
+        return AjaxResult.success();
     }
 
     /**
