@@ -104,13 +104,13 @@ public class BusTableController extends BaseController {
         return toAjax(iBusTableService.removeByIds(Arrays.asList(tableIds)) ? 1 : 0);
     }
     /**
-     * 依据配置创建对应的业务表
+     * 同步表结构
      */
     @PreAuthorize(hasPermi = "bus:table:add" )
-    @Log(title = "生成业务表" , businessType = BusinessType.INSERT)
-    @PostMapping
+    @Log(title = "业务表配置" , businessType = BusinessType.INSERT)
+    @PostMapping("/syncTableJg")
     public AjaxResult createTable(@RequestBody BusTable busTable) {
-        return toAjax(iBusTableService.createTable(busTable) ? 1 : 0);
+        return toAjax(iBusTableService.syncTableAllJg(busTable) ? 1 : 0);
     }
 
     /**
@@ -118,9 +118,9 @@ public class BusTableController extends BaseController {
      */
     @PreAuthorize(hasPermi = "bus:table:add" )
     @Log(title = "生成业务表" , businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult syncTable(@RequestBody BusTable busTable) {
-        return toAjax(iBusTableService.syncTableAll(busTable) ? 1 : 0);
+    @PostMapping("/initTableData")
+    public AjaxResult initTableData(@RequestBody BusTable busTable) {
+        return toAjax(iBusTableService.initTableAllData(busTable) ? 1 : 0);
     }
 
 }

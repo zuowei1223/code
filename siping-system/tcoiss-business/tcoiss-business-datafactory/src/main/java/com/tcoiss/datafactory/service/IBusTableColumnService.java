@@ -22,5 +22,9 @@ public interface IBusTableColumnService extends IService<BusTableColumn> {
      */
     List<BusTableColumn> getColumnsByName(String tableName);
 
-    Integer getMaxIdByTableName(String tableName);
+    List<BusTableColumn> getListByTableName(String tableName);
+
+    List<BusTableColumn> getEntryNumByTableName(String tableName);
+
+    List<BusTableColumn> getListByNum(String tableName,Integer entryNum);
 }

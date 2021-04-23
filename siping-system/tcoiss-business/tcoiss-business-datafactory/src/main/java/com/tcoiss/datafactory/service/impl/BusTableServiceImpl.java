@@ -3,6 +3,7 @@ package com.tcoiss.datafactory.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.tcoiss.common.core.domain.R;
 import com.tcoiss.common.core.exception.api.ApiException;
+import com.tcoiss.common.core.utils.ListUtils;
 import com.tcoiss.datafactory.domain.BusTable;
 import com.tcoiss.datafactory.domain.BusTableColumn;
 import com.tcoiss.datafactory.mapper.BusTableMapper;
@@ -62,9 +63,8 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
     @Override
     public boolean saveTable(BusTable busTable) {
         if(checkBusTable(busTable)){
-
+            return this.save(busTable);
         }
-
         return false;
     }
 
@@ -105,14 +105,11 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
 
     /**
      *
-     * @param busTable
+     * @param tableName
      * @return
      */
-    @Override
-    public boolean createTable(BusTable busTable) {
+    private boolean createTable(String tableName,List<BusTableColumn> columns) {
         //根据业务表结构生成建表sql并执行
-        Map<String,Object> busTableMap = this.getBusTableById(busTable.getTableId());
-        List<BusTableColumn> columns = (List<BusTableColumn>) busTableMap.get("rows");
         String id = "";
         for(BusTableColumn column :columns){
             if(column.getIsPk()=="1"){
@@ -120,44 +117,23 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
             }
             columns.remove(column);
         }
-        DataBaseSql.createTable(busTable.getBusTableName(),id,columns);
-        //创建拆分表，获取拆分表名称
-        String[] splitTables = busTable.getSplitTables().split(",");
-        for(int i=0;i<splitTables.length;i++){
-            List<BusTableColumn> splitColumns = iBusTableColumnService.getColumnsByName(splitTables[i]);
-            DataBaseSql.createTable(splitTables[i],id,splitColumns);
-        }
-
+        DataBaseSql.createTable(tableName,id,columns);
         return true;
     }
 
     /**
      *
-     * @param busTable
+     * @param tableName
      * @return
      */
-    private boolean insetTable(List<BusTableColumn> columns) {
-
-
-        List<String> data = columns.stream().map(column -> column.getColumnValue()).collect(Collectors.toList());
-        //根据业务表结构生成建表sql并执行
-        Map<String,Object> busTableMap = this.getBusTableById(busTable.getTableId());
-        List<BusTableColumn> columns = (List<BusTableColumn>) busTableMap.get("rows");
-        String id = "";
-        for(BusTableColumn column :columns){
-            if(column.getIsPk()=="1"){
-                id = column.getColumnName();
-            }
-            columns.remove(column);
+    private boolean insetTable(String tableName) {
+        //根据表名和分录号对数据进行分组，同步所有的表数据
+        List<BusTableColumn> columnNums = iBusTableColumnService.getEntryNumByTableName(tableName);
+        for(BusTableColumn columnNum :columnNums){
+            List<BusTableColumn> columns = iBusTableColumnService.getListByNum(columnNum.getTableName(),columnNum.getEntryNum());
+            List<String> data = columns.stream().map(column -> column.getColumnValue()).collect(Collectors.toList());
+            DataBaseSql.insert(tableName,columns,data.toArray(new String[data.size()]));
         }
-        DataBaseSql.createTable(busTable.getBusTableName(),id,columns);
-        //创建拆分表，获取拆分表名称
-        String[] splitTables = busTable.getSplitTables().split(",");
-        for(int i=0;i<splitTables.length;i++){
-            List<BusTableColumn> splitColumns = iBusTableColumnService.getColumnsByName(splitTables[i]);
-            DataBaseSql.createTable(splitTables[i],id,splitColumns);
-        }
-
         return true;
     }
 
@@ -173,6 +149,8 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
             Map<String,Object> map = r.getData();
             if((boolean)map.get("success")){
                 List<Map<String,Object>> list =(List) map.get("data");
+                ListUtils.listMapSortByKey(list,"fid");
+                List<List<BusTableColumn>> columnNums = new ArrayList<>();
                 for(int i=0;i<list.size();i++){
                     Map<String,Object> result = list.get(i);
                     Set<Map.Entry<String, Object>> entrys = result.entrySet();  //此行可省略，直接将map.entrySet()写在for-each循环的条件中
@@ -198,8 +176,11 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
                         column.setEntryNum(i);
                         columns.add(column);
                     }
+                    columnNums.add(columns);
                     iBusTableColumnService.saveBatch(columns);
                 }
+                //字段同步成功后，再创建表
+                this.createTable(tableName,columnNums.get(0));
                 return true;
 
             }else{
@@ -209,26 +190,46 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
         return false;
     }
 
-    public boolean syncTableAll(BusTable busTable){
+    public boolean syncTableAllJg(BusTable busTable){
         //同步主业务表结构及数据
         String tableName = busTable.getBusTableName();
         if(this.syncTableJg(tableName,busTable.getSyncTableParam())){
             //获取保存数据中id最大的一个id值
-            Integer maxId = iBusTableColumnService.getMaxIdByTableName(tableName);
+            List<BusTableColumn> columns = iBusTableColumnService.getColumnsByName(tableName);
+            BusTableColumn maxColum = columns.get(columns.size()-1);
             JSONObject object = new JSONObject();
-            object.put("fid",maxId);
+            object.put("fid",maxColum.getColumnValue());
             String syncParam = object.toJSONString();
             String[] splitTableNames = busTable.getSplitTables().split(",");
             for(String splitName: splitTableNames){
                 syncTableJg(splitName,syncParam);
             }
-            //同步完成数据结构后创建表并插入数据
-            if(this.createTable(busTable)){
-
-            }
-
+            //结构同步完成后保存表配置
+            return true;
         }
         return false;
+
+    }
+
+    /**
+     * 初始化所有的表数据
+     * @param busTable
+     * @return
+     */
+    public boolean initTableAllData(BusTable busTable){
+        /**
+         * 1 同步主表数据
+         */
+        //根据表名和分录号对数据进行分组，同步所有的表数据
+        this.insetTable(busTable.getBusTableName());
+        /**
+         * 1 同步拆分表
+         */
+        String[] splitTableNames = busTable.getSplitTables().split(",");
+        for(String splitName: splitTableNames){
+            this.insetTable(splitName);
+        }
+        return true;
 
     }
 

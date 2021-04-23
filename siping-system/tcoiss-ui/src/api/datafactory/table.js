@@ -51,16 +51,16 @@ export function delTable(tableId) {
   })
 }
 
-export function syncGlTb(data) {
+export function syncTableJg(data) {
   return request({
-    url: '/datafactory/table/syncGlTb',
+    url: '/datafactory/table/syncTableJg',
     method: 'post',
     data: data
   })
 }
-expect function createTable(data) {
+export function initTableData(data) {
   return request({
-    url: '/datafactory/table/createTable',
+    url: '/datafactory/table/initTableData',
     method: 'post',
     data: data
   })

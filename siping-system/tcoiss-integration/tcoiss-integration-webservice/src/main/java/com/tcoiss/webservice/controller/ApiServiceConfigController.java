@@ -47,6 +47,16 @@ public class ApiServiceConfigController extends BaseController {
     }
 
     /**
+     * 查询API服务配置列表
+     */
+    @PreAuthorize(hasPermi="${integration:apiServiceConfig}:list")
+    @GetMapping("/getApis")
+    public AjaxResult getApis(ApiServiceConfig apiServiceConfig) {
+        List<ApiServiceConfig> list = iApiServiceConfigService.queryList(apiServiceConfig);
+        return AjaxResult.success(list);
+    }
+
+    /**
      * 导出API服务配置列表
      */
     @PreAuthorize(hasPermi="${integration:apiServiceConfig}:export" )

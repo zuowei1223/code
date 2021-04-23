@@ -17,6 +17,7 @@ import './assets/icons' // icon
 import './permission' // permission control
 import { getDicts } from "@/api/system/dict/data";
 import { getService } from "@/api/integration/trackservice";
+import { getApis } from "@/api/integration/apiServiceConfig";
 import { listTable} from "@/api/datafactory/table";
 import { getConfigKey } from "@/api/system/config";
 import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, handleTree } from "@/utils/ruoyi";
@@ -28,6 +29,7 @@ import VueAMap from 'vue-amap';
 Vue.use(VueAMap);
 
 // 全局方法挂载
+Vue.prototype.getSyncApi = getApis
 Vue.prototype.getTables = listTable
 Vue.prototype.getService = getService
 Vue.prototype.getDicts = getDicts

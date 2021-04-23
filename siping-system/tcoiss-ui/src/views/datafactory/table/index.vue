@@ -10,15 +10,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="同步api编码" prop="syncApiCode">
-        <el-input
-          v-model="queryParams.syncApiCode"
-          placeholder="请输入同步api编码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item label="业务分组名称" prop="busGroupName">
         <el-input
           v-model="queryParams.busGroupName"
@@ -95,8 +87,10 @@
       <el-table-column label="编号" align="center" prop="tableId" />
       <el-table-column label="业务表名称" align="center" prop="busTableName" />
       <el-table-column label="业务表说明" align="center" prop="busTableComment" />
-      <el-table-column label="同步api编码" align="center" prop="syncApiCode" />
-      <el-table-column label="业务分组名称" align="center" prop="busGroupName" />
+      <el-table-column label="api编码" align="center" prop="syncApiCode" />
+      <el-table-column label="分组名称" align="center" prop="busGroupName" />
+      <el-table-column label="拆分表名" align="center" prop="" />
+      <el-table-column label="子表名" align="center" prop="" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -104,20 +98,14 @@
             size="mini"
             type="text"
             icon="el-icon-refresh"
-            @click="handleSync(scope.row)"
+            @click="handleSyncJg(scope.row)"
           >同步结构</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-download"
-            @click="handleCreateTable(scope.row)"
-          >生成表</el-button>
-          <el-button
-            size="mini"
-            type="text"
             icon="el-icon-refresh"
-            @click="handleSyncData(scope.row)"
-          >同步数据</el-button>
+            @click="handleInitData(scope.row)"
+          >初始化数据</el-button>
           <el-button
             size="mini"
             type="text"
@@ -144,29 +132,80 @@
     />
 
     <!-- 添加或修改代码生成业务对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="表名称" prop="busTableName">
-          <el-input v-model="form.busTableName" placeholder="请输入业务表名称" />
-        </el-form-item>
-        <el-form-item label="表说明" prop="busTableComment">
-          <el-input v-model="form.busTableComment" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="表类型" prop="syncApiCode">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="表物理名" prop="busTableName">
+              <el-input v-model="form.busTableName" placeholder="请输入表物理名" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="表业务名" prop="busTableComment">
+              <el-input v-model="form.busTableComment"  placeholder="请输入业务名" />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="同步接口" prop="syncApiCode">
+              <el-select v-model="form.syncApiCode" placeholder="请选择同步接口" clearable size="small">
+                <el-option
+                  v-for="api in syncApiOptions"
+                  :key="api.apiCode"
+                  :label="api.apiName"
+                  :value="api.apiCode"
+                />
+              </el-select>
+
+
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="同步参数" prop="syncTableParam">
+              <el-input v-model="form.syncTableParam" placeholder="请输入同步参数" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="分组名称" prop="busGroupName">
+              <el-input v-model="form.busGroupName" placeholder="请输入分组名称" />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item prop="splitTables">
+              <span slot="label">拆分表
+                <el-tooltip content="存在多个拆分表时用 ， 隔开" placement="top">
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
+              </span>
+              <el-input v-model="form.splitTables" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="subTables">
+              <span slot="label">
+                子表名
+                <el-tooltip content="存在多个子表时 ， 号隔开" placement="top">
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
+              </span>
+              <el-input v-model="form.subTables" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="备注" prop="remark">
+              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+        <!--<el-form-item label="表类型" prop="syncApiCode">
           <el-input v-model="form.syncApiCode" placeholder="请输入同步api编码" />
-        </el-form-item>
-        <el-form-item label="同步api编码" prop="syncApiCode">
+        </el-form-item>-->
+        <!--<el-form-item label="同步api编码" prop="syncApiCode">
           <el-input v-model="form.syncApiCode" placeholder="请输入同步api编码" />
-        </el-form-item>
-        <el-form-item label="同步参数" prop="syncTableParam">
-          <el-input v-model="form.syncTableParam" placeholder="请输入同步参数" />
-        </el-form-item>
-        <el-form-item label="分组名称" prop="busGroupName">
-          <el-input v-model="form.busGroupName" placeholder="请输入分组名称" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
+        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -178,7 +217,7 @@
 </template>
 
 <script>
-import { listTable, getTable, delTable, addTable, updateTable,syncTb,syncTbData } from "@/api/datafactory/table";
+import { listTable, getTable, delTable, addTable, updateTable,syncTableJg,initTableData } from "@/api/datafactory/table";
 
 export default {
   name: "Table",
@@ -200,6 +239,8 @@ export default {
       total: 0,
       // 代码生成业务表格数据
       tableList: [],
+
+      syncApiOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -222,6 +263,10 @@ export default {
   },
   created() {
     this.getList();
+    var query = {"appName":"kingdee"};
+    this.getSyncApi(query).then(response => {
+      this.syncApiOptions = response.data;
+    });
   },
   methods: {
     /** 查询代码生成业务列表 */
@@ -319,7 +364,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(function() {
-        return syncTb({'tableId':row.tableId});
+        return syncTableJg({'tableId':row.tableId});
       }).then(() => {
         this.msgSuccess("同步成功");
       })
@@ -336,14 +381,14 @@ export default {
         this.msgSuccess("同步成功");
     })
     },
-    handleSyncData(row) {
+    handleInitData(row) {
       const tableName = row.tableName;
       this.$confirm('确认要强制同步"' + tableName + '"表的关联结构吗？', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(function() {
-        return syncTbData({'tableId':row.tableId});
+        return initTableData({'tableId':row.tableId});
       }).then(() => {
         this.msgSuccess("同步成功");
     })

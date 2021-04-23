@@ -20,10 +20,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="业务对象" prop="appName">
+      <el-form-item label="业务对象" prop="apiObj">
         <el-input
-          v-model="queryParams.appName"
-          placeholder="请输入所属应用"
+          v-model="queryParams.apiObj"
+          placeholder="请输入业务对象"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -32,13 +32,14 @@
 
 
       <el-form-item label="所属应用" prop="appName">
-        <el-input
-          v-model="queryParams.appName"
-          placeholder="请输入所属应用"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.appName" placeholder="请选择所属应用" clearable size="small">
+          <el-option
+            v-for="dict in appTypeOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="数据级别" prop="dataLevel">
         <el-select v-model="queryParams.dataLevel" placeholder="请选择数据级别" clearable size="small">
@@ -187,7 +188,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="所属应用" prop="appName">
-          <el-input v-model="form.appName" placeholder="请输入所属应用" />
+          <el-select v-model="form.appName" placeholder="请选择所属应用" clearable size="small">
+            <el-option
+              v-for="dict in appTypeOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="API地址" prop="apiUrl">
           <el-input v-model="form.apiUrl" placeholder="请输入API地址" />
@@ -250,6 +258,9 @@ export default {
       dataLevelOptions: [],
       // 业务对象列表
       apiObjOptions: [],
+
+      appTypeOptions: [],
+
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -280,6 +291,9 @@ export default {
     });
     this.getDicts("data_level").then(response => {
       this.dataLevelOptions = response.data;
+    });
+    this.getDicts("app_type").then(response => {
+      this.appTypeOptions = response.data;
     });
     var query = {};
     this.getTables(query).then(response => {

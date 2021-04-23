@@ -9,6 +9,14 @@ export function listApiServiceConfig(query) {
   })
 }
 
+export function getApis(query) {
+  return request({
+    url: '/webservice/apiServiceConfig/getApis',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询API服务配置详细
 export function getApiServiceConfig(id) {
   return request({

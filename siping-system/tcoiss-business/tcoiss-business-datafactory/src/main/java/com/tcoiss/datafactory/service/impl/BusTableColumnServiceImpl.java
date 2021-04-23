@@ -75,13 +75,31 @@ public class BusTableColumnServiceImpl extends ServiceImpl<BusTableColumnMapper,
     }
 
     @Override
-    public Integer getMaxIdByTableName(String tableName) {
+    public List<BusTableColumn> getListByTableName(String tableName) {
         LambdaQueryWrapper<BusTableColumn> lqw = Wrappers.lambdaQuery();
         lqw.eq(BusTableColumn::getTableName ,tableName);
-        lqw.eq(BusTableColumn::getIsPk ,"1");
-        lqw.orderByDesc(BusTableColumn::getColumnValue );
-        BusTableColumn maxColumn = this.list(lqw).get(0);
-        String id = maxColumn.getColumnValue();
-        return Integer.valueOf(id);
+        lqw.eq(BusTableColumn::getIsPk,"1");
+        lqw.orderByDesc(BusTableColumn::getEntryNum );
+        return  this.list(lqw);
     }
+
+    @Override
+    public List<BusTableColumn> getEntryNumByTableName(String tableName) {
+        LambdaQueryWrapper<BusTableColumn> lqw = Wrappers.lambdaQuery();
+        lqw.select(BusTableColumn::getEntryNum);
+        lqw.eq(BusTableColumn::getTableName ,tableName);
+        lqw.groupBy(BusTableColumn::getEntryNum,BusTableColumn::getTableName);
+        lqw.orderByDesc(BusTableColumn::getEntryNum );
+        return this.list(lqw);
+    }
+
+    @Override
+    public List<BusTableColumn> getListByNum(String tableName, Integer entryNum) {
+        LambdaQueryWrapper<BusTableColumn> lqw = Wrappers.lambdaQuery();
+        lqw.eq(BusTableColumn::getTableName ,tableName);
+        lqw.eq(BusTableColumn::getEntryNum,entryNum);
+        lqw.orderByDesc(BusTableColumn::getEntryNum );
+        return this.list(lqw);
+    }
+
 }

@@ -52,13 +52,13 @@ public class DataBaseSql {
      * @param tabName 参数字段
      * @param columns 参数字段数据
      */
-    public static void insert(String tabName,List<BusTableColumn> columns) {
+    public static void insert(String tabName,List<BusTableColumn> columns,String[] data) {
         conn = getConnection();  // 首先要获取连接，即连接到数据库
         try {
             String sql = "insert into "+tabName+"(";
             for(int i=0;i<columns.size();i++){
-                BusTableColumn busTableColumn = columns.get(0);
-                sql+=busTableColumn.getColumnName();
+                BusTableColumn column = columns.get(i);
+                sql+=column.getColumnName();
                 //防止最后一个,
                 if(i<columns.size()-1){
                     sql+=",";
