@@ -93,6 +93,11 @@ public class Constants
     public final static long TOKEN_EXPIRE = 720;
 
     /**
+     * 金碟令牌有效期（分钟）
+     */
+    public final static long KD_TOKEN_EXPIRE = 60;
+
+    /**
      * 参数管理 cache key
      */
     public static final String SYS_CONFIG_KEY = "sys_config:";

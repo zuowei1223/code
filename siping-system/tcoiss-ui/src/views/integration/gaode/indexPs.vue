@@ -167,8 +167,8 @@
   var mouseTool;
   var opType;
   var tempFence = {};
-  var addPolygon = [];
   var polygons = [];
+  var queryPolygons = [];
   var district;
   export default {
     name: "GaodeAz",
@@ -231,7 +231,7 @@
         AMapLoader.load({
           "key": "3fa060bd1711d61ee47bb8983d7b1101",              // 申请好的Web端开发者Key，首次调用 load 时必填
           "version": "2.0",   // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-          "plugins": ['AMap.Scale','AMap.ToolBar','AMap.PolygonEditor','AMap.PolylineEditor','AMap.MouseTool',"AMap.DistrictSearch"],           // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+          "plugins": ['AMap.Scale','AMap.ToolBar','AMap.PolygonEditor','AMap.PolylineEditor','AMap.MouseTool',"AMap.DistrictSearch","AMap.GeometryUtil"],           // 需要使用的的插件列表，如比例尺'AMap.Scale'等
         }).then((AMap)=>{
           map = new AMap.Map('container', {
             resizeEnable: true,
@@ -256,15 +256,18 @@
         polyEditor.on('end', this.updateCache)
         var opts = {
           subdistrict: 0,   //获取边界不需要返回下级行政区
+          showbiz: false,
           extensions: 'all',  //返回行政区边界坐标组等具体信息
           level: 'district'  //查询行政级别为 市
         };
         district = new AMap.DistrictSearch(opts);
+
       }).catch(e => {
           console.log(e);
       })
       },
       updateCache(data){
+        console.log(data);
         var polygon = data.target;
         if(opType == "saveCache"){//将地图页面上的围栏保存到数据库中
           if(polygon==null){
@@ -275,11 +278,12 @@
           if(path.length>100){
             this.msgError("保存失败，当前编辑的围栏：【"+tempFence.fenceName+"】顶点数超过了100个，请重新编辑");
             //恢复编辑
-            opType == ""
+            opType = ""
             polyEditor.setTarget(polygon);
             return;
           }else{
             var points = "";
+            console.log(path);
             for(var i=0;i<path.length;i++){
               if (i < path.length - 1) {
                 points = points+path[i].getLng()+","+path[i].getLat()+";"
@@ -289,8 +293,13 @@
             }
             tempFence.fencePoints = points;
             saveCache(tempFence).then(response => {
+              if(response.code==200){
               this.handleQuery();
-            this.msgSuccess("保存成功");
+              this.msgSuccess("保存成功");
+            }else{
+              this.msgSuccess("保存失败");
+            }
+
           });
           }
 
@@ -299,6 +308,7 @@
       },
       addCache(data){//将围栏信息缓存到地图页面中
         var polygon = data.target;
+        console.log(data);
         var path = polygon.getPath();
         polyEditor.addAdsorbPolygons(polygon);
         var points = "";
@@ -335,7 +345,7 @@
                   }
                 });
                 map.add(polygon);
-                polyEditor.addAdsorbPolygons(polygon);
+                queryPolygons.push(polygon);
                 polygon.content = '围栏名称：'+fence.fenceName;
                 polygon.on('click', function(e){
                   infoWindow.setContent(e.target.content);
@@ -358,7 +368,6 @@
           });
         }else{
           var str = fence.fencePoints.split(";");
-          console.log(str);
           var path = [];
           for(var i=0;i<str.length;i++) {
             var point = str[i].split(",");
@@ -375,8 +384,7 @@
             }
           });
           map.add(polygon);
-          //queryPolygons.push(polygon);
-          polyEditor.addAdsorbPolygons(polygon);
+          queryPolygons.push(polygon);
           polygon.content = '围栏名称：'+fence.fenceName;
           polygon.on('click', this.polygonClick);
           polygon.on('rightclick', function (e) {
@@ -413,17 +421,18 @@
       },
 
       getList(){
-        var queryPolygons = [];
+        queryPolygons = [];
         this.queryParams.fencePop = "0";
         listFence(this.queryParams).then(response => {
           this.fenceList = response.data;
+        map.setCity(this.queryParams.cityCode);
         if(this.fenceList.length == 0 ){
           this.msgInfo("未查询到指定的围栏数据")
           return;
         }
         for(var i=0;i<this.fenceList.length;i++){
           var table = this.fenceList[i];
-          this.initPolygon(table,queryPolygons);
+          this.initPolygon(table);
         }
         map.setCity(this.queryParams.cityCode);
         //map.setFitView();//地图自适应
@@ -445,6 +454,9 @@
       handleQuery() {
         opType = "query";
         tempFence = {};
+        for (var i = 0, l = polygons.length; i < l; i++) {
+          map.remove(polygons[i]);
+        }
         map.clearMap();
         this.getList();
       },
@@ -454,9 +466,6 @@
         this.handleQuery();
       },
       handleClose(){
-        for (var i = 0, l = polygons.length; i < l; i++) {
-          map.remove(polygons[i]);
-        }
         if(polyEditor.getTarget()){
           var polygon = polyEditor.getTarget();
           map.setFitView(
@@ -477,9 +486,7 @@
           opType = "";
           polyEditor.setTarget();
           polyEditor.close();//关闭编辑*/
-          if(!fence){
-            map.remove(polygon);
-          }
+          this.handleQuery();
           $(".top-input").show();
         }).catch(() => {
             console.log("cancel");
@@ -490,6 +497,7 @@
           this.openIsSave = true;
           opType = "";
           polyEditor.close();//关闭编辑*/
+          this.handleQuery();
           $(".top-input").show();
         }
       },
@@ -529,6 +537,7 @@
 
       /** 新增按钮操作 */
       handleAdd() {//校验表单数据
+        polygons = [];
         this.$refs["form"].validate(valid => {
           if (valid) {
             this.districtOptions.forEach(item =>{
@@ -544,7 +553,6 @@
               $(".top-input").hide();
               //查询区域边界
               district.search(this.form.adcode, function (status, result) {
-
                 var bounds = result.districtList[0].boundaries;
                 if (bounds) {
                   for (var i = 0, l = bounds.length; i < l; i++) {
@@ -563,6 +571,7 @@
                 map.setFitView(polygons);//视口自适应
                 polyEditor.addAdsorbPolygons(polygons);
               });
+              console.log("开始绘制")
               this.openIsAdd = true;
               this.openIsClose = false;
               this.openIsSave = false;
@@ -621,8 +630,8 @@
           return delFence(data);
         }).then(() => {
           this.handleQuery();
-          this.msgSuccess("删除成功");
-        })
+        this.msgSuccess("删除成功");
+      })
       },
       getDistrict(value){
         var data ={};

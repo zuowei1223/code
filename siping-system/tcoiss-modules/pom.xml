@@ -15,6 +15,7 @@
         <module>tcoiss-modules-file</module>
         <module>tcoiss-modules-gen</module>
         <module>tcoiss-modules-system</module>
+        <module>tcoiss-modules-log</module>
     </modules>
 
 

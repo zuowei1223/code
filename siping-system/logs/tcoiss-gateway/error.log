@@ -1,8 +1,0 @@
-15:20:07.329 [reactor-http-nio-7] ERROR c.t.g.f.AuthFilter - [setUnauthorizedResponse,94] - [鉴权异常处理]请求路径:/system/user/getInfo
-15:20:22.864 [reactor-http-nio-5] ERROR c.t.g.h.GatewayExceptionHandler - [handle,56] - [网关异常处理]请求路径:/code/gen/list,异常信息:503 SERVICE_UNAVAILABLE "Unable to find instance for tcoiss-gen"
-15:21:50.565 [reactor-http-nio-6] ERROR c.t.g.h.GatewayExceptionHandler - [handle,56] - [网关异常处理]请求路径:/code/gen/list,异常信息:503 SERVICE_UNAVAILABLE "Unable to find instance for tcoiss-gen"
-15:21:51.787 [reactor-http-nio-7] ERROR c.t.g.h.GatewayExceptionHandler - [handle,56] - [网关异常处理]请求路径:/code/gen/list,异常信息:503 SERVICE_UNAVAILABLE "Unable to find instance for tcoiss-gen"
-15:22:07.312 [reactor-http-nio-2] ERROR c.t.g.h.GatewayExceptionHandler - [handle,56] - [网关异常处理]请求路径:/code/gen/list,异常信息:503 SERVICE_UNAVAILABLE "Unable to find instance for tcoiss-gen"
-15:22:22.947 [reactor-http-nio-5] ERROR c.t.g.h.GatewayExceptionHandler - [handle,56] - [网关异常处理]请求路径:/code/gen/list,异常信息:503 SERVICE_UNAVAILABLE "Unable to find instance for tcoiss-gen"
-15:22:26.974 [reactor-http-nio-8] ERROR c.t.g.h.GatewayExceptionHandler - [handle,56] - [网关异常处理]请求路径:/code/gen/list,异常信息:503 SERVICE_UNAVAILABLE "Unable to find instance for tcoiss-gen"
-15:22:44.815 [reactor-http-nio-3] ERROR c.t.g.h.GatewayExceptionHandler - [handle,56] - [网关异常处理]请求路径:/code/gen/list,异常信息:503 SERVICE_UNAVAILABLE "Unable to find instance for tcoiss-gen"

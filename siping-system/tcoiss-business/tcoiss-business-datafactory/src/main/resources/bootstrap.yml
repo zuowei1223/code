@@ -1,0 +1,36 @@
+# Tomcat
+server:
+  port: 9333
+
+# Spring
+spring: 
+  application:
+    # 应用名称
+    name: tcoiss-datafactory
+  #profiles:
+    # 环境配置
+    #active: dev
+    main:
+      allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: 124.71.130.38:8848
+        #namespace: d16ad0bb-44ff-49aa-960d-3e8a971d4c7b
+        #group: dev
+      config:
+        # 配置中心地址
+        server-addr: 124.71.130.38:8848
+        # 配置文件格式
+        file-extension: yml
+        namespace: de8e4dad-3d3e-4f95-a5a0-bf51b22982e4
+        group: dev
+        # 共享配置
+        #shared-dataids: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+        #refresh: true
+      shared-configs:
+        - data-id: application-dev.yml
+          refresh: true
+        #- data-id: application-.yml
+        #refresh: true

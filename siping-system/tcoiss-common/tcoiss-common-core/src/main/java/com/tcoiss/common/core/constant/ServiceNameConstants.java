@@ -21,4 +21,9 @@ public class ServiceNameConstants
      * 文件服务的serviceid
      */
     public static final String FILE_SERVICE = "tcoiss-file";
+
+    /**
+     * webApi服务的serviceid
+     */
+    public static final String WEBAPI_SERVICE = "tcoiss-webservice";
 }

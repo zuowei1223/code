@@ -9,10 +9,17 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/tcoiss-business/tcoiss-business-job/pom.xml" />
         <option value="$PROJECT_DIR$/tcoiss-common/tcoiss-datasource/pom.xml" />
         <option value="$PROJECT_DIR$/tcoiss-integration/tcoiss-integration-admin/pom.xml" />
+        <option value="$PROJECT_DIR$/tcoiss-job/tcoiss-xxlJob-service/pom.xml" />
+        <option value="$PROJECT_DIR$/tcoiss-rocketmq-console/pom.xml" />
+        <option value="$PROJECT_DIR$/tcoiss-schedule-admin/pom.xml" />
       </set>
     </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/tcoiss-ui/src/views/datafactory/table/tablecolumn.vue" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

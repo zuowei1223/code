@@ -261,11 +261,13 @@ export default {
           level: 'district'  //查询行政级别为 市
         };
         district = new AMap.DistrictSearch(opts);
+
       }).catch(e => {
           console.log(e);
       })
     },
     updateCache(data){
+      console.log(data);
       var polygon = data.target;
       if(opType == "saveCache"){//将地图页面上的围栏保存到数据库中
         if(polygon==null){
@@ -273,24 +275,15 @@ export default {
           return;
         }
         var path = polygon.getPath();
-        //面积检查
-        var area = AMap.GeometryUtil.ringArea(path);
-        console.log(area);
-        if(area>100000000){
-          this.msgError("保存失败，当前编辑的围栏：【"+tempFence.fenceName+"】面积超过100平方公里，请重新编辑");
-          //恢复编辑
-          opType == ""
-          polyEditor.setTarget(polygon);
-          return;
-        }
         if(path.length>100){
           this.msgError("保存失败，当前编辑的围栏：【"+tempFence.fenceName+"】顶点数超过了100个，请重新编辑");
           //恢复编辑
-          opType == ""
+          opType = ""
           polyEditor.setTarget(polygon);
           return;
         }else{
           var points = "";
+          console.log(path);
           for(var i=0;i<path.length;i++){
             if (i < path.length - 1) {
               points = points+path[i].getLng()+","+path[i].getLat()+";"
@@ -304,7 +297,7 @@ export default {
               this.handleQuery();
               this.msgSuccess("保存成功");
             }else{
-
+              this.msgSuccess("保存失败");
             }
 
           });
@@ -315,6 +308,7 @@ export default {
     },
     addCache(data){//将围栏信息缓存到地图页面中
         var polygon = data.target;
+        console.log(data);
         var path = polygon.getPath();
         polyEditor.addAdsorbPolygons(polygon);
         var points = "";
@@ -460,6 +454,9 @@ export default {
     handleQuery() {
       opType = "query";
       tempFence = {};
+      for (var i = 0, l = polygons.length; i < l; i++) {
+        map.remove(polygons[i]);
+      }
       map.clearMap();
       this.getList();
     },
@@ -469,9 +466,6 @@ export default {
       this.handleQuery();
     },
     handleClose(){
-      for (var i = 0, l = polygons.length; i < l; i++) {
-        map.remove(polygons[i]);
-      }
       if(polyEditor.getTarget()){
         var polygon = polyEditor.getTarget();
         map.setFitView(
@@ -492,9 +486,7 @@ export default {
           opType = "";
           polyEditor.setTarget();
           polyEditor.close();//关闭编辑*/
-          if(!fence){
-            map.remove(polygon);
-          }
+          this.handleQuery();
           $(".top-input").show();
         }).catch(() => {
             console.log("cancel");
@@ -505,6 +497,7 @@ export default {
         this.openIsSave = true;
         opType = "";
         polyEditor.close();//关闭编辑*/
+        this.handleQuery();
         $(".top-input").show();
       }
     },
@@ -544,6 +537,7 @@ export default {
 
     /** 新增按钮操作 */
     handleAdd() {//校验表单数据
+      polygons = [];
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.districtOptions.forEach(item =>{
@@ -577,6 +571,7 @@ export default {
                 map.setFitView(polygons);//视口自适应
                 polyEditor.addAdsorbPolygons(polygons);
               });
+              console.log("开始绘制")
               this.openIsAdd = true;
               this.openIsClose = false;
               this.openIsSave = false;

@@ -11,6 +11,7 @@ import com.tcoiss.webservice.apiServer.InvokerBuilder;
 import com.tcoiss.webservice.domain.ApiServiceConfig;
 import com.tcoiss.webservice.mapper.ApiServiceConfigMapper;
 import com.tcoiss.webservice.service.IApiService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class ApiServiceImpl implements IApiService {
     @Autowired
     private RedisService redisService;
 
-    private final static long EXPIRE_TIME = Constants.TOKEN_EXPIRE * 90;
+    private final static long EXPIRE_TIME = Constants.KD_TOKEN_EXPIRE * 90;
 
     @Override
     public Map<String, Object> apiTest(Long id)  {
@@ -85,7 +86,8 @@ public class ApiServiceImpl implements IApiService {
     }
 
     @Override
-    public Map<String, Object> executeKdByApiCode(String apiCode, Object param,String token) {
+    public Map<String, Object> executeKdByApiCode(String apiCode, Object param) {
+        String token = getKdAccessToken();
         QueryWrapper<ApiServiceConfig> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("api_code",apiCode);
         queryWrapper.eq("data_level",1);
@@ -112,24 +114,28 @@ public class ApiServiceImpl implements IApiService {
 
     }
 
-    @Override
     public String getKdAccessToken() {
-        Map<String,Object> appMap = this.executeByApiCode("getAppToken",new HashMap<>());
-        if(appMap!= null&&appMap.get("state").equals("success")){
-            String appToken = (String)((Map)appMap.get("data")).get("app_token");
-            Map<String,Object> param = new HashMap<>();
-            param.put("appToken",appToken);
-            Map<String,Object> accessMap = this.executeByApiCode("getUserToken",param);
-            if(accessMap!= null&&accessMap.get("state").equals("success")){
-                String accessToken = (String)((Map)accessMap.get("data")).get("access_token");
-                redisService.setCacheObject("kd_access_token",accessToken,EXPIRE_TIME, TimeUnit.SECONDS);
-                return accessToken;
+        String accessToken = redisService.getCacheObject("kd_access_token");
+        if(StringUtils.isEmpty(accessToken)){
+            Map<String,Object> appMap = this.executeByApiCode("getAppToken",new HashMap<>());
+            if(appMap!= null&&appMap.get("state").equals("success")){
+                String appToken = (String)((Map)appMap.get("data")).get("app_token");
+                Map<String,Object> param = new HashMap<>();
+                param.put("appToken",appToken);
+                Map<String,Object> accessMap = this.executeByApiCode("getUserToken",param);
+                if(accessMap!= null&&accessMap.get("state").equals("success")){
+                    accessToken = (String)((Map)accessMap.get("data")).get("access_token");
+                    redisService.setCacheObject("kd_access_token",accessToken,EXPIRE_TIME, TimeUnit.SECONDS);
+                    return accessToken;
+                }else{
+                    throw new ApiException("500",new Object[] { "getUserToken" },"获取用户令牌请求连接异常");
+                }
             }else{
-                throw new ApiException("500",new Object[] { "getUserToken" },"获取用户令牌请求连接异常");
+                throw new ApiException("500",new Object[] { "getAppToken" },"获取应用令牌请求连接异常");
             }
-        }else{
-            throw new ApiException("500",new Object[] { "getAppToken" },"获取应用令牌请求连接异常");
         }
+        return accessToken;
+
     }
 
 

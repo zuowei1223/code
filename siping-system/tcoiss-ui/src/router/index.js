@@ -128,10 +128,10 @@ export const constantRoutes = [
       {
         path: 'log',
         component: (resolve) => require(['@/views/monitor/test/log'], resolve),
-      name: 'JobLog',
-      meta: { title: '调度日志' }
-  }
-  ]
+        name: 'JobLog',
+        meta: { title: '调度日志' }
+      }
+    ]
   },
   {
     path: '/gen',
@@ -142,6 +142,32 @@ export const constantRoutes = [
         path: 'edit/:tableId(\\d+)',
         component: (resolve) => require(['@/views/tool/gen/editTable'], resolve),
         name: 'GenEdit',
+        meta: { title: '修改生成配置' }
+      }
+    ]
+  },
+  {
+    path: '/bus',
+      component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'table/index',
+        component: (resolve) => require(['@/views/datafactory/table/index'], resolve),
+        name: 'GenTableEdit',
+        meta: { title: '修改生成配置' }
+      }
+    ]
+  },
+  {
+    path: '/bus',
+      component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'editTable/:tableId(\\d+)',
+        component: (resolve) => require(['@/views/datafactory/table/editTable'], resolve),
+        name: 'GenTableEdit',
         meta: { title: '修改生成配置' }
       }
     ]

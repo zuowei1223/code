@@ -37,7 +37,7 @@ public class SysLogininforController extends BaseController
     @Autowired
     private ISysLogininforService logininforService;
 
-    @PreAuthorize(hasPermi = "mapper.system:logininfor:list")
+    @PreAuthorize(hasPermi = "system:logininfor:list")
     @GetMapping("/list")
     public TableDataInfo list(SysLogininfor logininfor)
     {
@@ -47,7 +47,7 @@ public class SysLogininforController extends BaseController
     }
 
     @Log(title = "登录日志", businessType = BusinessType.EXPORT)
-    @PreAuthorize(hasPermi = "mapper.system:logininfor:export")
+    @PreAuthorize(hasPermi = "system:logininfor:export")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysLogininfor logininfor) throws IOException
     {
@@ -56,7 +56,7 @@ public class SysLogininforController extends BaseController
         util.exportExcel(response, list, "登录日志");
     }
 
-    @PreAuthorize(hasPermi = "mapper.system:logininfor:remove")
+    @PreAuthorize(hasPermi = "system:logininfor:remove")
     @Log(title = "登录日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/{infoIds}")
     public AjaxResult remove(@PathVariable Long[] infoIds)
@@ -64,7 +64,7 @@ public class SysLogininforController extends BaseController
         return toAjax(logininforService.deleteLogininforByIds(infoIds));
     }
 
-    @PreAuthorize(hasPermi = "mapper.system:logininfor:remove")
+    @PreAuthorize(hasPermi = "system:logininfor:remove")
     @Log(title = "登录日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/clean")
     public AjaxResult clean()

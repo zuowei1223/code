@@ -1,6 +1,6 @@
 # 本地文件上传    
 file:
-    domain: http://192.168.0.80:9300
+    domain: http://124.71.130.38:9300
     path: D:/tcoiss/uploadPath
     prefix: /statics
 

@@ -87,16 +87,12 @@ public class ElectronicFenceServiceImpl extends ServiceImpl<ElectronicFenceMappe
     @Override
     public boolean syncFence(ElectronicFence electronicFence,int enable) {
         //查看缓存是否存在token,存在则取，不存在则接口获取
-        String accessToken = redisService.getCacheObject("kd_access_token");
-        if(StringUtils.isEmpty(accessToken)){
-            accessToken = iApiService.getKdAccessToken();
-        }
         Map<String,Object> map = new HashMap<>();
         map.put("fenceCode",electronicFence.getFenceCode());
         map.put("fenceName",electronicFence.getFenceName());
         map.put("typeflag",","+electronicFence.getFencePop()+",");
         map.put("enable",enable);
-        Map<String,Object> resultMap = iApiService.executeKdByApiCode("syncKdFence",map,accessToken);
+        Map<String,Object> resultMap = iApiService.executeKdByApiCode("syncKdFence",map);
         if(resultMap.get("errorCode").equals("success")){
             if(enable==1) {
                 return this.saveOrUpdate(electronicFence);

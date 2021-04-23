@@ -20,6 +20,17 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="业务对象" prop="appName">
+        <el-input
+          v-model="queryParams.appName"
+          placeholder="请输入所属应用"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+
       <el-form-item label="所属应用" prop="appName">
         <el-input
           v-model="queryParams.appName"
@@ -106,6 +117,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="API名称" align="center" prop="apiName" />
       <el-table-column label="API编码" align="center" prop="apiCode" />
+      <el-table-column label="业务对象" align="center" prop="requestType" :formatter="requestTypeFormat" />
       <el-table-column label="请求方式" align="center" prop="requestType" :formatter="requestTypeFormat" />
       <el-table-column label="所属应用" align="center" prop="appName" />
       <el-table-column label="内容格式" align="center" prop="dataType" />
@@ -164,8 +176,15 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="集成对象" prop="apiObj">
-          <el-input v-model="form.apiObj" placeholder="请输入集成对象" />
+        <el-form-item label="业务对象" prop="apiObj">
+          <el-select v-model="form.apiObj" placeholder="请选择数据级别">
+            <el-option
+              v-for="obj in apiObjOptions"
+              :key="obj.busTableName"
+              :label="obj.busTableComment"
+              :value="obj.busTableName"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="所属应用" prop="appName">
           <el-input v-model="form.appName" placeholder="请输入所属应用" />
@@ -229,6 +248,8 @@ export default {
       requestTypeOptions: [],
       // 数据级别字典
       dataLevelOptions: [],
+      // 业务对象列表
+      apiObjOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -260,6 +281,11 @@ export default {
     this.getDicts("data_level").then(response => {
       this.dataLevelOptions = response.data;
     });
+    var query = {};
+    this.getTables(query).then(response => {
+      this.apiObjOptions = response.data;
+  });
+
   },
   methods: {
     /** 查询API服务配置列表 */
@@ -279,6 +305,10 @@ export default {
     dataLevelFormat(row, column) {
       return this.selectDictLabel(this.dataLevelOptions, row.dataLevel);
     },
+    apiObjFormat(row, column) {
+      return this.selectDictLabel(this.dataLevelOptions, row.dataLevel);
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;

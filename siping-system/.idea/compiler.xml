@@ -6,28 +6,41 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="tcoiss-api-business" />
         <module name="tcoiss-api-system" />
         <module name="tcoiss-api-webservice" />
         <module name="tcoiss-auth" />
+        <module name="tcoiss-business-base" />
+        <module name="tcoiss-business-bill" />
+        <module name="tcoiss-business-datafactory" />
         <module name="tcoiss-common-core" />
         <module name="tcoiss-common-datascope" />
         <module name="tcoiss-common-datasource" />
         <module name="tcoiss-common-log" />
+        <module name="tcoiss-common-mq" />
         <module name="tcoiss-common-redis" />
         <module name="tcoiss-common-security" />
         <module name="tcoiss-common-swagger" />
         <module name="tcoiss-gateway" />
         <module name="tcoiss-integration-dbsource" />
+        <module name="tcoiss-integration-epdfund" />
         <module name="tcoiss-integration-webservice" />
+        <module name="tcoiss-job-admin" />
+        <module name="tcoiss-job-service" />
         <module name="tcoiss-modules-file" />
         <module name="tcoiss-modules-gen" />
+        <module name="tcoiss-modules-log" />
         <module name="tcoiss-modules-system" />
-        <module name="tcoiss-schedule-admin" />
         <module name="tociss-integration-report" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="tcoiss-business-job" target="1.8" />
       <module name="tcoiss-integration-admin" target="1.8" />
+      <module name="tcoiss-rocketmq-console" target="1.8" />
+      <module name="tcoiss-schedule-admin" target="1.8" />
+      <module name="tcoiss-schedule-service" target="1.8" />
+      <module name="tcoiss-xxlJob-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

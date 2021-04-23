@@ -38,6 +38,9 @@ public class ApiServiceConfigServiceImpl extends ServiceImpl<ApiServiceConfigMap
         if (apiServiceConfig.getDataLevel() != null){
             lqw.eq(ApiServiceConfig::getDataLevel ,apiServiceConfig.getDataLevel());
         }
+        if (apiServiceConfig.getApiObj() != null){
+            lqw.eq(ApiServiceConfig::getApiObj ,apiServiceConfig.getApiObj());
+        }
         return this.list(lqw);
     }
 

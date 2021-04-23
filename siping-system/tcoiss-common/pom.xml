@@ -18,6 +18,7 @@
         <module>tcoiss-common-datasource</module>
         <module>tcoiss-common-datascope</module>
         <module>tcoiss-common-swagger</module>
+        <module>tcoiss-common-mq</module>
     </modules>
 
 

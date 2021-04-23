@@ -7,34 +7,44 @@ spring:
   application:
     # 应用名称
     name: tcoiss-gateway
-  profiles:
+  #profiles:
     # 环境配置
-    active: dev
+    #active: dev
   main:
     allow-bean-definition-overriding: true
   cloud:
     nacos:
       discovery:
         # 服务注册地址
-        server-addr: 192.168.0.80:8848
+        server-addr: 124.71.130.38:8848
+        #namespace: 1f3c41b7-fa8e-4b52-bbbc-6e4590ca4003
+        #group: dev
       config:
         # 配置中心地址
-        server-addr: 192.168.0.80:8848
+        server-addr: 124.71.130.38:8848
         # 配置文件格式
         file-extension: yml
+        namespace: 1f3c41b7-fa8e-4b52-bbbc-6e4590ca4003
+        group: dev
         # 共享配置
-        shared-dataids: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+        #shared-dataids: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+        #refresh: true
+      shared-configs:
+        - data-id: application-dev.yml
+          refresh: true
+          #- data-id: application-.yml
+          #refresh: true
     sentinel:
       # 取消控制台懒加载
       eager: true
       transport:
         # 控制台地址
-        dashboard: 192.168.0.80:8718
+        dashboard: 124.71.130.38:8718
       # nacos配置持久化
       datasource:
         ds1:
           nacos:
-            server-addr: 192.168.0.80:8848
+            server-addr: 124.71.130.38:8848
             dataId: sentinel-tcoiss-gateway
             groupId: DEFAULT_GROUP
             data-type: json
