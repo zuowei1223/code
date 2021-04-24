@@ -1,26 +1,28 @@
 package com.tcoiss.datafactory.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.tcoiss.common.core.utils.poi.ExcelUtil;
 import com.tcoiss.datafactory.domain.BusTable;
+import com.tcoiss.datafactory.domain.BusTableColumn;
+import com.tcoiss.datafactory.domain.vo.TableVO;
 import com.tcoiss.datafactory.service.IBusTableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.tcoiss.common.log.annotation.Log;
 import com.tcoiss.common.core.web.controller.BaseController;
 import com.tcoiss.common.core.web.domain.AjaxResult;
 import com.tcoiss.common.log.enums.BusinessType;
 import com.tcoiss.common.security.annotation.PreAuthorize;
 import com.tcoiss.common.core.web.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 生成表结构业务Controller
@@ -49,13 +51,22 @@ public class BusTableController extends BaseController {
     /**
      * 导入业务表
      */
-    @PreAuthorize(hasPermi = "bus:table:export" )
-    @Log(title = "业务表" , businessType = BusinessType.EXPORT)
-    @PostMapping("/importTable")
-    public void importTable(@RequestBody BusTable busTable)
+    @PreAuthorize(hasPermi = "bus:table:import" )
+    @Log(title = "业务表", businessType = BusinessType.IMPORT)
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        List<BusTable> list = iBusTableService.queryList(busTable);
+        ExcelUtil<TableVO> util = new ExcelUtil<TableVO>(TableVO.class);
+        List<TableVO> columns = util.importExcel(file.getInputStream());
 
+        String message = iBusTableService.importTable(columns,updateSupport);
+        return AjaxResult.success(message);
+    }
+
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) throws IOException {
+        ExcelUtil<TableVO> util = new ExcelUtil<TableVO>(TableVO.class);
+        util.importTemplateExcel(response,"表结构");
     }
 
     /**
@@ -87,8 +98,13 @@ public class BusTableController extends BaseController {
         return toAjax(iBusTableService.updateBusTableById(busTable) ? 1 : 0);
     }
 
+    /**
+     * 提交业务表配置，同步业务表结构，创建表并插入表数据
+     * @param busTable
+     * @return
+     */
     @PreAuthorize(hasPermi = "bus:table:edit" )
-    @Log(title = "修改业务表配置" , businessType = BusinessType.UPDATE)
+    @Log(title = "提交业务表配置" , businessType = BusinessType.UPDATE)
     @PutMapping("/updateBusTable")
     public AjaxResult editTable(@RequestBody BusTable busTable) {
         return toAjax(iBusTableService.updateBusTable(busTable) ? 1 : 0);
@@ -106,21 +122,21 @@ public class BusTableController extends BaseController {
     /**
      * 同步表结构
      */
-    @PreAuthorize(hasPermi = "bus:table:add" )
+    /*@PreAuthorize(hasPermi = "bus:table:add" )
     @Log(title = "业务表配置" , businessType = BusinessType.INSERT)
     @PostMapping("/syncTableJg")
-    public AjaxResult createTable(@RequestBody BusTable busTable) {
-        return toAjax(iBusTableService.syncTableAllJg(busTable) ? 1 : 0);
-    }
+    public AjaxResult syncTableJg(@RequestBody BusTable busTable) {
+        return toAjax(iBusTableService.syncTableJg(busTable) ? 1 : 0);
+    }*/
 
     /**
      * 依据配置同步业务表数据
      */
     @PreAuthorize(hasPermi = "bus:table:add" )
-    @Log(title = "生成业务表" , businessType = BusinessType.INSERT)
-    @PostMapping("/initTableData")
-    public AjaxResult initTableData(@RequestBody BusTable busTable) {
-        return toAjax(iBusTableService.initTableAllData(busTable) ? 1 : 0);
+    @Log(title = "初始化业务表" , businessType = BusinessType.INSERT)
+    @PostMapping("/initTable")
+    public AjaxResult initTable(@RequestBody BusTable busTable) {
+        return toAjax(iBusTableService.initTable(busTable) ? 1 : 0);
     }
 
 }

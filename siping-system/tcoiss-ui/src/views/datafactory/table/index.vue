@@ -30,27 +30,18 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-		  plain
+		      plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
           v-hasPermi="['bus:table:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="info"
-          plain
-          icon="el-icon-upload"
-          size="mini"
-          @click="openImportTable"
-          v-hasPermi="['bus:table:import']"
-        >导入表</el-button>
-      </el-col>
+
       <el-col :span="1.5">
         <el-button
           type="success"
-		  plain
+		      plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -61,7 +52,7 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-		  plain
+		      plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -71,8 +62,18 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
+          type="info"
+          plain
+          icon="el-icon-upload2"
+          size="mini"
+          @click="handleImport"
+          v-hasPermi="['bus:table:import']"
+        >导入</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
           type="warning"
-		  plain
+		      plain
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
@@ -130,6 +131,37 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+
+    <!-- 导入对话框 -->
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px">
+      <el-upload
+        ref="upload"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+        <div class="el-upload__tip" slot="tip">
+          <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的业务表
+          <el-link type="info" style="font-size:12px" @click="importTemplate">下载模板</el-link>
+        </div>
+        <div class="el-upload__tip" style="color:red" slot="tip">提示：仅允许导入“xls”或“xlsx”格式文件！</div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileForm">确 定</el-button>
+        <el-button @click="upload.open = false">取 消</el-button>
+      </div>
+    </el-dialog>
 
     <!-- 添加或修改代码生成业务对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
@@ -217,8 +249,8 @@
 </template>
 
 <script>
-import { listTable, getTable, delTable, addTable, updateTable,syncTableJg,initTableData } from "@/api/datafactory/table";
-
+import { listTable, getTable, delTable, addTable, updateTable,syncTableJg,initTable } from "@/api/datafactory/table";
+import { getToken } from "@/utils/auth";
 export default {
   name: "Table",
   components: {
@@ -245,6 +277,21 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 用户导入参数
+      upload: {
+        // 是否显示弹出层（）
+        open: false,
+        // 弹出层标题（）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/datafactory/table/importData"
+      },
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -357,7 +404,7 @@ export default {
     },
     
     /** 同步表结构操作 */
-    handleSync(row) {
+    /*handleSync(row) {
       const tableName = row.tableName;
       this.$confirm('确认要强制同步"' + tableName + '"表的关联结构吗？', "警告", {
         confirmButtonText: "确定",
@@ -368,8 +415,8 @@ export default {
       }).then(() => {
         this.msgSuccess("同步成功");
       })
-    },
-    handleCreateTable(row){
+    },*/
+    /*handleCreateTable(row){
       const tableName = row.tableName;
       this.$confirm('确认要创建"' + tableName + '"表，及其关联表吗？', "警告", {
         confirmButtonText: "确定",
@@ -380,15 +427,15 @@ export default {
       }).then(() => {
         this.msgSuccess("同步成功");
     })
-    },
-    handleInitData(row) {
+    },*/
+    handleInitTable(row) {
       const tableName = row.tableName;
-      this.$confirm('确认要强制同步"' + tableName + '"表的关联结构吗？', "警告", {
+      this.$confirm('确认要强制初始化"' + tableName + '"表吗？', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(function() {
-        return initTableData({'tableId':row.tableId});
+        return initTable(row);
       }).then(() => {
         this.msgSuccess("同步成功");
     })
@@ -415,9 +462,36 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('gen/table/export', {
+      this.download('bus/table/export', {
         ...this.queryParams
-      }, `gen_table.xlsx`)
+      }, `bus_table.xlsx`)
+    },
+    /** 导入按钮操作 */
+    handleImport() {
+      this.upload.title = "表导入";
+      this.upload.open = true;
+    },
+    /** 下载模板操作 */
+    importTemplate() {
+      this.download('datafactory/table/importTemplate', {
+        ...this.queryParams
+      }, `table_${new Date().getTime()}.xlsx`)
+    },
+    // 文件上传中处理
+    handleFileUploadProgress(event, file, fileList) {
+      this.upload.isUploading = true;
+    },
+    // 文件上传成功处理
+    handleFileSuccess(response, file, fileList) {
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$alert(response.msg, "导入结果", { dangerouslyUseHTMLString: true });
+      this.getList();
+    },
+    // 提交上传文件
+    submitFileForm() {
+      this.$refs.upload.submit();
     }
   }
 };

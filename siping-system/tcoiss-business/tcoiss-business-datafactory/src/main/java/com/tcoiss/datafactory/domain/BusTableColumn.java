@@ -35,14 +35,17 @@ private static final long serialVersionUID=1L;
     private Long columnId;
 
     /** 归属表编号 */
-    @Excel(name = "归属表编号")
+    @Excel(name = "表名" , type = Excel.Type.IMPORT )
     private String tableName;
     /** 分录号*/
     private Integer entryNum;
 
     /** 列名称 */
-    @Excel(name = "列名称")
+    @Excel(name = "列名称" , type = Excel.Type.IMPORT)
     private String columnName;
+
+    @Excel(name = "金碟列名称" , type = Excel.Type.IMPORT)
+    private String kdColumnName;
 
     private String columnValue;
 
@@ -59,31 +62,31 @@ private static final long serialVersionUID=1L;
     private String isPk;
 
     /** 是否必填（1是） */
-    @Excel(name = "是否必填" , readConverterExp = "1=是")
+    //@Excel(name = "是否必填" , readConverterExp = "1=是")
     private String isRequired;
 
     /** 是否列表字段（1是） */
-    @Excel(name = "是否列表字段" , readConverterExp = "1=是")
+    //@Excel(name = "是否列表字段" , readConverterExp = "1=是")
     private String isList;
 
     /** 是否过滤字段（1是） */
-    @Excel(name = "是否过滤字段" , readConverterExp = "1=是")
+    //@Excel(name = "是否过滤字段" , readConverterExp = "1=是")
     private String isFilter;
 
     /** 过滤方式（等于、不等于、大于、小于、范围） */
-    @Excel(name = "过滤方式" , readConverterExp = "等=于、不等于、大于、小于、范围")
+    //@Excel(name = "过滤方式" , readConverterExp = "等=于、不等于、大于、小于、范围")
     private String filterType;
 
     /** 数据类型（REF,ENUM,String,decimal） */
-    @Excel(name = "数据类型" , readConverterExp = "R=EF,ENUM,String,decimal")
+    //@Excel(name = "数据类型" , readConverterExp = "R=EF,ENUM,String,decimal")
     private String dataType;
 
     /** 数据模型 */
-    @Excel(name = "数据模型")
+    //@Excel(name = "数据模型")
     private String dataModel;
 
     /** 排序 */
-    @Excel(name = "排序")
+    //@Excel(name = "排序")
     private Long sort;
 
     /** 创建者 */

@@ -48,7 +48,7 @@ private static final long serialVersionUID=1L;
     @Excel(name = "业务分组名称")
     private String busGroupName;
 
-    private String splitTables;
+    /*private String splitTables;
 
     private String splitApiCode;
 
@@ -64,7 +64,7 @@ private static final long serialVersionUID=1L;
 
     private String tableType;
 
-    private String syncTableParam;
+    private String syncTableParam;*/
 
 
     /** 创建者 */

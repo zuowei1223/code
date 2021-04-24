@@ -3,6 +3,7 @@ package com.tcoiss.datafactory.service;
 import com.tcoiss.datafactory.domain.BusTable;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tcoiss.datafactory.domain.BusTableColumn;
+import com.tcoiss.datafactory.domain.vo.TableVO;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public interface IBusTableService extends IService<BusTable> {
 
     boolean updateBusTable(BusTable busTable);
 
-    boolean syncTableAllJg(BusTable busTable);
+    boolean initTable(BusTable busTable);
 
-    boolean initTableAllData(BusTable busTable);
+    String importTable(List<TableVO> columns, boolean updateSupport);
 }

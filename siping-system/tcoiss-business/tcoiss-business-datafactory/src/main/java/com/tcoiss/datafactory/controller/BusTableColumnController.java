@@ -24,6 +24,7 @@ import com.tcoiss.common.log.enums.BusinessType;
 import com.tcoiss.common.security.annotation.PreAuthorize;
 import javax.servlet.http.HttpServletResponse;
 import com.tcoiss.common.core.web.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 代码生成业务字段Controller
@@ -61,6 +62,7 @@ public class BusTableColumnController extends BaseController {
         ExcelUtil<BusTableColumn> util = new ExcelUtil<BusTableColumn>(BusTableColumn.class);
         util.exportExcel(response,list, "column" );
     }
+
 
     /**
      * 获取代码生成业务字段详细信息

@@ -18,7 +18,7 @@ public class DataBaseSql {
      * @param tabName 表名称
      * @param columns 表字段
      */
-    public static void createTable(String tabName, String id, List<BusTableColumn> columns) {
+    public static boolean createTable(String tabName, String id, List<BusTableColumn> columns) {
         conn = getConnection();  // 首先要获取连接，即连接到数据库
         try {
             String sql = "create table "+tabName+"("+id+" bigint primary key not null";
@@ -42,8 +42,10 @@ public class DataBaseSql {
             ps.executeUpdate(sql);
             ps.close();
             conn.close();  //关闭数据库连接
+            return true;
         } catch (SQLException e) {
             System.out.println("建表失败" + e.getMessage());
+            return false;
         }
     }
     /**
@@ -210,7 +212,7 @@ public class DataBaseSql {
     }
     /**
      * 用于注入参数
-     * @param ps
+     * @param
      * @param data
      * @throws SQLException
      */

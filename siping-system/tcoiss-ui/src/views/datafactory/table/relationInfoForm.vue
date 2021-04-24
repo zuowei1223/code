@@ -1,7 +1,7 @@
 <template>
   <el-form ref="relationInfoForm" :model="info" :rules="rules" label-width="150px">
     <el-row>
-      <el-col :span="12">
+      <!--<el-col :span="12">
         <el-form-item prop="splitTables">
           <span slot="label">拆分表名
             <el-tooltip content="数据转换时会关联的子表名称" placement="top">
@@ -23,7 +23,7 @@
           <span slot="label">关联拆分表脚本</span>
           <el-input v-model="info.splitGlsqlScript" />
         </el-form-item>
-      </el-col>
+      </el-col>-->
 
       <el-col :span="12">
         <el-form-item prop="subTables">
