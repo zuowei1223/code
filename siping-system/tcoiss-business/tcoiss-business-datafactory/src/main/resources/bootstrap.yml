@@ -24,13 +24,13 @@ spring:
         server-addr: 124.71.130.38:8848
         # 配置文件格式
         file-extension: yml
-        namespace: de8e4dad-3d3e-4f95-a5a0-bf51b22982e4
+        namespace: f59dc014-246c-497d-b645-7ebdda3d783b
         group: dev
         # 共享配置
         #shared-dataids: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
         #refresh: true
-      shared-configs:
-        - data-id: application-dev.yml
-          refresh: true
+        shared-configs:
+          - data-id: application.yml
+            refresh: true
         #- data-id: application-.yml
         #refresh: true

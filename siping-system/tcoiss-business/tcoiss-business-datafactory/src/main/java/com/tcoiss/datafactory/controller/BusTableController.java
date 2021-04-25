@@ -117,7 +117,7 @@ public class BusTableController extends BaseController {
     @Log(title = "业务表配置" , businessType = BusinessType.DELETE)
     @DeleteMapping("/{tableIds}" )
     public AjaxResult remove(@PathVariable Long[] tableIds) {
-        return toAjax(iBusTableService.removeByIds(Arrays.asList(tableIds)) ? 1 : 0);
+        return toAjax(iBusTableService.removeTablesByIds(Arrays.asList(tableIds)) ? 1 : 0);
     }
     /**
      * 同步表结构
@@ -130,7 +130,7 @@ public class BusTableController extends BaseController {
     }*/
 
     /**
-     * 依据配置同步业务表数据
+     * 初始化业务表
      */
     @PreAuthorize(hasPermi = "bus:table:add" )
     @Log(title = "初始化业务表" , businessType = BusinessType.INSERT)

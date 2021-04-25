@@ -8,11 +8,16 @@
         <el-table ref="dragTable" :data="cloumns" row-key="columnId" :max-height="tableHeight">
           <el-table-column label="序号" type="index" min-width="5%" class-name="allowDrag" />
           <el-table-column
-            label="字段列名"
-            prop="columnName"
+            label="金碟字段列名"
+            prop="kdColumnName"
             min-width="10%"
             :show-overflow-tooltip="true"
           />
+          <el-table-column label="字段列名" min-width="10%" >
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.columnName"></el-input>
+            </template>
+          </el-table-column>
           <el-table-column label="字段描述" min-width="10%">
             <template slot-scope="scope">
               <el-input v-model="scope.row.columnComment"></el-input>

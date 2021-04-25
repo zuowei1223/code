@@ -105,8 +105,8 @@
             size="mini"
             type="text"
             icon="el-icon-refresh"
-            @click="handleInitData(scope.row)"
-          >初始化数据</el-button>
+            @click="handleInitTable(scope.row)"
+          >初始化表</el-button>
           <el-button
             size="mini"
             type="text"
@@ -164,7 +164,7 @@
     </el-dialog>
 
     <!-- 添加或修改代码生成业务对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
+    <!--<el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -188,8 +188,6 @@
                   :value="api.apiCode"
                 />
               </el-select>
-
-
             </el-form-item>
           </el-col>
 
@@ -204,16 +202,6 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="12">
-            <el-form-item prop="splitTables">
-              <span slot="label">拆分表
-                <el-tooltip content="存在多个拆分表时用 ， 隔开" placement="top">
-                  <i class="el-icon-question"></i>
-                </el-tooltip>
-              </span>
-              <el-input v-model="form.splitTables" />
-            </el-form-item>
-          </el-col>
           <el-col :span="12">
             <el-form-item prop="subTables">
               <span slot="label">
@@ -230,20 +218,13 @@
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
             </el-form-item>
           </el-col>
-
         </el-row>
-        <!--<el-form-item label="表类型" prop="syncApiCode">
-          <el-input v-model="form.syncApiCode" placeholder="请输入同步api编码" />
-        </el-form-item>-->
-        <!--<el-form-item label="同步api编码" prop="syncApiCode">
-          <el-input v-model="form.syncApiCode" placeholder="请输入同步api编码" />
-        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
-    </el-dialog>
+    </el-dialog>-->
     <!--<import-table ref="import" @ok="handleQuery" />-->
   </div>
 </template>
@@ -404,30 +385,6 @@ export default {
     },
     
     /** 同步表结构操作 */
-    /*handleSync(row) {
-      const tableName = row.tableName;
-      this.$confirm('确认要强制同步"' + tableName + '"表的关联结构吗？', "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(function() {
-        return syncTableJg({'tableId':row.tableId});
-      }).then(() => {
-        this.msgSuccess("同步成功");
-      })
-    },*/
-    /*handleCreateTable(row){
-      const tableName = row.tableName;
-      this.$confirm('确认要创建"' + tableName + '"表，及其关联表吗？', "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(function() {
-        return createTable({'tableId':row.tableId});
-      }).then(() => {
-        this.msgSuccess("同步成功");
-    })
-    },*/
     handleInitTable(row) {
       const tableName = row.tableName;
       this.$confirm('确认要强制初始化"' + tableName + '"表吗？', "警告", {
@@ -438,7 +395,7 @@ export default {
         return initTable(row);
       }).then(() => {
         this.msgSuccess("同步成功");
-    })
+      })
     },
     /** 修改按钮操作 */
     handleEditTable(row) {
@@ -449,7 +406,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const tableIds = row.tableId || this.ids;
-      this.$confirm('是否确认删除代码生成业务编号为"' + tableIds + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除业务表为"' + tableIds + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

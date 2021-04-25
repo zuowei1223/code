@@ -40,13 +40,39 @@ public class HttpAPIServer {
     public String doGet(String url) throws Exception {
         // 声明 http get 请求
         HttpGet httpGet = new HttpGet(url);
-
         // 装载配置信息
         httpGet.setConfig(config);
-
         // 发起请求
         CloseableHttpResponse response = this.httpClient.execute(httpGet);
+        // 判断状态码是否为200
+        if (response.getStatusLine().getStatusCode() == 200) {
+            // 返回响应体的内容
+            return EntityUtils.toString(response.getEntity(), "UTF-8");
+        }
+        return null;
+    }
 
+    /**
+     * 带参数的get请求，如果状态码为200，则返回body，如果不为200，则返回null
+     *
+     * @param url
+     * @return
+     * @throws Exception
+     */
+    public String doGet(String url,InvokeContext invokeContext) throws Exception {
+        // 声明 http get 请求
+        HttpGet httpGet = new HttpGet(url);
+        // 装载配置信息
+        httpGet.setConfig(config);
+        // 设置请求格式
+        if(invokeContext!=null){
+            httpGet.setHeader("Content-type",invokeContext.getDataType());
+            if(url.startsWith("https")&& StringUtils.isNotEmpty(invokeContext.getAccessToken())){//需要登录
+                httpGet.setHeader("access_token",invokeContext.getAccessToken());
+            }
+        }
+        // 发起请求
+        CloseableHttpResponse response = this.httpClient.execute(httpGet);
         // 判断状态码是否为200
         if (response.getStatusLine().getStatusCode() == 200) {
             // 返回响应体的内容

@@ -18,14 +18,15 @@ public class DataBaseSql {
      * @param tabName 表名称
      * @param columns 表字段
      */
-    public static boolean createTable(String tabName, String id, List<BusTableColumn> columns) {
+    public static boolean createTable(String tabName,List<BusTableColumn> columns) {
+        String id = columns.get(0).getColumnName();
         conn = getConnection();  // 首先要获取连接，即连接到数据库
         try {
             String sql = "create table "+tabName+"("+id+" bigint primary key not null";
             if(columns!=null&&columns.size()>0){
                 sql+=",";
 
-                for(int i=0;i<columns.size();i++){
+                for(int i=1;i<columns.size();i++){
                     BusTableColumn column = columns.get(i);
                     //添加字段
                     sql+=column.getColumnName().trim()+" "+column.getColumnType();
@@ -54,7 +55,7 @@ public class DataBaseSql {
      * @param tabName 参数字段
      * @param columns 参数字段数据
      */
-    public static void insert(String tabName,List<BusTableColumn> columns,String[] data) {
+    public static void insert(String tabName,List<BusTableColumn> columns,String[] data) throws SQLException {
         conn = getConnection();  // 首先要获取连接，即连接到数据库
         try {
             String sql = "insert into "+tabName+"(";
@@ -80,11 +81,17 @@ public class DataBaseSql {
             excutePs(sql,columns.size(),data);
             //执行
             ps.executeUpdate();
-            //关闭流
+            /*//关闭流
             ps.close();
-            conn.close();  //关闭数据库连接
+            conn.close();  //关闭数据库连接*/
         } catch (SQLException e) {
             System.out.println("添加数据失败" + e.getMessage());
+        }finally
+        {
+            if(ps!= null)
+                ps.close();
+            if(conn!= null)
+                conn.close();
         }
     }
     /**

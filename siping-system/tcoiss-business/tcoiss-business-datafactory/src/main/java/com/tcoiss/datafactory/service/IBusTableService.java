@@ -32,4 +32,6 @@ public interface IBusTableService extends IService<BusTable> {
     boolean initTable(BusTable busTable);
 
     String importTable(List<TableVO> columns, boolean updateSupport);
+
+    boolean removeTablesByIds(List<Long> asList);
 }

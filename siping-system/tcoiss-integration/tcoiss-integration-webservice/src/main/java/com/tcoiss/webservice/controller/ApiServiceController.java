@@ -39,16 +39,10 @@ public class ApiServiceController {
 
     @PostMapping("/executeKdApi")
     public R<Map<String, Object>> executeKdApi(@RequestBody ApiParam apiParam){
-        /*if(!StringUtils.isNotEmpty(apiParam.getApiCode())){
+        if(!StringUtils.isNotEmpty(apiParam.getApiCode())){
             return R.fail("webApi编码不能为空");
-        }*/
-        ApiServiceConfig config = new ApiServiceConfig();
-        config.setApiObj(apiParam.getApiObj());
-        ApiServiceConfig config1 = iApiServiceConfigService.queryList(config).get(0);
-        if(config1==null){
-            return R.fail("未查询到对应的API配置");
         }
-        Map<String,Object> result = iApiService.executeKdByApiCode(config1.getApiCode(),apiParam.getParam());
+        Map<String,Object> result = iApiService.executeKdByApiCode(apiParam.getApiCode(),apiParam.getParam());
         if(result==null){
             return R.fail("webApi接口请求失败");
         }

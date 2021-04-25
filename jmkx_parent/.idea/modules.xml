@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/jmkx_common/jmkx_common.iml" filepath="$PROJECT_DIR$/jmkx_common/jmkx_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_easServer/jmkx_easServer.iml" filepath="$PROJECT_DIR$/jmkx_easServer/jmkx_easServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_mdm/jmkx_mdm.iml" filepath="$PROJECT_DIR$/jmkx_mdm/jmkx_mdm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_mq/jmkx_mq.iml" filepath="$PROJECT_DIR$/jmkx_mq/jmkx_mq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_oaServer/jmkx_oaServer.iml" filepath="$PROJECT_DIR$/jmkx_oaServer/jmkx_oaServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_parent.iml" filepath="$PROJECT_DIR$/jmkx_parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_portal/jmkx_portal.iml" filepath="$PROJECT_DIR$/jmkx_portal/jmkx_portal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_web_server/jmkx_portal_web/jmkx_portal_web.iml" filepath="$PROJECT_DIR$/jmkx_web_server/jmkx_portal_web/jmkx_portal_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_server_api/jmkx_server_api.iml" filepath="$PROJECT_DIR$/jmkx_server_api/jmkx_server_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_server_api/jmkx_server_easServer_api/jmkx_server_easServer_api.iml" filepath="$PROJECT_DIR$/jmkx_server_api/jmkx_server_easServer_api/jmkx_server_easServer_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_server_api/jmkx_server_uf013Server_api/jmkx_server_uf013Server_api.iml" filepath="$PROJECT_DIR$/jmkx_server_api/jmkx_server_uf013Server_api/jmkx_server_uf013Server_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_uf013Server/jmkx_uf013Server.iml" filepath="$PROJECT_DIR$/jmkx_uf013Server/jmkx_uf013Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jmkx_web_server/jmkx_web_server.iml" filepath="$PROJECT_DIR$/jmkx_web_server/jmkx_web_server.iml" />
+    </modules>
+  </component>
+</project>

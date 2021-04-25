@@ -27,4 +27,6 @@ public interface IBusTableColumnService extends IService<BusTableColumn> {
     List<BusTableColumn> getEntryNumByTableName(String tableName);
 
     List<BusTableColumn> getListByNum(String tableName,Integer entryNum);
+
+    boolean removeByTableName(String busTableName);
 }

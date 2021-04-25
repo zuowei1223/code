@@ -28,8 +28,11 @@ public class HttpInvoker extends Invoker{
             }else if (StringUtils.equals("post",invokeContext.getRequestType())){
                 response = httpAPIServer.doPost(targerUrl,reqBody);
 
-            }else if (StringUtils.equals("get",invokeContext.getRequestType())){
+            }else if (StringUtils.equals("get",invokeContext.getRequestType())&&StringUtils.equals("parameters",invokeContext.getDataType())){
                 //拼装请求地址
+                targerUrl = targerUrl+reqBody;
+                response = httpAPIServer.doGet(targerUrl,invokeContext);
+            }else {
                 targerUrl = targerUrl+reqBody;
                 response = httpAPIServer.doGet(targerUrl);
             }

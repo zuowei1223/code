@@ -70,7 +70,6 @@ public class BusTableColumnServiceImpl extends ServiceImpl<BusTableColumnMapper,
     public List<BusTableColumn> getColumnsByName(String tableName) {
         BusTableColumn column = new BusTableColumn();
         column.setTableName(tableName);
-        column.setEntryNum(0);
         return this.queryList(column);
     }
 
@@ -101,5 +100,14 @@ public class BusTableColumnServiceImpl extends ServiceImpl<BusTableColumnMapper,
         lqw.orderByDesc(BusTableColumn::getEntryNum );
         return this.list(lqw);
     }
+
+    @Override
+    public boolean removeByTableName(String busTableName) {
+        LambdaQueryWrapper<BusTableColumn> lqw = Wrappers.lambdaQuery();
+        lqw.eq(BusTableColumn::getTableName ,busTableName);
+        List<BusTableColumn> columns = this.list(lqw);
+        return this.removeByIds(columns);
+    }
+
 
 }

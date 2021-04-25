@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -119,17 +120,11 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
     private boolean createTable(String tableName,List<BusTableColumn> columns) {
         //先判断是否存在表
         if(DataBaseSql.exitTable(tableName)){
-            DataBaseSql.delete(tableName);
+            DataBaseSql.dropTable(tableName);
         }
         //根据业务表结构生成建表sql并执行
-        String id = "";
-        for(BusTableColumn column :columns){
-            if(column.getIsPk()=="1"){
-                id = column.getColumnName();
-            }
-            columns.remove(column);
-        }
-        return DataBaseSql.createTable(tableName,id,columns);
+
+        return DataBaseSql.createTable(tableName,columns);
     }
 
     /**
@@ -138,13 +133,17 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
      * @return
      */
     private boolean insetTable(String tableName,List<BusTableColumn> columns) {
-        //从redis中取出数据集合
-        List<List<Object>> datas = redisService.getCacheObject(tableName);
-        //根据表名和分录号对数据进行分组，同步所有的表数据
-        for(List<Object> data: datas){
-            DataBaseSql.insert(tableName,columns,data.toArray(new String[data.size()]));
+        try {
+            //从redis中取出数据集合
+            List<List<Object>> datas = redisService.getCacheObject(tableName);
+            //根据表名和分录号对数据进行分组，同步所有的表数据
+            for(List<Object> data: datas){
+               DataBaseSql.insert(tableName,columns,data.toArray(new String[data.size()]));
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new DataException("500",null,"初始化表数据时报错如下："+e.getMessage());
         }
-        return true;
     }
 
     //同步表结构
@@ -154,7 +153,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
         R<Map<String,Object>> r = remoteApiService.executeKdApi(apiParam);
         if(r.getCode()==200){
             Map<String,Object> map = r.getData();
-            if((boolean)map.get("success")){
+            if(map.get("success").equals("true")){
                 Map<String,Object> data =(Map<String, Object>) map.get("data");
                 int count = Integer.valueOf(data.get("count").toString());
                 if(count==0){
@@ -162,7 +161,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
                 }
                 List<Object> header = (List)data.get("header");
                 for(int i= 0;i<vos.size();i++){
-                    TableVO vo = vos.get(0);
+                    TableVO vo = vos.get(i);
                     BusTableColumn column = new BusTableColumn();
                     Map<String,Object> headerMap = (Map) header.get(i);
                     column.setDataType(headerMap.get("type").toString());
@@ -170,7 +169,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
                     column.setTableName(vo.getTableName());
                     column.setKdColumnName(vo.getKdColumnName());
                     column.setColumnType("varchar(60)");
-                    column.setIsPk("0");
+                    column.setIsPk(vo.getIsPk());
                     column.setColumnComment(headerMap.get("caption").toString());
                     columns.add(column);
                 }
@@ -197,12 +196,13 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
         /**
          * 1 创建表
          */
-        if(this.createTable(busTable.getBusTableName(),busTable.getColumns())){
+        List<BusTableColumn> columns = this.iBusTableColumnService.getColumnsByName(busTable.getBusTableName());
+        if(this.createTable(busTable.getBusTableName(),columns)){
             /**
              * 2. 插入数据
              */
             //根据表名和分录号对数据进行分组，同步所有的表数据
-            if(this.insetTable(busTable.getBusTableName(),busTable.getColumns())){
+            if(this.insetTable(busTable.getBusTableName(),columns)){
                 return redisService.deleteObject(busTable.getBusTableName());
             }else {
                 throw new ApiException("500",null,"初始化表数据失败");
@@ -257,9 +257,9 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
         busTable.setCreateBy(SecurityUtils.getUsername());
         busTable.setCreateTime(new Date());
         //调用api获取数据
-        List<String> columnNames = columns.stream().map(column -> column.getColumnName()).collect(Collectors.toList());
+        List<String> columnNames = columns.stream().map(column -> column.getKdColumnName()).collect(Collectors.toList());
         ApiParam apiParam = new ApiParam();
-        apiParam.setApiObj(busTable.getSyncApiCode());
+        apiParam.setApiCode(busTable.getSyncApiCode());
         String select = StringUtils.join(columnNames.toArray(),",");
         Map<String,Object> param = new HashMap<>();
         param.put("select",select);
@@ -277,6 +277,20 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
         return successMsg.toString();
     }
 
+    @Override
+    public boolean removeTablesByIds(List<Long> asList) {
+        if(this.removeByIds(asList)){
+            for(Long id:asList){
+                BusTable busTable = this.getById(id);
+                if(this.iBusTableColumnService.removeByTableName(busTable.getBusTableName())){
+                    if(DataBaseSql.exitTable(busTable.getBusTableName())){
+                        DataBaseSql.dropTable(busTable.getBusTableName());
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
 
 }

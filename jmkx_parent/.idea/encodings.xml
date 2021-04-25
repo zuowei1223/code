@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_easServer" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_mdm" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_mq" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_oaServer" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_portal" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_server_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_server_api/jmkx_server_easServer_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_server_api/jmkx_server_uf013Server_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_uf013Server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_web_server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jmkx_web_server/jmkx_portal_web" charset="UTF-8" />
+  </component>
+</project>

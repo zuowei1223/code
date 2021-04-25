@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="jmkx_common" />
+        <module name="jmkx_easServer" />
+        <module name="jmkx_mdm" />
+        <module name="jmkx_mq" />
+        <module name="jmkx_oaServer" />
+        <module name="jmkx_portal" />
+        <module name="jmkx_portal_web" />
+        <module name="jmkx_server_easServer_api" />
+        <module name="jmkx_server_uf013Server_api" />
+        <module name="jmkx_uf013Server" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="jmkx_common" target="1.8" />
+      <module name="jmkx_easServer" target="1.8" />
+      <module name="jmkx_mdm" target="1.8" />
+      <module name="jmkx_mq" target="1.8" />
+      <module name="jmkx_oaServer" target="1.8" />
+      <module name="jmkx_parent" target="1.8" />
+      <module name="jmkx_portal" target="1.8" />
+      <module name="jmkx_portal_web" target="1.8" />
+      <module name="jmkx_server_api" target="1.8" />
+      <module name="jmkx_server_easServer_api" target="1.8" />
+      <module name="jmkx_server_uf013Server_api" target="1.8" />
+      <module name="jmkx_uf013Server" target="1.8" />
+      <module name="jmkx_web_server" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

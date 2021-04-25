@@ -17,14 +17,14 @@ spring:
       discovery:
         # 服务注册地址
         server-addr: 124.71.130.38:8848
-        #namespace: 1f3c41b7-fa8e-4b52-bbbc-6e4590ca4003
+        #namespace: f59dc014-246c-497d-b645-7ebdda3d783b
         #group: dev
       config:
         # 配置中心地址
         server-addr: 124.71.130.38:8848
         # 配置文件格式
         file-extension: yml
-        namespace: 1f3c41b7-fa8e-4b52-bbbc-6e4590ca4003
+        namespace: f59dc014-246c-497d-b645-7ebdda3d783b
         group: dev
         # 共享配置
         #shared-dataids: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
