@@ -15,6 +15,7 @@
         <module>tcoiss-api-system</module>
         <module>tcoiss-api-webservice</module>
         <module>tcoiss-api-business</module>
+        <module>tcoiss-api-datafactory</module>
     </modules>
     <description>
         tcoiss-api系统接口

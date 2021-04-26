@@ -105,12 +105,12 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
      */
     @Override
     public boolean updateBusTable(BusTable busTable) {
-         if(this.updateById(busTable)){
-             List<BusTableColumn> columns = busTable.getColumns();
+        if(this.updateById(busTable)){
+            List<BusTableColumn> columns = busTable.getColumns();
 
-             return iBusTableColumnService.updateBatchById(busTable.getColumns());
-         }
-         return false;
+            return iBusTableColumnService.updateBatchById(busTable.getColumns());
+        }
+        return false;
     }
 
     /**
@@ -139,7 +139,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
             List<List<Object>> datas = redisService.getCacheObject(tableName);
             //根据表名和分录号对数据进行分组，同步所有的表数据
             for(List<Object> data: datas){
-               DataBaseSql.insert(tableName,columns,data.toArray(new String[data.size()]));
+                DataBaseSql.insert(tableName,columns,data.toArray(new String[data.size()]));
             }
             return true;
         } catch (SQLException e) {
@@ -171,6 +171,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
                     column.setKdColumnName(vo.getKdColumnName());
                     column.setColumnType("varchar(60)");
                     column.setColumnComment(vo.getColumnComment());
+                    column.setDataModel(vo.getDataModel());
                     columns.add(column);
                 }
                 if(columns.size()>0){
@@ -182,6 +183,8 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
             }else{
                 throw new DataException("405",null,"生成结构时调用API接口异常");
             }
+        }else {
+            throw new DataException("500",null,"API调用异常");
         }
         return null;
     }
@@ -240,7 +243,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
         }
         if (StringUtils.isNull(columns) || columns.size() == 0)
         {
-            throw new DataException("500",null,"导入用户数据不能为空！");
+            throw new DataException("500",null,"导入表数据不能为空！");
         }
         //将获取到的导入数据保存到数据库中,对数据根据表名进行分组
         Map<String, List<TableVO>> tableMap = columns.stream()
@@ -279,17 +282,15 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
 
     @Override
     public boolean removeTablesByIds(List<Long> asList) {
-        if(this.removeByIds(asList)){
-            for(Long id:asList){
-                BusTable busTable = this.getById(id);
-                if(this.iBusTableColumnService.removeByTableName(busTable.getBusTableName())){
-                    if(DataBaseSql.exitTable(busTable.getBusTableName())){
-                        DataBaseSql.dropTable(busTable.getBusTableName());
-                    }
+        for(Long id:asList){
+            BusTable busTable = this.getById(id);
+            if(this.iBusTableColumnService.removeByTableName(busTable.getBusTableName())){
+                if(DataBaseSql.exitTable(busTable.getBusTableName())){
+                    DataBaseSql.dropTable(busTable.getBusTableName());
                 }
             }
         }
-        return true;
+        return this.removeByIds(asList);
     }
 
 

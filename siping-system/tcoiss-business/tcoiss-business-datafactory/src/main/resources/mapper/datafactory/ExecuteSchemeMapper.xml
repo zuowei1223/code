@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcoiss.datafactory.mapper.ExecuteSchemeMapper">
+    
+    <resultMap type="ExecuteScheme" id="ExecuteSchemeResult">
+        <result property="schemeId"    column="scheme_id"    />
+        <result property="schemeName"    column="scheme_name"    />
+        <result property="executeNumber"    column="execute_number"    />
+        <result property="executeType"    column="execute_type"    />
+        <result property="executeStrategy"    column="execute_strategy"    />
+        <result property="creatorName"    column="creator_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="status"    column="status"    />
+        <result property="schemeExplain"    column="scheme_explain"    />
+    </resultMap>
+
+
+</mapper>

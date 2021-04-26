@@ -83,11 +83,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>com.siping.tcoiss</groupId>
-            <artifactId>tcoiss-common-mq</artifactId>
+            <artifactId>tcoiss-api-datafactory</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>com.siping.tcoiss</groupId>
             <artifactId>tcoiss-api-webservice</artifactId>

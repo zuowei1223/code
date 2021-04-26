@@ -31,10 +31,10 @@ public class TableVO implements Serializable {
     @Excel(name = "列描述")
     private String columnComment;
 
-
     @Excel(name = "金碟列名称" , type = Excel.Type.IMPORT)
     private String kdColumnName;
 
-
+    @Excel(name = "数据模型" , type = Excel.Type.IMPORT)
+    private String dataModel;
 
 }

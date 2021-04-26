@@ -11,7 +11,7 @@
 
     <artifactId>tcoiss-job-service</artifactId>
     <description>
-        数据连接集成
+        定时调度集成
     </description>
 
     <dependencies>
@@ -99,6 +99,12 @@
             <groupId>com.xuxueli</groupId>
             <artifactId>xxl-job-core</artifactId>
             <version>2.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.siping.tcoiss</groupId>
+            <artifactId>tcoiss-api-datafactory</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

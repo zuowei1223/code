@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcoiss.datafactory.mapper.ExecuteWorkMapper">
+    
+    <resultMap type="ExecuteWork" id="ExecuteWorkResult">
+        <result property="workId"    column="work_id"    />
+        <result property="schemeId"    column="scheme_id"    />
+        <result property="workName"    column="work_name"    />
+        <result property="tableName"    column="table_name"    />
+        <result property="workExplain"    column="work_explain"    />
+        <result property="workType"    column="work_type"    />
+        <result property="workScript"    column="work_script"    />
+        <result property="status"    column="status"    />
+        <result property="creatorName"    column="creator_name"    />
+        <result property="createDate"    column="create_date"    />
+    </resultMap>
+
+
+</mapper>

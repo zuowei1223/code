@@ -1,3 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.tcoiss.webservice.api.factory.RemoteApiFallbackFactory
+  com.tcoiss.webservice.api.factory.RemoteBusFallbackFactory
 

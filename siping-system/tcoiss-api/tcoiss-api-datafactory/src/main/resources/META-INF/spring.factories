@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.tcoiss.datafactory.api.factory.RemoteDataFactoryFallbackFactory
+

@@ -1,19 +1,47 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="方案名称" prop="schemeName">
+      <el-form-item label="所属方案" prop="schemeId">
         <el-input
-          v-model="queryParams.schemeName"
-          placeholder="请输入方案名称"
+          v-model="queryParams.schemeId"
+          placeholder="请输入所属方案"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="执行方式" prop="executeType">
-        <el-select v-model="queryParams.executeType" placeholder="请选择执行方式" clearable size="small">
+      <el-form-item label="作业名称" prop="workName">
+        <el-input
+          v-model="queryParams.workName"
+          placeholder="请输入作业名称"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="业务表" prop="tableName">
+        <el-input
+          v-model="queryParams.tableName"
+          placeholder="请输入业务表"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="作业类型" prop="workType">
+        <el-select v-model="queryParams.workType" placeholder="请选择作业类型" clearable size="small">
           <el-option
-            v-for="dict in executeTypeOptions"
+            v-for="dict in workTypeOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="数据状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择数据状态" clearable size="small">
+          <el-option
+            v-for="dict in statusOptions"
             :key="dict.dictValue"
             :label="dict.dictLabel"
             :value="dict.dictValue"
@@ -34,7 +62,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['datafactory:scheme:add']"
+          v-hasPermi="['datafactory:work:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -45,7 +73,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['datafactory:scheme:edit']"
+          v-hasPermi="['datafactory:work:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -56,7 +84,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['datafactory:scheme:remove']"
+          v-hasPermi="['datafactory:work:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -66,27 +94,27 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['datafactory:scheme:export']"
+          v-hasPermi="['datafactory:work:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="schemeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="workList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <!--<el-table-column label="方案ID" align="center" prop="schemeId" />-->
-      <el-table-column label="方案名称" align="center" prop="schemeName" />
-      <el-table-column label="执行编码" align="center" prop="executeNumber" />
-      <el-table-column label="执行方式" align="center" prop="executeType" :formatter="executeTypeFormat" />
-      <el-table-column label="执行策略" align="center" prop="executeStrategy" />
+      <!--<el-table-column label="编号" align="center" prop="workId" />-->
+      <el-table-column label="所属方案" align="center" prop="schemeId" />
+      <el-table-column label="作业名称" align="center" prop="workName" />
+      <el-table-column label="业务表" align="center" prop="tableName" />
+      <el-table-column label="作业说明" align="center" prop="workExplain" />
+      <el-table-column label="作业类型" align="center" prop="workType" :formatter="workTypeFormat" />
+      <el-table-column label="数据状态" align="center" prop="status" :formatter="statusFormat" />
       <el-table-column label="创建人姓名" align="center" prop="creatorName" />
-      <el-table-column label="创建日期" align="center" prop="createTime" width="180">
+      <el-table-column label="创建日期" align="center" prop="createDate" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="数据状态" align="center" prop="status" :formatter="statusFormat" />
-      <el-table-column label="方案描述" align="center" prop="schemeExplain" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -94,14 +122,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['datafactory:scheme:edit']"
+            v-hasPermi="['datafactory:work:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['datafactory:scheme:remove']"
+            v-hasPermi="['datafactory:work:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -115,44 +143,33 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改执行方案对话框 -->
+    <!-- 添加或修改作业对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="方案名称" prop="schemeName">
-          <el-input v-model="form.schemeName" placeholder="请输入方案名称" />
+        <el-form-item label="所属方案" prop="schemeId">
+          <el-input v-model="form.schemeId" placeholder="请输入所属方案" />
         </el-form-item>
-        <el-form-item label="执行编码" prop="executeNumber">
-          <el-input v-model="form.executeNumber" placeholder="请输入执行编码" />
+        <el-form-item label="作业名称" prop="workName">
+          <el-input v-model="form.workName" placeholder="请输入作业名称" />
         </el-form-item>
-        <el-form-item label="执行方式" prop="executeType">
-          <el-select v-model="form.executeType" placeholder="请选择执行方式">
+        <el-form-item label="业务表" prop="tableName">
+          <el-input v-model="form.tableName" placeholder="请输入业务表" />
+        </el-form-item>
+        <el-form-item label="作业说明" prop="workExplain">
+          <el-input v-model="form.workExplain" placeholder="请输入作业说明" />
+        </el-form-item>
+        <el-form-item label="作业类型" prop="workType">
+          <el-select v-model="form.workType" placeholder="请选择作业类型">
             <el-option
-              v-for="dict in executeTypeOptions"
+              v-for="dict in workTypeOptions"
               :key="dict.dictValue"
               :label="dict.dictLabel"
               :value="parseInt(dict.dictValue)"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="执行策略" prop="executeStrategy">
-          <el-select v-model="form.executeStrategy" placeholder="请选择执行策略">
-            <el-option label="请选择字典生成" value="" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="创建人姓名" prop="creatorName">
-          <el-input v-model="form.creatorName" placeholder="请输入创建人姓名" />
-        </el-form-item>
-        <el-form-item label="数据状态">
-          <el-radio-group v-model="form.status">
-            <el-radio
-              v-for="dict in statusOptions"
-              :key="dict.dictValue"
-              :label="parseInt(dict.dictValue)"
-            >{{dict.dictLabel}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="方案描述" prop="schemeExplain">
-          <el-input v-model="form.schemeExplain" placeholder="请输入方案描述" />
+        <el-form-item label="作业脚本" prop="workScript">
+          <el-input v-model="form.workScript" type="textarea" placeholder="请输入内容" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -164,10 +181,10 @@
 </template>
 
 <script>
-import { listScheme, getScheme, delScheme, addScheme, updateScheme } from "@/api/datafactory/scheme";
+import { listWork, getWork, delWork, addWork, updateWork } from "@/api/datafactory/work";
 
 export default {
-  name: "Scheme",
+  name: "Work",
   components: {
   },
   data() {
@@ -184,58 +201,67 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 执行方案表格数据
-      schemeList: [],
+      // 作业表格数据
+      workList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
-      // 执行方式字典
-      executeTypeOptions: [],
+      // 作业类型字典
+      workTypeOptions: [],
       // 数据状态字典
       statusOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        schemeName: null,
-        executeType: null,
+        schemeId: null,
+        workName: null,
+        tableName: null,
+        workType: null,
+        status: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        executeNumber: [
-          { required: true, message: "执行编码不能为空", trigger: "blur" }
+        schemeId: [
+          { required: true, message: "所属方案不能为空", trigger: "blur" }
         ],
-        executeType: [
-          { required: true, message: "执行方式不能为空", trigger: "change" }
+        workName: [
+          { required: true, message: "作业名称不能为空", trigger: "blur" }
+        ],
+        tableName: [
+          { required: true, message: "业务表不能为空", trigger: "blur" }
+        ],
+        workType: [
+          { required: true, message: "作业类型不能为空", trigger: "change" }
         ],
       }
     };
   },
   created() {
     this.getList();
-    this.getDicts("execute_type").then(response => {
-      this.executeTypeOptions = response.data;
+    this.getDicts("work_type").then(response => {
+      this.workTypeOptions = response.data;
     });
     this.getDicts("data_level").then(response => {
       this.statusOptions = response.data;
     });
   },
   methods: {
-    /** 查询执行方案列表 */
+    /** 查询作业列表 */
     getList() {
       this.loading = true;
-      listScheme(this.queryParams).then(response => {
-        this.schemeList = response.rows;
+      listWork(this.queryParams).then(response => {
+        this.workList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
     },
-    // 执行方式字典翻译
-    executeTypeFormat(row, column) {
-      return this.selectDictLabel(this.executeTypeOptions, row.executeType);
+    // 作业类型字典翻译
+    workTypeFormat(row, column) {
+      return this.selectDictLabel(this.workTypeOptions, row.workType);
     },
     // 数据状态字典翻译
     statusFormat(row, column) {
@@ -249,15 +275,16 @@ export default {
     // 表单重置
     reset() {
       this.form = {
+        workId: null,
         schemeId: null,
-        schemeName: null,
-        executeNumber: null,
-        executeType: null,
-        executeStrategy: null,
-        creatorName: null,
-        createTime: null,
+        workName: null,
+        tableName: null,
+        workExplain: null,
+        workType: null,
+        workScript: null,
         status: 0,
-        schemeExplain: null
+        creatorName: null,
+        createDate: null
       };
       this.resetForm("form");
     },
@@ -273,7 +300,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.schemeId)
+      this.ids = selection.map(item => item.workId)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -281,30 +308,30 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加执行方案";
+      this.title = "添加作业";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const schemeId = row.schemeId || this.ids
-      getScheme(schemeId).then(response => {
+      const workId = row.workId || this.ids
+      getWork(workId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改执行方案";
+        this.title = "修改作业";
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.schemeId != null) {
-            updateScheme(this.form).then(response => {
+          if (this.form.workId != null) {
+            updateWork(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addScheme(this.form).then(response => {
+            addWork(this.form).then(response => {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -315,13 +342,13 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const schemeIds = row.schemeId || this.ids;
-      this.$confirm('是否确认删除执行方案编号为"' + schemeIds + '"的数据项?', "警告", {
+      const workIds = row.workId || this.ids;
+      this.$confirm('是否确认删除作业编号为"' + workIds + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delScheme(schemeIds);
+          return delWork(workIds);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -329,9 +356,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('datafactory/scheme/export', {
+      this.download('datafactory/work/export', {
         ...this.queryParams
-      }, `datafactory_scheme.xlsx`)
+      }, `datafactory_work.xlsx`)
     }
   }
 };
