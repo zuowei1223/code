@@ -20,7 +20,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="业务对象" prop="apiObj">
+      <!--<el-form-item label="业务对象" prop="apiObj">
         <el-input
           v-model="queryParams.apiObj"
           placeholder="请输入业务对象"
@@ -28,7 +28,7 @@
           size="small"
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item>-->
 
 
       <el-form-item label="所属应用" prop="appName">
@@ -118,7 +118,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="API名称" align="center" prop="apiName" />
       <el-table-column label="API编码" align="center" prop="apiCode" />
-      <el-table-column label="业务对象" align="center" prop="requestType" :formatter="requestTypeFormat" />
+      <!--<el-table-column label="业务对象" align="center" prop="requestType" :formatter="requestTypeFormat" />-->
       <el-table-column label="请求方式" align="center" prop="requestType" :formatter="requestTypeFormat" />
       <el-table-column label="所属应用" align="center" prop="appName" />
       <el-table-column label="内容格式" align="center" prop="dataType" />
@@ -177,7 +177,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="业务对象" prop="apiObj">
+        <!--<el-form-item label="业务对象" prop="apiObj">
           <el-select v-model="form.apiObj" placeholder="请选择数据级别">
             <el-option
               v-for="obj in apiObjOptions"
@@ -186,7 +186,7 @@
               :value="obj.busTableName"
             ></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="所属应用" prop="appName">
           <el-select v-model="form.appName" placeholder="请选择所属应用" clearable size="small">
             <el-option

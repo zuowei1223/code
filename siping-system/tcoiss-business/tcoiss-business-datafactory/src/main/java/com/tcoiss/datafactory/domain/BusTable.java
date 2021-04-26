@@ -48,23 +48,13 @@ private static final long serialVersionUID=1L;
     @Excel(name = "业务分组名称")
     private String busGroupName;
 
-    /*private String splitTables;
-
-    private String splitApiCode;
-
-    private String splitGlsqlScript;
-
     private String subTables;
 
     private String subGlsqlScript;
 
-    private String resultType;
-
-    private String resultTableName;
-
     private String tableType;
 
-    private String syncTableParam;*/
+    private String tableStatus;
 
 
     /** 创建者 */
@@ -82,6 +72,7 @@ private static final long serialVersionUID=1L;
     /** 备注 */
     @Excel(name = "备注")
     private String remark;
+
     @TableField(exist = false)
     private List<BusTableColumn> columns = new ArrayList<>();
 

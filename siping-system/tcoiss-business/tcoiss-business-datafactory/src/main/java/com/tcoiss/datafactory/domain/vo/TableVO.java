@@ -27,12 +27,14 @@ public class TableVO implements Serializable {
     @Excel(name = "列名称" , type = Excel.Type.IMPORT)
     private String columnName;
 
+    /** 列描述 */
+    @Excel(name = "列描述")
+    private String columnComment;
+
+
     @Excel(name = "金碟列名称" , type = Excel.Type.IMPORT)
     private String kdColumnName;
 
-    /** 是否主键（1是） */
-    @Excel(name = "是否主键" , readConverterExp = "1=是")
-    private String isPk;
 
 
 }

@@ -106,6 +106,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
     @Override
     public boolean updateBusTable(BusTable busTable) {
          if(this.updateById(busTable)){
+             List<BusTableColumn> columns = busTable.getColumns();
 
              return iBusTableColumnService.updateBatchById(busTable.getColumns());
          }
@@ -169,8 +170,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
                     column.setTableName(vo.getTableName());
                     column.setKdColumnName(vo.getKdColumnName());
                     column.setColumnType("varchar(60)");
-                    column.setIsPk(vo.getIsPk());
-                    column.setColumnComment(headerMap.get("caption").toString());
+                    column.setColumnComment(vo.getColumnComment());
                     columns.add(column);
                 }
                 if(columns.size()>0){
