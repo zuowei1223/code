@@ -14,7 +14,7 @@ server:
     context-path: /tcoiss-job-admin
 spring:
   redis:
-    host: 124.71.130.38
+    host: 124.71.141.121
     port: 6379
     password: 123456
   datasource:
@@ -31,7 +31,7 @@ spring:
     password: 123456
     username: root
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://124.71.130.38:3306/sp_system?useSSL=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://124.71.141.121:3306/sp_system?useSSL=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
 
   freemarker:
     charset: UTF-8
