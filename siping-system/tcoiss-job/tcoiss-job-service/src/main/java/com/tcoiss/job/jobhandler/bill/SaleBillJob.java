@@ -16,7 +16,7 @@ public class SaleBillJob {
     @XxlJob("saleBillJob")
     public ReturnT<String> demoJobHandler(String jobCode) throws Exception {
         XxlJobLogger.log("开始同步【人员数据】");
-        //更据任务编码调用数据工厂接口查询执行方案，执行同步逻辑
+        //更据任务编码调用数据工厂接口执行方案，执行同步逻辑
 
         XxlJobLogger.log("结束同步【人员数据】");
         return ReturnT.SUCCESS;
