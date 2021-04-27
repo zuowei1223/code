@@ -7,6 +7,7 @@ import com.tcoiss.common.core.exception.datafactory.DataException;
 import com.tcoiss.common.core.utils.ListUtils;
 import com.tcoiss.common.core.utils.SecurityUtils;
 import com.tcoiss.common.core.utils.StringUtils;
+import com.tcoiss.common.datasource.annotation.System;
 import com.tcoiss.common.redis.service.RedisService;
 import com.tcoiss.datafactory.domain.BusTable;
 import com.tcoiss.datafactory.domain.BusTableColumn;
@@ -28,12 +29,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 代码生成业务Service业务层处理
+ * 业务表Service业务层处理
  *
  * @author zw
  * @date 2021-04-20
  */
 @Service
+@System
 public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> implements IBusTableService {
 
     @Autowired
@@ -85,6 +87,18 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
     }
 
     @Override
+    public BusTable getBusTableByName(String tableName) {
+        LambdaQueryWrapper<BusTable> lqw = Wrappers.lambdaQuery();
+        if (StringUtils.isNotBlank(tableName)){
+            lqw.like(BusTable::getBusTableName ,tableName);
+        }
+        BusTable busTable = this.getOne(lqw);
+        List<BusTableColumn> columns = iBusTableColumnService.getColumnsByName(tableName);
+
+        return busTable.setColumns(columns);
+    }
+
+    @Override
     public Map<String,Object> getBusTableById(Long tableId) {
         Map<String,Object> map = new HashMap<>();
         //查询表详细配置以及表字段列表信息
@@ -99,7 +113,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
     }
 
     /**
-     * 提交业务表配置并通过API获取全量数据
+     * 提交业务表
      * @param busTable
      * @return
      */
@@ -196,6 +210,10 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
      * @return
      */
     public boolean initTable(BusTable busTable){
+        if(busTable.getTableStatus()==1){
+            throw new ApiException("201",new String[]{busTable.getBusTableName()
+            },"表已初始化，请勿重复操作");
+        }
         /**
          * 1 创建表
          */
@@ -206,6 +224,9 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
              */
             //根据表名和分录号对数据进行分组，同步所有的表数据
             if(this.insetTable(busTable.getBusTableName(),columns)){
+                //更新表状态为已初始化
+                busTable.setTableStatus(1);
+                this.updateById(busTable);
                 return redisService.deleteObject(busTable.getBusTableName());
             }else {
                 throw new ApiException("500",null,"初始化表数据失败");
@@ -215,6 +236,44 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
         }
     }
 
+    public boolean syncDataByApi(BusTable busTable,String script){
+        List<String> columnNames = busTable.getColumns().stream().map(column -> column.getKdColumnName()).collect(Collectors.toList());
+        ApiParam apiParam = new ApiParam();
+        apiParam.setApiCode(busTable.getSyncApiCode());
+        String select = StringUtils.join(columnNames.toArray(),",");
+        JSONObject jsonObject = JSONObject.parseObject(script);
+        jsonObject.put("select",select);
+        apiParam.setParam(jsonObject);
+        try{
+            R<Map<String,Object>> r = remoteApiService.executeKdApi(apiParam);
+            if(r.getCode()==200) {
+                Map<String, Object> map = r.getData();
+                if (map.get("success").equals("true")) {
+                    Map<String, Object> data = (Map<String, Object>) map.get("data");
+                    int count = Integer.valueOf(data.get("count").toString());
+                    if (count == 0) {
+                        throw new ApiException("405", null, "未查询到可同步数据");
+                    }
+                    List<List<String>> rows = (List)data.get("rows");
+                    //保存数据
+                    for(List<String> row: rows){
+                        DataBaseSql.insert(busTable.getBusTableName(),busTable.getColumns(),row.toArray(new String[data.size()]));
+                    }
+                    return true;
+                }else{
+                    throw new DataException("405",null,"生成结构时调用API接口异常");
+                }
+            }else {
+                throw new DataException("500",null,"API调用异常");
+            }
+        }catch (SQLException e){
+            throw new DataException("501",new String[] {busTable.getBusTableName()},"保存同步数据失败");
+
+        }
+
+    }
+
+
 
     private boolean checkBusTable(String tableName){
         LambdaQueryWrapper<BusTable> lqw = Wrappers.lambdaQuery();
@@ -222,7 +281,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
             lqw.eq(BusTable::getBusTableName ,tableName);
         }
         if(this.list(lqw).size()>0){
-            throw new ApiException("405",new String[] {tableName},"保存失败，表名已存在");
+            throw new DataException("405",new String[] {tableName},"保存失败，表名已存在");
         }
         return true;
 

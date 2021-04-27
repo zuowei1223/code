@@ -1,5 +1,7 @@
 package com.tcoiss.datafactory.service.impl;
 
+import com.tcoiss.common.datasource.annotation.Master;
+import com.tcoiss.common.datasource.annotation.System;
 import com.tcoiss.datafactory.domain.BusTableColumn;
 import com.tcoiss.datafactory.mapper.BusTableColumnMapper;
 import com.tcoiss.datafactory.service.IBusTableColumnService;
@@ -19,6 +21,7 @@ import java.util.Map;
  * @date 2021-04-20
  */
 @Service
+@System
 public class BusTableColumnServiceImpl extends ServiceImpl<BusTableColumnMapper, BusTableColumn> implements IBusTableColumnService {
 
     @Override

@@ -54,6 +54,8 @@ private static final long serialVersionUID=1L;
     @Excel(name = "作业类型")
     private Integer workType;
 
+    private Integer workOrder;
+
     /** 作业脚本 */
     private String workScript;
 

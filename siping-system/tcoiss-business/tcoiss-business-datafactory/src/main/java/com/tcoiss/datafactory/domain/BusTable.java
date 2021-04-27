@@ -54,7 +54,7 @@ private static final long serialVersionUID=1L;
 
     private String tableType;
 
-    private String tableStatus;
+    private Integer tableStatus;
 
 
     /** 创建者 */

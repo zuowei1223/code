@@ -2,6 +2,8 @@ package com.tcoiss.datafactory.service.impl;
 
 import com.tcoiss.common.core.domain.R;
 import com.tcoiss.common.core.exception.datafactory.DataException;
+import com.tcoiss.common.datasource.annotation.Master;
+import com.tcoiss.common.datasource.annotation.System;
 import com.tcoiss.datafactory.api.model.SchemeVO;
 import com.tcoiss.datafactory.domain.ExecuteWork;
 import com.tcoiss.datafactory.service.IExecuteWorkService;
@@ -25,6 +27,7 @@ import java.util.Map;
  * @date 2021-04-26
  */
 @Service
+@System
 public class ExecuteSchemeServiceImpl extends ServiceImpl<ExecuteSchemeMapper, ExecuteScheme> implements IExecuteSchemeService {
 
     @Autowired
@@ -68,6 +71,9 @@ public class ExecuteSchemeServiceImpl extends ServiceImpl<ExecuteSchemeMapper, E
         // todo 根据执行策略，执行作业 1.串行 2.并行 3.异步
         switch (scheme.getExecuteStrategy()){
             case 1:
+                for(ExecuteWork work:works){
+                    iExecuteWorkService.executeWork(work);
+                }
 
         }
         return R.ok();

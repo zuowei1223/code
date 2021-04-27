@@ -1,13 +1,13 @@
 package com.tcoiss.datafactory.util;
 
 import com.tcoiss.datafactory.domain.BusTableColumn;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
-
 public class DataBaseSql {
     //配置文件 读取jdbc的配置文件
     private static ResourceBundle bundle = PropertyResourceBundle.getBundle("db");

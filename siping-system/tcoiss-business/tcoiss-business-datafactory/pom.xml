@@ -48,6 +48,12 @@
             <version>${swagger.fox.version}</version>
         </dependency>
 
+        <!-- jdbcTemplate 执行动态sql-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
         <!-- Mysql Connector -->
         <dependency>
             <groupId>mysql</groupId>
@@ -91,6 +97,11 @@
         <dependency>
             <groupId>com.siping.tcoiss</groupId>
             <artifactId>tcoiss-api-webservice</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.siping.tcoiss</groupId>
+            <artifactId>tcoiss-common-datasource</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

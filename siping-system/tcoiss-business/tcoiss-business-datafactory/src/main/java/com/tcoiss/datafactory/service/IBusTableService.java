@@ -25,6 +25,8 @@ public interface IBusTableService extends IService<BusTable> {
 
     boolean updateBusTableById(BusTable busTable);
 
+    BusTable getBusTableByName(String tableName);
+
     Map<String,Object> getBusTableById(Long tableId);
 
     boolean updateBusTable(BusTable busTable);
@@ -34,4 +36,6 @@ public interface IBusTableService extends IService<BusTable> {
     String importTable(List<TableVO> columns, boolean updateSupport);
 
     boolean removeTablesByIds(List<Long> asList);
+
+    boolean syncDataByApi(BusTable table, String script);
 }

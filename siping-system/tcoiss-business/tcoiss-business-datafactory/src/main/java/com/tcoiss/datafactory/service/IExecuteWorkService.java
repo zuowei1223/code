@@ -21,4 +21,6 @@ public interface IExecuteWorkService extends IService<ExecuteWork> {
      * 根据方案ID查询作业列表
      */
     List<ExecuteWork> getWorksBySchemeId(Long schemeId);
+
+    void executeWork(ExecuteWork work);
 }
