@@ -70,7 +70,7 @@ private static final long serialVersionUID=1L;
     /** 创建日期 */
     @Excel(name = "创建日期" , width = 30, dateFormat = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createDate;
+    private Date createTime;
 
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();

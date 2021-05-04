@@ -84,16 +84,15 @@
     </el-row>
 
     <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="编号" align="center" prop="tableId" />
-      <el-table-column label="业务表名称" align="center" prop="busTableName" />
-      <el-table-column label="业务表说明" align="center" prop="busTableComment" />
-      <el-table-column label="api编码" align="center" prop="syncApiCode" />
-      <el-table-column label="分组名称" align="center" prop="busGroupName" />
-      <el-table-column label="拆分表名" align="center" prop="" />
-      <el-table-column label="子表名" align="center" prop="" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column type="selection" min-width="20" align="center" />
+      <el-table-column label="业务表名称" align="center" min-width="50" prop="busTableName" />
+      <el-table-column label="业务表说明" align="center" min-width="50" prop="busTableComment" />
+      <el-table-column label="api编码" align="center" min-width="50" prop="syncApiCode" />
+      <el-table-column label="分组名称" align="center" min-width="30" prop="busGroupName" />
+      <el-table-column label="子表名" align="center" min-width="30" prop="" />
+      <el-table-column label="备注" align="center" min-width="50" prop="remark" />
+      <el-table-column label="操作" align="center"  class-name="small-padding fixed-width">
+
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -122,8 +121,9 @@
           >删除</el-button>
         </template>
       </el-table-column>
+      </el-col>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -383,7 +383,7 @@ export default {
     openImportTable() {
       this.$refs.import.show();
     },
-    
+
     /** 同步表结构操作 */
     handleInitTable(row) {
       const tableName = row.tableName;

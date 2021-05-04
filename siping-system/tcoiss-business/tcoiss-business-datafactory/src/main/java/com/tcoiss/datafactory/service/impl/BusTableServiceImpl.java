@@ -168,6 +168,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
     private List<BusTableColumn> getColumnsByApi(ApiParam apiParam,List<TableVO> vos) {
         //根据api调用获取表结构JSON串
         List<BusTableColumn> columns = new ArrayList<>();
+        List<List<String>> rows = new ArrayList<>();
         R<Map<String,Object>> r = remoteApiService.executeKdApi(apiParam);
         if(r.getCode()==200){
             Map<String,Object> map = r.getData();
@@ -175,7 +176,8 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
                 Map<String,Object> data =(Map<String, Object>) map.get("data");
                 int count = Integer.valueOf(data.get("count").toString());
                 if(count==0){
-                    throw new ApiException("405",null,"未查询到可同步数据");
+                    //throw new ApiException("405",null,"未查询到可同步数据");
+                    redisService.setCacheObject(vos.get(0).getTableName(),rows);
                 }
                 List<Object> header = (List)data.get("header");
                 for(int i= 0;i<vos.size();i++){
@@ -192,7 +194,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
                     columns.add(column);
                 }
                 if(columns.size()>0){
-                    List<List<String>> rows = (List)data.get("rows");
+                    rows = (List)data.get("rows");
                     //将数据保存到redis，key值为表名
                     redisService.setCacheObject(vos.get(0).getTableName(),rows);
                     return columns;

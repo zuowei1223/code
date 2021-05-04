@@ -78,6 +78,9 @@ public class ExecuteSchemeServiceImpl extends ServiceImpl<ExecuteSchemeMapper, E
                 for(ExecuteWork work:works){
                     iExecuteWorkService.executeWork(work);
                 }
+                break;
+            default :
+                break;
 
         }
         return R.ok();

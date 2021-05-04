@@ -149,7 +149,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -159,63 +159,88 @@
     />
 
     <!-- 添加或修改API服务配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="50%" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="API名称" prop="apiName">
-          <el-input v-model="form.apiName" placeholder="请输入API名称" />
-        </el-form-item>
-        <el-form-item label="API编码" prop="apiCode">
-          <el-input v-model="form.apiCode" placeholder="请输入API编码" />
-        </el-form-item>
-        <el-form-item label="请求方式" prop="requestType">
-          <el-select v-model="form.requestType" placeholder="请选择请求方式">
-            <el-option
-              v-for="dict in requestTypeOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="dict.dictValue"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <!--<el-form-item label="业务对象" prop="apiObj">
-          <el-select v-model="form.apiObj" placeholder="请选择数据级别">
-            <el-option
-              v-for="obj in apiObjOptions"
-              :key="obj.busTableName"
-              :label="obj.busTableComment"
-              :value="obj.busTableName"
-            ></el-option>
-          </el-select>
-        </el-form-item>-->
-        <el-form-item label="所属应用" prop="appName">
-          <el-select v-model="form.appName" placeholder="请选择所属应用" clearable size="small">
-            <el-option
-              v-for="dict in appTypeOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="dict.dictValue"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="API地址" prop="apiUrl">
-          <el-input v-model="form.apiUrl" placeholder="请输入API地址" />
-        </el-form-item>
-        <el-form-item label="内容格式" prop="dataType">
-          <el-input v-model="form.dataType" placeholder="请输入内容格式" />
-        </el-form-item>
-        <el-form-item label="参数模板" prop="paramTemplate">
-          <el-input v-model="form.paramTemplate" type="textarea" rows="5" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="数据级别" prop="dataLevel">
-          <el-select v-model="form.dataLevel" placeholder="请选择数据级别">
-            <el-option
-              v-for="dict in dataLevelOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="parseInt(dict.dictValue)"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+    <el-dialog :title="title" :visible.sync="open" width="60%" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="90px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="API名称" prop="apiName">
+              <el-input v-model="form.apiName" placeholder="请输入API名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="API编码" prop="apiCode">
+              <el-input v-model="form.apiCode" placeholder="请输入API编码" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="请求方式" prop="requestType">
+              <el-select v-model="form.requestType" placeholder="请选择请求方式">
+                <el-option
+                  v-for="dict in requestTypeOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+            <!--<el-form-item label="业务对象" prop="apiObj">
+              <el-select v-model="form.apiObj" placeholder="请选择数据级别">
+                <el-option
+                  v-for="obj in apiObjOptions"
+                  :key="obj.busTableName"
+                  :label="obj.busTableComment"
+                  :value="obj.busTableName"
+                ></el-option>
+              </el-select>
+            </el-form-item>-->
+          <el-col :span="12">
+            <el-form-item label="所属应用" prop="appName">
+              <el-select v-model="form.appName" placeholder="请选择所属应用" clearable size="small">
+                <el-option
+                  v-for="dict in appTypeOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="API地址" prop="apiUrl">
+              <el-input v-model="form.apiUrl" placeholder="请输入API地址" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="内容格式" prop="dataType">
+              <el-select v-model="form.dataType" placeholder="请输入内容格式" clearable size="small">
+                <el-option
+                  v-for="dict in contentTypeOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="参数模板" prop="paramTemplate">
+              <el-input v-model="form.paramTemplate" type="textarea" rows="5" placeholder="请输入内容" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="数据级别" prop="dataLevel">
+              <el-select v-model="form.dataLevel" placeholder="请选择数据级别">
+                <el-option
+                  v-for="dict in dataLevelOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="parseInt(dict.dictValue)"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -258,9 +283,10 @@ export default {
       dataLevelOptions: [],
       // 业务对象列表
       apiObjOptions: [],
-
+      //所属应用列表
       appTypeOptions: [],
-
+      //内容格式列表
+      contentTypeOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -294,6 +320,9 @@ export default {
     });
     this.getDicts("app_type").then(response => {
       this.appTypeOptions = response.data;
+    });
+    this.getDicts("data_type").then(response => {
+      this.contentTypeOptions = response.data;
     });
     var query = {};
     this.getTables(query).then(response => {
