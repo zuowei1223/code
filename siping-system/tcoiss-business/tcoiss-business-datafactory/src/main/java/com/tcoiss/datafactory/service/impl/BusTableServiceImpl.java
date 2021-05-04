@@ -62,7 +62,7 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
         if (StringUtils.isNotBlank(busTable.getBusGroupName())){
             lqw.like(BusTable::getBusGroupName ,busTable.getBusGroupName());
         }
-        if (busTable.getTableStatus()==null){
+        if (busTable.getTableStatus()!=null){
             lqw.like(BusTable::getTableStatus ,busTable.getTableStatus());
         }
         return this.list(lqw);
