@@ -2,13 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91be85a5-c040-459b-9f0a-064cc75ed66c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-base/src/main/resources/bootstrap.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-base/src/main/resources/logback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-datafactory/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-datafactory/src/main/java/com/tcoiss/datafactory/api/RemoteDataFactoryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-datafactory/src/main/java/com/tcoiss/datafactory/api/model/SchemeVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-datafactory/src/main/resources/META-INF/spring.factories" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/controller/ExecuteSchemeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/controller/ExecuteWorkController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/domain/ExecuteScheme.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/domain/ExecuteWork.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/mapper/ExecuteSchemeMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/mapper/ExecuteWorkMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/service/IExecuteSchemeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/service/IExecuteWorkService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/service/impl/ExecuteSchemeServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/service/impl/ExecuteWorkServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/resources/mapper/datafactory/ExecuteSchemeMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/resources/mapper/datafactory/ExecuteWorkMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/api/datafactory/scheme.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/api/datafactory/work.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/datafactory/work/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/domain/BusTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/domain/BusTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/domain/vo/TableVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/domain/vo/TableVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/service/impl/BusTableServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/src/main/java/com/tcoiss/datafactory/service/impl/BusTableServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/integration/apiServiceConfig/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/integration/apiServiceConfig/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-api/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-business/src/main/java/com/tcoiss/business/api/RemoteBusService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-business/src/main/java/com/tcoiss/business/api/RemoteBusService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-business/src/main/java/com/tcoiss/business/api/factory/RemoteBusFallbackFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-datafactory/src/main/java/com/tcoiss/datafactory/api/factory/RemoteDataFactoryFallbackFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-business/src/main/resources/META-INF/spring.factories" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-api/tcoiss-api-business/src/main/resources/META-INF/spring.factories" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-business/tcoiss-business-datafactory/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-job/tcoiss-job-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-job/tcoiss-job-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-job/tcoiss-job-service/src/main/java/com/tcoiss/job/jobhandler/bill/SaleBillJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-job/tcoiss-job-service/src/main/java/com/tcoiss/job/jobhandler/bill/SaleBillJob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/api/datafactory/gen.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/datafactory/scheme/addSyncInfoForm.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/datafactory/scheme/basicInfoForm.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/datafactory/scheme/genInfoForm.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/datafactory/scheme/importTable.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/datafactory/scheme/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/datafactory/scheme/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/datafactory/scheme/step1InfoForm.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../siping-system/tcoiss-ui/src/views/datafactory/scheme/syncscheme.vue" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

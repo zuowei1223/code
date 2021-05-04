@@ -42,6 +42,10 @@ public class ExecuteSchemeServiceImpl extends ServiceImpl<ExecuteSchemeMapper, E
         if (executeScheme.getExecuteType() != null){
             lqw.eq(ExecuteScheme::getExecuteType ,executeScheme.getExecuteType());
         }
+        if (executeScheme.getStatus() != null){
+            lqw.eq(ExecuteScheme::getStatus ,executeScheme.getStatus());
+        }
+
         return this.list(lqw);
     }
 

@@ -1,17 +1,17 @@
 package com.tcoiss.common.datasource.sharding;
 
 
-import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
+/*import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
 import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
 
 import java.util.Collection;
 
-/**
+*//**
  * 自定义分片算法
  * 
  * @author yinjihuan
  *
- */
+ *//*
 public class MyPreciseShardingAlgorithm implements PreciseShardingAlgorithm<Integer> {
 
 	@Override
@@ -24,4 +24,4 @@ public class MyPreciseShardingAlgorithm implements PreciseShardingAlgorithm<Inte
 		throw new IllegalArgumentException();
 	}
 
-}
+}*/

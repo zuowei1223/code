@@ -182,6 +182,8 @@
 
 <script>
 import { listWork, getWork, delWork, addWork, updateWork } from "@/api/datafactory/work";
+import { getSchemes } from "@/api/datafactory/scheme";
+import { getTables } from "@/api/datafactory/table";
 
 export default {
   name: "Work",
@@ -248,6 +250,15 @@ export default {
     this.getDicts("data_level").then(response => {
       this.statusOptions = response.data;
     });
+    var table = {"tableStatus":1};
+    this.getTables().then(response => {
+      this.statusOptions = response.data;
+    });
+    var scheme = {"status":1}
+    this.getSchemes().then(response => {
+      this.statusOptions = response.data;
+    });
+
   },
   methods: {
     /** 查询作业列表 */

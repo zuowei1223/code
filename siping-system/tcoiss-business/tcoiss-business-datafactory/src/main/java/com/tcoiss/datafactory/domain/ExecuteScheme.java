@@ -31,7 +31,7 @@ private static final long serialVersionUID=1L;
 
 
     /** 方案ID */
-    @TableId(value = "scheme_id")
+    @TableId(type = IdType.AUTO)
     private Long schemeId;
 
     /** 方案名称 */

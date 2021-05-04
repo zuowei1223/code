@@ -9,6 +9,15 @@ export function listTable(query) {
   })
 }
 
+// 查询代码生成业务列表
+export function getTables(query) {
+  return request({
+    url: '/datafactory/table/getTables',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询代码生成业务详细
 export function getBusTable(tableId) {
   return request({

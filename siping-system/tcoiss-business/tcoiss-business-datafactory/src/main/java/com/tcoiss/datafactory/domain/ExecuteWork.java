@@ -31,7 +31,7 @@ private static final long serialVersionUID=1L;
 
 
     /** 编号 */
-    @TableId(value = "work_id")
+    @TableId(type = IdType.AUTO)
     private Long workId;
 
     /** 所属方案 */

@@ -9,6 +9,15 @@ export function listScheme(query) {
   })
 }
 
+// 查询执行方案列表
+export function getSchemes(query) {
+  return request({
+    url: '/datafactory/scheme/getSchemes',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询执行方案详细
 export function getScheme(schemeId) {
   return request({

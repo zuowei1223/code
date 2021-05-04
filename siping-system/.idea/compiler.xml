@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="tcoiss-api-business" />
+        <module name="tcoiss-api-datafactory" />
         <module name="tcoiss-api-system" />
         <module name="tcoiss-api-webservice" />
         <module name="tcoiss-auth" />
