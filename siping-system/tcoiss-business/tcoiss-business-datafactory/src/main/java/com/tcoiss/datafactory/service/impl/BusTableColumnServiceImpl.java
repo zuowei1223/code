@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 代码生成业务字段Service业务层处理
@@ -109,7 +110,8 @@ public class BusTableColumnServiceImpl extends ServiceImpl<BusTableColumnMapper,
         LambdaQueryWrapper<BusTableColumn> lqw = Wrappers.lambdaQuery();
         lqw.eq(BusTableColumn::getTableName ,busTableName);
         List<BusTableColumn> columns = this.list(lqw);
-        return this.removeByIds(columns);
+        List<Long> idList = columns.stream().map(BusTableColumn::getColumnId).collect(Collectors.toList());
+        return this.removeByIds(idList);
     }
 
 

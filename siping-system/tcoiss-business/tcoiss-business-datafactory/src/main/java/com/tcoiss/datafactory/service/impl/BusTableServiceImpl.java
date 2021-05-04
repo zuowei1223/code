@@ -307,6 +307,10 @@ public class BusTableServiceImpl extends ServiceImpl<BusTableMapper, BusTable> i
         {
             throw new DataException("500",null,"导入表数据不能为空！");
         }
+        for (int i=0;i<columns.size();i++){
+            if(StringUtils.isEmpty(columns.get(i).getTableName()))
+                columns.remove(i);
+        }
         //将获取到的导入数据保存到数据库中,对数据根据表名进行分组
         Map<String, List<TableVO>> tableMap = columns.stream()
                 .collect(Collectors.groupingBy(TableVO::getTableName));
